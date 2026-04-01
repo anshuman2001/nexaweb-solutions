@@ -214,7 +214,7 @@ export default function LiveDemoWidget() {
 
   return (
     <>
-      {/* Chat Panel — sits above WhatsApp button, below navbar */}
+      {/* Chat Panel */}
       <div className="fixed bottom-28 right-4 z-30 flex flex-col items-end">
         <AnimatePresence>
           {isOpen && (
@@ -222,27 +222,18 @@ export default function LiveDemoWidget() {
               initial={{ opacity: 0, scale: 0.85, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              className="w-[320px] sm:w-[360px] bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/60 overflow-hidden mb-3"
-              style={{ maxHeight: 'calc(100vh - 160px)' }}
+              className="w-[300px] sm:w-[340px] bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/60 overflow-hidden mb-3"
+              style={{ maxHeight: '420px' }}
             >
               {/* Header */}
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 flex items-center justify-between flex-shrink-0">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-white font-bold text-sm leading-none">NexaWeb AI</p>
-                    <p className="text-blue-200 text-[11px] mt-0.5">Sales & Support Agent 🟢</p>
-                  </div>
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 flex items-center gap-2.5 flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-4 h-4 text-white" />
                 </div>
-                {/* Close button — always visible */}
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/25 hover:bg-white/40 flex items-center justify-center text-white transition-all flex-shrink-0 ml-2"
-                >
-                  <X className="w-4 h-4" strokeWidth={2.5} />
-                </button>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-bold text-sm leading-none">NexaWeb AI</p>
+                  <p className="text-blue-200 text-[11px] mt-0.5">Sales & Support Agent 🟢</p>
+                </div>
               </div>
 
               {/* Messages */}
@@ -259,7 +250,7 @@ export default function LiveDemoWidget() {
                         ? 'bg-accent-blue text-white rounded-tr-sm'
                         : 'bg-surface text-gray-300 rounded-tl-sm border border-border-subtle'
                     }`}>
-                      {m.content}
+                      {m.content.replace(/\*\*(.*?)\*\*/g, '$1')}
                     </div>
                   </div>
                 ))}
@@ -311,24 +302,17 @@ export default function LiveDemoWidget() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 2 }}
           onClick={() => setIsOpen(!isOpen)}
-          className={`flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-xl transition-all group ${
-            isOpen
-              ? 'bg-surface border-red-500/30 text-red-400 hover:border-red-500/50'
-              : 'bg-surface border-accent-blue/30 text-white hover:border-accent-blue/60'
-          }`}
+          className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-surface border border-accent-blue/30 shadow-xl hover:border-accent-blue/60 transition-all group"
         >
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
-            isOpen ? 'bg-red-500/10' : 'bg-accent-blue group-hover:scale-110'
-          }`}>
-            {isOpen ? <X className="w-4 h-4" /> : <MessageCircle className="w-4 h-4 text-white" />}
+          <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+            {isOpen ? <X className="w-4 h-4 text-white" /> : <MessageCircle className="w-4 h-4 text-white" />}
           </div>
-          {!isOpen && (
-            <div className="text-left">
-              <p className="font-semibold text-sm leading-none mb-0.5">Chat with AI Agent</p>
-              <p className="text-gray-400 text-xs">Get instant answers →</p>
-            </div>
-          )}
-          {isOpen && <span className="text-sm font-medium">Close Chat</span>}
+          <div className="text-left">
+            <p className="font-semibold text-sm leading-none mb-0.5 text-white">
+              {isOpen ? 'Close Chat' : 'Chat with AI Agent'}
+            </p>
+            <p className="text-gray-400 text-xs">{isOpen ? 'Click to close' : 'Get instant answers →'}</p>
+          </div>
         </motion.button>
       </div>
     </>
