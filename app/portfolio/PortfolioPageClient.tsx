@@ -8,9 +8,20 @@ import { portfolioData } from '@/lib/utils';
 
 const filters = ['All', 'AI Agent', 'eCommerce', 'Business', 'Landing Page'];
 
+type PortfolioItem = {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+  techStack: string[];
+  liveUrl?: string;
+  description: string;
+  featured: boolean;
+};
+
 export default function PortfolioPageClient() {
   const [active, setActive] = useState('All');
-  const filtered = active === 'All' ? portfolioData : portfolioData.filter(p => p.category === active);
+  const filtered: PortfolioItem[] = (active === 'All' ? portfolioData : portfolioData.filter(p => p.category === active)) as PortfolioItem[];
 
   return (
     <div className="min-h-screen pt-20">
