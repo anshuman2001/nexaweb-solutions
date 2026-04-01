@@ -68,7 +68,7 @@ export default function DashboardPage() {
       <div className="border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-white">Hello, {user?.email?.split('@')[0]} 👋</h1>
+            <h1 className="text-xl font-bold text-white">Welcome, {user?.user_metadata?.full_name || user?.email?.split('@')[0]} 👋</h1>
             <p className="text-gray-400 text-sm">{user?.email}</p>
           </div>
           <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border-subtle text-gray-400 text-sm hover:text-white hover:border-accent-blue/50 transition-all">
@@ -112,7 +112,7 @@ export default function DashboardPage() {
             </div>
             <h3 className="text-white font-bold text-xl mb-2">No Project Yet</h3>
             <p className="text-gray-400 mb-6">Your project hasn't been set up yet. Contact us to get started!</p>
-            <a href={`https://wa.me/919999999999?text=Hi! I just logged into the client portal and want to start my project.`}
+            <a href={`https://wa.me/919997730768?text=Hi! I just logged into the client portal and want to start my project.`}
               target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-blue text-white font-semibold hover:bg-blue-500 transition-all">
               <MessageCircle className="w-5 h-5" />Contact Us on WhatsApp
@@ -155,7 +155,7 @@ export default function DashboardPage() {
                 <MessageCircle className="w-5 h-5 text-accent-green" />Need Help?
               </h2>
               <p className="text-gray-400 text-sm mb-4">Have questions? Chat with us directly.</p>
-              <a href="https://wa.me/919999999999?text=Hi! I'm checking on my project status." target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/919997730768?text=Hi! I'm checking on my project status." target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] font-semibold text-sm hover:bg-[#25D366]/20 transition-all">
                 <MessageCircle className="w-5 h-5" />Message on WhatsApp
               </a>

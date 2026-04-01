@@ -26,21 +26,53 @@ export default function PortalLoginClient() {
 
     try {
       if (isSignUp) {
-        // Sign up with extra metadata
-        const { data, error } = await supabase.auth.signUp({
-          email,
+        // ✅ Check for duplicate email BEFORE signup
+        const { data: existingUsers } = await supabase
+          .from('clients')
+          .select('id')
+          .eq('email', email.toLowerCase().trim())
+          .limit(1);
+
+        // Also try signing in to detect if auth user already exists
+        const { error: signInCheck } = await supabase.auth.signInWithPassword({
+          email: email.toLowerCase().trim(),
+          password: '___check_only___',
+        });
+
+        // If error is "Invalid login credentials" it means email EXISTS (wrong password)
+        // If error is "Email not confirmed" it also means email exists
+        if (
+          signInCheck?.message === 'Invalid login credentials' ||
+          signInCheck?.message?.includes('Email not confirmed')
+        ) {
+          throw new Error('This email is already registered. Please log in instead.');
+        }
+
+        // Proceed with signup
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email: email.toLowerCase().trim(),
           password,
           options: {
-            data: { full_name: name, phone }
+            data: { full_name: name.trim(), phone: phone.trim() }
           }
         });
-        if (error) throw error;
+
+        if (signUpError) {
+          // Friendly error messages
+          if (signUpError.message.toLowerCase().includes('already registered') ||
+              signUpError.message.toLowerCase().includes('already been registered')) {
+            throw new Error('This email is already registered. Please log in instead.');
+          }
+          throw signUpError;
+        }
 
         // Save basic client record in clients table
         if (data.user) {
           await supabase.from('clients').insert([{
             user_id: data.user.id,
-            company_name: name,
+            email: email.toLowerCase().trim(),
+            company_name: name.trim(),
+            contact_number: phone.trim(),
             project_name: 'Pending Setup',
             status: 'in_progress',
             progress: 0,
@@ -49,9 +81,27 @@ export default function PortalLoginClient() {
 
         setSuccess('Account created! Please check your email to verify, then log in.');
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        router.push('/portal/dashboard');
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.toLowerCase().trim(),
+          password,
+        });
+        if (error) {
+          if (error.message.toLowerCase().includes('invalid login credentials')) {
+            throw new Error('Incorrect email or password. Please try again.');
+          }
+          if (error.message.toLowerCase().includes('email not confirmed')) {
+            throw new Error('Please verify your email first. Check your inbox for the confirmation link.');
+          }
+          throw error;
+        }
+
+        // Check if admin
+        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        if (adminEmail && email.toLowerCase().trim() === adminEmail.toLowerCase()) {
+          router.push('/portal/admin');
+        } else {
+          router.push('/portal/dashboard');
+        }
       }
     } catch (err: any) {
       setError(err.message || 'Authentication failed. Please try again.');
@@ -98,10 +148,8 @@ export default function PortalLoginClient() {
         {/* Form */}
         <form onSubmit={handleAuth} className="bg-surface rounded-2xl border border-border-subtle p-8 space-y-4">
 
-          {/* Sign Up Extra Fields */}
           {isSignUp && (
             <>
-              {/* Full Name */}
               <div>
                 <label className="block text-sm text-gray-400 mb-1.5">Full Name *</label>
                 <div className="relative">
@@ -117,7 +165,6 @@ export default function PortalLoginClient() {
                 </div>
               </div>
 
-              {/* Phone */}
               <div>
                 <label className="block text-sm text-gray-400 mb-1.5">Contact Number *</label>
                 <div className="relative">
@@ -135,7 +182,6 @@ export default function PortalLoginClient() {
             </>
           )}
 
-          {/* Email */}
           <div>
             <label className="block text-sm text-gray-400 mb-1.5">Email *</label>
             <div className="relative">
@@ -151,7 +197,6 @@ export default function PortalLoginClient() {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm text-gray-400 mb-1.5">Password *</label>
             <div className="relative">
@@ -173,12 +218,9 @@ export default function PortalLoginClient() {
                 {showPw ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
-            {isSignUp && (
-              <p className="text-gray-600 text-xs mt-1">Minimum 6 characters</p>
-            )}
+            {isSignUp && <p className="text-gray-600 text-xs mt-1">Minimum 6 characters</p>}
           </div>
 
-          {/* Error / Success */}
           {error && (
             <p className="text-red-400 text-sm bg-red-900/20 border border-red-900/30 rounded-lg px-4 py-2">{error}</p>
           )}
@@ -186,7 +228,6 @@ export default function PortalLoginClient() {
             <p className="text-green-400 text-sm bg-green-900/20 border border-green-900/30 rounded-lg px-4 py-2">{success}</p>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -198,16 +239,13 @@ export default function PortalLoginClient() {
             }
           </button>
 
-          {/* Toggle */}
           <div className="text-center pt-1">
             <button
               type="button"
               onClick={() => { setIsSignUp(!isSignUp); setError(''); setSuccess(''); setName(''); setPhone(''); }}
               className="text-sm text-gray-400 hover:text-white transition-colors"
             >
-              {isSignUp
-                ? 'Already have an account? Log in'
-                : "Don't have an account? Sign up"}
+              {isSignUp ? 'Already have an account? Log in' : "Don't have an account? Sign up"}
             </button>
           </div>
         </form>
