@@ -26,29 +26,7 @@ export default function PortalLoginClient() {
 
     try {
       if (isSignUp) {
-        // ✅ Check for duplicate email BEFORE signup
-        const { data: existingUsers } = await supabase
-          .from('clients')
-          .select('id')
-          .eq('email', email.toLowerCase().trim())
-          .limit(1);
-
-        // Also try signing in to detect if auth user already exists
-        const { error: signInCheck } = await supabase.auth.signInWithPassword({
-          email: email.toLowerCase().trim(),
-          password: '___check_only___',
-        });
-
-        // If error is "Invalid login credentials" it means email EXISTS (wrong password)
-        // If error is "Email not confirmed" it also means email exists
-        if (
-          signInCheck?.message === 'Invalid login credentials' ||
-          signInCheck?.message?.includes('Email not confirmed')
-        ) {
-          throw new Error('This email is already registered. Please log in instead.');
-        }
-
-        // Proceed with signup
+        // Proceed with signup — let Supabase handle duplicate detection
         const { data, error: signUpError } = await supabase.auth.signUp({
           email: email.toLowerCase().trim(),
           password,
@@ -58,12 +36,17 @@ export default function PortalLoginClient() {
         });
 
         if (signUpError) {
-          // Friendly error messages
           if (signUpError.message.toLowerCase().includes('already registered') ||
-              signUpError.message.toLowerCase().includes('already been registered')) {
+              signUpError.message.toLowerCase().includes('already been registered') ||
+              signUpError.message.toLowerCase().includes('user already registered')) {
             throw new Error('This email is already registered. Please log in instead.');
           }
           throw signUpError;
+        }
+
+        // If identities is empty array, email already exists in Supabase
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+          throw new Error('This email is already registered. Please log in instead.');
         }
 
         // Save basic client record in clients table
