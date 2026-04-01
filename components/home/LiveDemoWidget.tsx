@@ -57,16 +57,19 @@ export default function LiveDemoWidget() {
             {/* Header */}
             <div className="bg-accent-blue px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">NexaWeb AI</p>
-                  <p className="text-blue-200 text-xs">Try our agent live!</p>
+                  <p className="text-blue-200 text-xs">Sales & Support Agent</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white transition-colors">
-                <X className="w-5 h-5" />
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all flex-shrink-0"
+              >
+                <X className="w-4 h-4" />
               </button>
             </div>
 
