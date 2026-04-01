@@ -20,7 +20,7 @@ export default function ContactPageClient() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,9 +62,9 @@ export default function ContactPageClient() {
               <h2 className="text-xl font-bold text-white mb-5">Get In Touch</h2>
               <div className="space-y-4">
                 {[
-                  { icon: Phone, label:'WhatsApp', value:'+91 99999 99999', href:`https://wa.me/${whatsappNumber}` },
-                  { icon: Mail, label:'Email', value:'hello@nexawebsolutions.in', href:'mailto:hello@nexawebsolutions.in' },
-                  { icon: MapPin, label:'Location', value:'India 🇮🇳', href:'#' },
+                  { icon: Phone, label:'WhatsApp', value:'+91 99977 30768', href:`https://wa.me/${whatsappNumber}` },
+                  { icon: Mail, label:'Email', value:'info.nexawebsolution@gmail.com', href:'mailto:info.nexawebsolution@gmail.com' },
+                  { icon: MapPin, label:'Location', value:'Noida, UP 🇮🇳', href:'#' },
                   { icon: Clock, label:'Working Hours', value:'Mon-Sat, 9AM - 8PM IST', href:'#' },
                 ].map(({ icon: Icon, label, value, href }) => (
                   <a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="flex items-start gap-3 group">

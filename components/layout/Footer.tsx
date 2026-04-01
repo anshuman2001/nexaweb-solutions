@@ -23,7 +23,7 @@ const footerLinks = {
 };
 
 export default function Footer() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
   const currentYear = new Date().getFullYear();
 
   return (
@@ -50,24 +50,24 @@ export default function Footer() {
             {/* Contact Info */}
             <div className="space-y-3">
               <a
-                href="mailto:hello@nexawebsolutions.in"
+                href="mailto:info.nexawebsolution@gmail.com"
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-blue transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                hello@nexawebsolutions.in
+                info.nexawebsolution@gmail.com
               </a>
               <a
-                href={`https://wa.me/${whatsappNumber}`}
+                href={`https://wa.me/919997730768`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-green transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                +91 99999 99999
+                +91 99977 30768
               </a>
               <div className="flex items-center gap-2.5 text-sm text-gray-400">
                 <MapPin className="w-4 h-4" />
-                India 🇮🇳
+                Noida, UP 🇮🇳
               </div>
             </div>
 

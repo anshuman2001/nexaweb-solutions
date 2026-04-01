@@ -10,7 +10,14 @@ const categories = ['All', 'Support', 'Sales', 'Marketing', 'eCommerce', 'Produc
 export default function AIAgentsPageClient() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedAgent, setSelectedAgent] = useState<typeof agentsData[0] | null>(null);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999';
+  const [expandedFeatures, setExpandedFeatures] = useState<string[]>([]);
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+
+  const toggleFeatures = (agentId: string) => {
+    setExpandedFeatures(prev =>
+      prev.includes(agentId) ? prev.filter(id => id !== agentId) : [...prev, agentId]
+    );
+  };
 
   const filtered = activeCategory === 'All' ? agentsData : agentsData.filter(a => a.category === activeCategory);
 
@@ -84,14 +91,23 @@ export default function AIAgentsPageClient() {
 
                 {/* Features */}
                 <ul className="space-y-1.5 mb-4 flex-1">
-                  {agent.features.slice(0, 4).map(f => (
+                  {(expandedFeatures.includes(agent.id) ? agent.features : agent.features.slice(0, 4)).map(f => (
                     <li key={f} className="flex items-start gap-2 text-xs text-gray-400">
                       <Check className="w-3.5 h-3.5 text-accent-green flex-shrink-0 mt-0.5" />
                       {f}
                     </li>
                   ))}
                   {agent.features.length > 4 && (
-                    <li className="text-xs text-accent-blue">+{agent.features.length - 4} more features</li>
+                    <li>
+                      <button
+                        onClick={() => toggleFeatures(agent.id)}
+                        className="text-xs text-accent-blue hover:text-blue-400 transition-colors font-medium underline underline-offset-2 cursor-pointer"
+                      >
+                        {expandedFeatures.includes(agent.id)
+                          ? '− Show less'
+                          : `+${agent.features.length - 4} more features`}
+                      </button>
+                    </li>
                   )}
                 </ul>
 
@@ -226,7 +242,7 @@ export default function AIAgentsPageClient() {
                     Get Demo on WhatsApp
                   </a>
                   <a
-                    href={`mailto:hello@nexawebsolutions.in?subject=Inquiry: ${selectedAgent.name}`}
+                    href={`mailto:info.nexawebsolution@gmail.com?subject=Inquiry: ${selectedAgent.name}`}
                     className="flex-1 text-center py-3 rounded-xl border border-border-subtle text-white font-semibold hover:border-accent-blue/50 transition-all"
                   >
                     Email Us
