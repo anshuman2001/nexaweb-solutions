@@ -12,7 +12,7 @@ interface Message {
 export default function LiveDemoWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Namaste! 🙏 I'm NexaWeb's AI assistant. Ask me anything about our AI agents or web design services! आप हिंदी में भी पूछ सकते हैं।" },
+    { role: 'assistant', content: "Namaste! 🙏 I'm NexaWeb's AI Sales Assistant. I'm here to help you find the right solution for your business!\n\nMay I know your name to get started? 😊" },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function LiveDemoWidget() {
       const res = await fetch('/api/demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({ message: userMsg, history: messages }),
       });
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply || 'Sorry, something went wrong. Please try again.' }]);
