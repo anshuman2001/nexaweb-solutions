@@ -58,9 +58,9 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <div className="hidden sm:flex flex-col leading-tight">
-                <span className="text-white font-bold text-base tracking-wide">NexaWeb</span>
-                <span className="text-[10px] text-gray-400 tracking-[0.2em] uppercase font-medium">Solutions</span>
+              <div className="flex flex-col leading-tight">
+                <span className="text-white font-bold text-sm sm:text-base tracking-wide">NexaWeb</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">Solutions</span>
               </div>
             </Link>
 
