@@ -215,15 +215,15 @@ export default function LiveDemoWidget() {
   return (
     <>
       {/* Chat Panel */}
-      <div className="fixed bottom-28 right-4 z-30 flex flex-col items-end">
+      <div className="fixed bottom-6 left-4 z-30 flex flex-col items-start">
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, scale: 0.85, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              className="w-[300px] sm:w-[340px] bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/60 overflow-hidden mb-3"
-              style={{ maxHeight: '420px' }}
+              className="w-[280px] sm:w-[340px] bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/60 overflow-hidden mb-3"
+              style={{ maxHeight: '370px' }}
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 flex items-center gap-2.5 flex-shrink-0">
@@ -237,7 +237,7 @@ export default function LiveDemoWidget() {
               </div>
 
               {/* Messages */}
-              <div className="overflow-y-auto p-4 space-y-3 bg-background/60" style={{ height: '260px' }}>
+              <div className="overflow-y-auto p-3 space-y-3 bg-background/60" style={{ height: '190px' }}>
                 {messages.map((m, i) => (
                   <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'gap-2 items-start'}`}>
                     {m.role === 'assistant' && (
@@ -302,16 +302,16 @@ export default function LiveDemoWidget() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 2 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-surface border border-accent-blue/30 shadow-xl hover:border-accent-blue/60 transition-all group"
+          className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-surface border border-accent-blue/30 shadow-xl hover:border-accent-blue/60 transition-all group"
         >
           <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
             {isOpen ? <X className="w-4 h-4 text-white" /> : <MessageCircle className="w-4 h-4 text-white" />}
           </div>
           <div className="text-left">
-            <p className="font-semibold text-sm leading-none mb-0.5 text-white">
-              {isOpen ? 'Close Chat' : 'Chat with AI Agent'}
+            <p className="font-semibold text-xs leading-none mb-0.5 text-white">
+              {isOpen ? 'Close Chat' : 'AI Sales Agent'}
             </p>
-            <p className="text-gray-400 text-xs">{isOpen ? 'Click to close' : 'Get instant answers →'}</p>
+            <p className="text-gray-400 text-[10px]">{isOpen ? 'Click to close ✕' : 'Ask anything →'}</p>
           </div>
         </motion.button>
       </div>
