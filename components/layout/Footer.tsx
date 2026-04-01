@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Bot, Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
 
 const footerLinks = {
   services: [
@@ -32,15 +33,15 @@ export default function Footer() {
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-accent-blue flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
+            <Link href="/" className="inline-block mb-4">
+              <div className="relative h-12 w-44">
+                <Image
+                  src="/logo.png"
+                  alt="NexaWeb Solutions"
+                  fill
+                  className="object-contain object-left"
+                />
               </div>
-              <span className="font-bold text-xl">
-                <span className="text-white">Nexa</span>
-                <span className="text-accent-blue">Web</span>
-                <span className="text-gray-400 font-medium"> Solutions</span>
-              </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
               Building AI agents and professional websites for Indian businesses. Automate, grow, and scale with cutting-edge technology.

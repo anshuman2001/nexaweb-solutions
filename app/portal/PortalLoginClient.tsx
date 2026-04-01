@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Bot, Mail, Lock, Eye, EyeOff, ArrowRight, User, Phone } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, User, Phone } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
@@ -73,11 +74,16 @@ export default function PortalLoginClient() {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-accent-blue flex items-center justify-center">
-              <Bot className="w-6 h-6 text-white" />
+          <Link href="/" className="inline-flex items-center justify-center mb-6">
+            <div className="relative h-14 w-52">
+              <Image
+                src="/logo.png"
+                alt="NexaWeb Solutions"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
-            <span className="font-bold text-xl text-white">NexaWeb</span>
           </Link>
           <h1 className="text-2xl font-extrabold text-white mb-2">
             {isSignUp ? 'Create Account' : 'Client Portal'}
