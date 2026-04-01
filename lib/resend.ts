@@ -2,8 +2,8 @@ import { Resend } from 'resend';
 
 export const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const FROM_EMAIL = 'NexaWeb Solutions <hello@nexawebsolutions.in>';
-export const OWNER_EMAIL = 'owner@nexawebsolutions.in';
+export const FROM_EMAIL = 'NexaWeb Solutions <onboarding@resend.dev>';
+export const OWNER_EMAIL = 'info.nexawebsolution@gmail.com';
 
 export async function sendContactNotification(data: {
   name: string;
@@ -44,7 +44,7 @@ export async function sendContactNotification(data: {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #07090f; color: #fff; padding: 32px; border-radius: 12px;">
           <h2 style="color: #2563eb; margin-bottom: 16px;">Thank you, ${data.name}! 🙏</h2>
           <p style="color: #d1d5db; line-height: 1.6;">We've received your inquiry and will get back to you within <strong style="color: #10b981;">2 hours</strong>.</p>
-          <p style="color: #d1d5db; line-height: 1.6;">In the meantime, feel free to WhatsApp us at <a href="https://wa.me/919999999999" style="color: #10b981;">+91 99999 99999</a> for faster response.</p>
+          <p style="color: #d1d5db; line-height: 1.6;">In the meantime, feel free to WhatsApp us at <a href="https://wa.me/919997730768" style="color: #10b981;">+91 99977 30768</a> for faster response.</p>
           <div style="margin-top: 24px; padding: 20px; background: #0c0f1a; border-radius: 8px; text-align: center;">
             <p style="color: #9ca3af; margin-bottom: 12px;">Your inquiry details:</p>
             <p style="color: #fff; font-weight: bold;">${data.service || 'General Inquiry'}</p>
