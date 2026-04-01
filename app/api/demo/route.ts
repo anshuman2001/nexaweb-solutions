@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
     messages.push({ role: 'user', content: message });
 
     const response = await client.messages.create({
-      model: 'claude-3-5-haiku-20241022',
+      model: 'claude-3-haiku-20240307',
       max_tokens: 400,
       system: SYSTEM_PROMPT,
       messages,
@@ -120,10 +120,10 @@ export async function POST(request: NextRequest) {
       : 'Please WhatsApp us at +91 99977 30768 for instant help!';
 
     return NextResponse.json({ reply });
-  } catch (error) {
-    console.error('Demo API error:', error);
+  } catch (error: any) {
+    console.error('Demo API error:', error?.message || error);
     return NextResponse.json({
-      reply: "Namaste! 🙏 Having a brief issue. Please WhatsApp us at +91 99977 30768 for instant help!"
+      reply: `Sorry, I'm facing a technical issue right now. Please WhatsApp us directly at +91 99977 30768 for instant help! 🚀`
     });
   }
 }

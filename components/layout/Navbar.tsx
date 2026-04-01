@@ -47,16 +47,20 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center group">
-              <div className="relative h-10 w-36 group-hover:scale-105 transition-transform duration-200">
+            {/* Logo + Branding */}
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
                 <Image
                   src="/logo.png"
                   alt="NexaWeb Solutions"
                   fill
-                  className="object-contain object-left"
+                  className="object-contain"
                   priority
                 />
+              </div>
+              <div className="hidden sm:flex flex-col leading-tight">
+                <span className="text-white font-bold text-base tracking-wide">NexaWeb</span>
+                <span className="text-[10px] text-gray-400 tracking-[0.2em] uppercase font-medium">Solutions</span>
               </div>
             </Link>
 
