@@ -1,11 +1,77 @@
 import type { Metadata } from 'next';
 import ContactPageClient from './ContactPageClient';
+import JsonLd from '@/components/seo/JsonLd';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Get a Free AI Agent Demo',
-  description: 'Contact NexaWeb Solutions for AI agents and web design. We reply within 2 hours. WhatsApp: +91 99999 99999.',
+  title: 'Contact NexaWeb Solutions — Get Free AI Agent Demo | Noida, India',
+  description: 'Contact NexaWeb Solutions for AI agents and web design. Based in Noida, UP. WhatsApp: +91 99977 30768. Email: info.nexawebsolution@gmail.com. We reply within 2 hours.',
+  keywords: [
+    'contact NexaWeb Solutions', 'AI agent demo India', 'free chatbot demo',
+    'web design consultation India', 'AI agent Noida', 'web design Noida',
+    'hire AI developer India', 'WhatsApp chatbot demo', 'contact AI company India',
+  ],
+  alternates: {
+    canonical: `${siteUrl}/contact`,
+  },
+  openGraph: {
+    title: 'Contact NexaWeb Solutions — Free AI Agent Demo',
+    description: 'Get a free demo of our AI agents. Based in Noida, India. WhatsApp +91 99977 30768. Reply within 2 hours.',
+    url: `${siteUrl}/contact`,
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'Contact NexaWeb Solutions' }],
+  },
+};
+
+const contactPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact NexaWeb Solutions',
+  url: `${siteUrl}/contact`,
+  description: 'Get in touch with NexaWeb Solutions for AI agents and web design services in India.',
+  mainEntity: {
+    '@type': 'ProfessionalService',
+    name: 'NexaWeb Solutions',
+    telephone: '+91-9997730768',
+    email: 'info.nexawebsolution@gmail.com',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Noida',
+      addressRegion: 'Uttar Pradesh',
+      postalCode: '201301',
+      addressCountry: 'IN',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '09:00',
+        closes: '20:00',
+      },
+    ],
+    availableLanguage: ['English', 'Hindi'],
+    url: siteUrl,
+    image: `${siteUrl}/logo.png`,
+    priceRange: '₹₹',
+    areaServed: { '@type': 'Country', name: 'India' },
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Contact', item: `${siteUrl}/contact` },
+  ],
 };
 
 export default function ContactPage() {
-  return <ContactPageClient />;
+  return (
+    <>
+      <JsonLd schema={contactPageSchema} />
+      <JsonLd schema={breadcrumbSchema} />
+      <ContactPageClient />
+    </>
+  );
 }

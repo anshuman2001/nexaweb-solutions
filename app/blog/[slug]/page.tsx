@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 import { blogPostsData } from '@/lib/utils';
+import JsonLd from '@/components/seo/JsonLd';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
 
 interface Props {
   params: { slug: string };
@@ -19,7 +22,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
-    openGraph: { title: post.title, description: post.excerpt, images: [post.imageUrl] },
+    keywords: [post.category, 'AI agents India', 'NexaWeb Solutions', 'chatbot India', 'web design India'],
+    authors: [{ name: post.author }],
+    alternates: { canonical: `${siteUrl}/blog/${post.slug}` },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.excerpt,
+      url: `${siteUrl}/blog/${post.slug}`,
+      publishedTime: post.publishedAt,
+      authors: [post.author],
+      section: post.category,
+      images: [{ url: post.imageUrl, width: 800, height: 500, alt: post.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [post.imageUrl],
+    },
   };
 }
 
@@ -85,8 +106,47 @@ export default function BlogPostPage({ params }: Props) {
 
   const relatedPosts = blogPostsData.filter(p => p.id !== post.id).slice(0, 3);
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.imageUrl,
+    url: `${siteUrl}/blog/${post.slug}`,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    author: {
+      '@type': 'Organization',
+      name: 'NexaWeb Solutions',
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'NexaWeb Solutions',
+      logo: { '@type': 'ImageObject', url: `${siteUrl}/logo.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blog/${post.slug}` },
+    articleSection: post.category,
+    inLanguage: 'en-IN',
+    keywords: `${post.category}, AI agents India, chatbot India, web design India, NexaWeb Solutions`,
+    timeRequired: `PT${post.readTime}M`,
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `${siteUrl}/blog/${post.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen pt-20">
+      <JsonLd schema={articleSchema} />
+      <JsonLd schema={breadcrumbSchema} />
+
       {/* Back Button */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link
@@ -154,7 +214,7 @@ export default function BlogPostPage({ params }: Props) {
           <p className="text-gray-400 mb-6">Get a free demo of our AI agents and see how they can help your business.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href={`https://wa.me/919999999999?text=Hi! I read your blog about ${post.category} and would like a free demo.`}
+              href={`https://wa.me/919997730768?text=Hi! I read your blog about ${post.category} and would like a free demo.`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 rounded-xl bg-accent-blue text-white font-semibold hover:bg-blue-500 transition-all btn-glow"
