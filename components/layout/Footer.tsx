@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
 
 const footerLinks = {
@@ -22,13 +25,112 @@ const footerLinks = {
   ],
 };
 
-export default function Footer() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
-  const currentYear = new Date().getFullYear();
+function StarfieldCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+    let stars: { x: number; y: number; z: number; size: number; opacity: number; twinkle: number; twinkleSpeed: number }[] = [];
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      initStars();
+    };
+
+    const initStars = () => {
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 4000);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random(),
+          size: Math.random() * 1.8 + 0.3,
+          opacity: Math.random() * 0.7 + 0.2,
+          twinkle: Math.random() * Math.PI * 2,
+          twinkleSpeed: Math.random() * 0.02 + 0.005,
+        });
+      }
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach((star) => {
+        star.twinkle += star.twinkleSpeed;
+        const twinkleFactor = 0.6 + 0.4 * Math.sin(star.twinkle);
+        const alpha = star.opacity * twinkleFactor;
+
+        // Depth-based color: deeper stars are more blue, closer are whiter
+        const blue = Math.floor(180 + star.z * 75);
+        const green = Math.floor(180 + star.z * 55);
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size * (0.5 + star.z * 0.5), 0, Math.PI * 2);
+
+        // Glow effect for bigger stars
+        if (star.size > 1.2) {
+          const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3);
+          gradient.addColorStop(0, `rgba(${green}, ${green}, ${blue}, ${alpha})`);
+          gradient.addColorStop(1, `rgba(${green}, ${green}, ${blue}, 0)`);
+          ctx.fillStyle = gradient;
+          ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
+        } else {
+          ctx.fillStyle = `rgba(${green}, ${green}, ${blue}, ${alpha})`;
+        }
+
+        ctx.fill();
+
+        // Some stars are square dots (like in screenshot)
+        if (star.size > 1.5 && Math.random() < 0.002) {
+          ctx.fillStyle = `rgba(100, 150, 255, ${alpha * 0.5})`;
+          ctx.fillRect(star.x - 1, star.y - 1, 2, 2);
+        }
+      });
+
+      animationId = requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+
+    window.addEventListener('resize', resize);
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
 
   return (
-    <footer className="bg-surface border-t border-border-subtle mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ opacity: 0.9 }}
+    />
+  );
+}
+
+export default function Footer() {
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+
+  return (
+    <footer className="relative border-t border-white/10 mt-auto overflow-hidden" style={{ background: 'linear-gradient(180deg, #07090f 0%, #0a0d1a 50%, #060810 100%)' }}>
+      {/* 3D Starfield Background */}
+      <StarfieldCanvas />
+
+      {/* Subtle gradient overlays for depth */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-600/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer */}
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
@@ -51,16 +153,16 @@ export default function Footer() {
             <div className="space-y-3">
               <a
                 href="mailto:info.nexawebsolution@gmail.com"
-                className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-blue transition-colors"
+                className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <Mail className="w-4 h-4" />
                 info.nexawebsolution@gmail.com
               </a>
               <a
-                href={`https://wa.me/919997730768`}
+                href="https://wa.me/919997730768"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-green transition-colors"
+                className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-green-400 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 +91 99977 30768
@@ -84,7 +186,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-lg border border-border-subtle flex items-center justify-center text-gray-400 hover:text-white hover:border-accent-blue/50 hover:bg-accent-blue/10 transition-all"
+                  className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-blue-500/50 hover:bg-blue-500/10 transition-all"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -147,9 +249,9 @@ export default function Footer() {
                 href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a free demo.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-green/10 border border-accent-green/20 text-accent-green text-sm font-medium hover:bg-accent-green/20 transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 transition-all"
               >
-                <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 Chat on WhatsApp
               </a>
             </div>
@@ -157,13 +259,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border-subtle py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © {currentYear} NexaWeb Solutions. All rights reserved.
+            © 2026 NexaWeb Solutions. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-border-subtle text-xs text-gray-400">
-              Made in India 🇮🇳
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400">
+              Made with care in India 🇮🇳
             </span>
             <div className="flex gap-4 text-xs text-gray-500">
               <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
