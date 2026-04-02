@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Bot, Zap, Globe, Sparkles } from 'lucide-react';
+import { ArrowRight, Bot, Zap, Globe } from 'lucide-react';
 
 const badges = [
   { icon: '🤖', text: '24/7 AI Support' },
@@ -11,74 +11,19 @@ const badges = [
 ];
 
 export default function HeroSection() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
 
-      {/* ── Deep space gradient base ── */}
+      {/* Static deep background — no animation, no lag */}
       <div className="absolute inset-0 bg-[#07090f]">
-        <div className="absolute inset-0 aurora-bg" />
-        <div className="absolute inset-0 grid-bg opacity-60" />
-      </div>
-
-      {/* ── 3D floating orbs ── */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Large deep glow — center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)' }} />
-
-        {/* Orb 1 — top left, blue */}
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, -20, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full animate-orb"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.14) 0%, transparent 65%)' }}
-        />
-
-        {/* Orb 2 — bottom right, purple */}
-        <motion.div
-          animate={{ x: [0, -25, 0], y: [0, 15, 0], scale: [1, 1.12, 1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 65%)' }}
-        />
-
-        {/* Orb 3 — top right, green */}
-        <motion.div
-          animate={{ x: [0, -15, 0], y: [0, 25, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-          className="absolute top-10 right-10 w-80 h-80 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.09) 0%, transparent 65%)' }}
-        />
-
-        {/* Floating geometric rings */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full border border-blue-500/8"
-          style={{ borderStyle: 'dashed' }}
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full border border-purple-500/6"
-          style={{ borderStyle: 'dashed' }}
-        />
-
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{ y: [0, -30, 0], opacity: [0.3, 0.8, 0.3] }}
-            transition={{ duration: 4 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.8 }}
-            className="absolute w-1 h-1 rounded-full bg-blue-400"
-            style={{
-              left: `${15 + i * 14}%`,
-              top: `${30 + (i % 3) * 20}%`,
-            }}
-          />
-        ))}
+        <div className="absolute inset-0 grid-bg opacity-50" />
+        {/* Static gradient orbs — CSS only, GPU-accelerated */}
+        <div className="absolute top-1/4 left-1/6 w-[480px] h-[480px] rounded-full pointer-events-none animate-orb"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+        <div className="absolute bottom-1/4 right-1/6 w-[520px] h-[520px] rounded-full pointer-events-none animate-orb"
+          style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%)', filter: 'blur(60px)', animationDelay: '3s' }} />
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full pointer-events-none animate-orb"
+          style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%)', filter: 'blur(50px)', animationDelay: '6s' }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -88,9 +33,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-blue-500/30 bg-blue-500/8 text-blue-300 text-sm font-medium mb-8 animate-glow-ring"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-blue-500/30 bg-blue-500/8 text-blue-300 text-sm font-medium mb-8"
         >
-          <Sparkles className="w-4 h-4" />
+          <Zap className="w-4 h-4" />
           India&apos;s Leading AI Agent Builder
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
         </motion.div>
@@ -149,14 +94,14 @@ export default function HeroSection() {
           </Link>
           <Link
             href="/portfolio"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/10 text-white font-semibold text-lg hover:border-blue-500/40 hover:bg-white/5 transition-all glass-luxury"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/10 text-white font-semibold text-lg hover:border-blue-500/40 hover:bg-white/5 transition-all"
           >
             <Globe className="w-5 h-5" />
             View Our Work
           </Link>
         </motion.div>
 
-        {/* Floating badges */}
+        {/* Badges */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -169,7 +114,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6 + i * 0.1 }}
-              className="flex items-center gap-2 px-4 py-2 rounded-full glass-luxury text-sm text-gray-300 animate-border-glow"
+              className="flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-gray-300 border border-white/8"
             >
               <span>{badge.icon}</span>
               {badge.text}
@@ -177,19 +122,18 @@ export default function HeroSection() {
           ))}
         </motion.div>
 
-        {/* Hero visual — 3D dashboard card */}
+        {/* Hero dashboard card */}
         <motion.div
-          initial={{ opacity: 0, y: 60, rotateX: 15 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="relative mx-auto max-w-4xl"
-          style={{ perspective: '1200px' }}
         >
           {/* Glow behind card */}
-          <div className="absolute -inset-4 rounded-3xl opacity-40 blur-2xl"
-            style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.3), rgba(124,58,237,0.2), rgba(16,185,129,0.15))' }} />
+          <div className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl pointer-events-none"
+            style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.4), rgba(124,58,237,0.25))' }} />
 
-          <div className="relative rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-6 backdrop-blur-xl overflow-hidden luxury-border">
+          <div className="relative rounded-2xl border border-white/10 bg-[#0c0f1a]/90 p-6 backdrop-blur-xl overflow-hidden">
             {/* Top bar */}
             <div className="flex items-center gap-2 mb-5">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -214,7 +158,7 @@ export default function HeroSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1 + i * 0.1 }}
-                  className="bg-[#07090f]/70 rounded-xl p-3.5 border border-white/5 text-left hover:border-blue-500/20 transition-colors"
+                  className="bg-[#07090f]/70 rounded-xl p-3.5 border border-white/5 text-left"
                 >
                   <div className="flex items-center justify-between mb-2.5">
                     <span className="text-lg">{agent.icon}</span>

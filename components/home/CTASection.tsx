@@ -21,19 +21,11 @@ export default function CTASection() {
             border: '1px solid rgba(99,102,241,0.2)',
           }}
         >
-          {/* Animated aurora blobs */}
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-0 left-1/4 w-72 h-72 rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%)', filter: 'blur(40px)' }}
-          />
-          <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.5, 0.25] }}
-            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-            className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)', filter: 'blur(40px)' }}
-          />
+          {/* Static aurora blobs — CSS animated, no JS */}
+          <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full pointer-events-none animate-orb"
+            style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full pointer-events-none animate-orb"
+            style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(40px)', animationDelay: '4s' }} />
 
           {/* Animated top border glow */}
           <div className="absolute top-0 left-0 right-0 h-px"
@@ -46,13 +38,7 @@ export default function CTASection() {
           <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-purple-500/40 rounded-br-xl" />
 
           <div className="relative z-10">
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="text-5xl mb-6 inline-block"
-            >
-              🚀
-            </motion.div>
+            <div className="text-5xl mb-6">🚀</div>
 
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/25 bg-purple-500/8 text-purple-300 text-xs font-medium mb-5">
               <Sparkles className="w-3.5 h-3.5" />
