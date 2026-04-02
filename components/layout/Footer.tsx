@@ -53,10 +53,10 @@ function StarfieldCanvas() {
 
     const initStars = () => {
       stars = [];
-      const count = Math.floor((canvas.width * canvas.height) / 3500);
+      const count = Math.floor((canvas.width * canvas.height) / 1800);
       for (let i = 0; i < count; i++) {
         const depth = Math.random(); // 0 = far, 1 = close
-        const speed = 0.08 + depth * 0.25; // closer stars move faster
+        const speed = 0.04 + depth * 0.12; // slow gentle drift
         const angle = Math.random() * Math.PI * 2;
         const colors = [
           `rgba(200,210,255`,  // cool white-blue
@@ -69,8 +69,8 @@ function StarfieldCanvas() {
           y: Math.random() * canvas.height,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          size: 0.4 + depth * 1.6,
-          opacity: 0.3 + depth * 0.6,
+          size: 0.2 + depth * 0.8,   // much smaller: max ~1px
+          opacity: 0.25 + depth * 0.55,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
@@ -90,13 +90,13 @@ function StarfieldCanvas() {
         if (star.y < -2) star.y = canvas.height + 2;
         if (star.y > canvas.height + 2) star.y = -2;
 
-        // Draw glow for larger stars
-        if (star.size > 1.2) {
-          const grd = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 2.5);
-          grd.addColorStop(0, `${star.color},${star.opacity})`);
+        // Subtle glow only for the closest/largest stars
+        if (star.size > 0.7) {
+          const grd = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 2);
+          grd.addColorStop(0, `${star.color},${star.opacity * 0.6})`);
           grd.addColorStop(1, `${star.color},0)`);
           ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size * 2.5, 0, Math.PI * 2);
+          ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
           ctx.fillStyle = grd;
           ctx.fill();
         }
