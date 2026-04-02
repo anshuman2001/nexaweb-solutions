@@ -35,7 +35,15 @@ function StarfieldCanvas() {
     if (!ctx) return;
 
     let animationId: number;
-    let stars: { x: number; y: number; z: number; size: number; opacity: number; twinkle: number; twinkleSpeed: number }[] = [];
+
+    type Star = {
+      x: number; y: number;
+      vx: number; vy: number;
+      size: number; opacity: number;
+      color: string;
+    };
+
+    let stars: Star[] = [];
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
@@ -45,16 +53,25 @@ function StarfieldCanvas() {
 
     const initStars = () => {
       stars = [];
-      const count = Math.floor((canvas.width * canvas.height) / 4000);
+      const count = Math.floor((canvas.width * canvas.height) / 3500);
       for (let i = 0; i < count; i++) {
+        const depth = Math.random(); // 0 = far, 1 = close
+        const speed = 0.08 + depth * 0.25; // closer stars move faster
+        const angle = Math.random() * Math.PI * 2;
+        const colors = [
+          `rgba(200,210,255`,  // cool white-blue
+          `rgba(180,200,255`,  // soft blue
+          `rgba(220,220,255`,  // near white
+          `rgba(160,180,255`,  // deeper blue
+        ];
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          z: Math.random(),
-          size: Math.random() * 1.8 + 0.3,
-          opacity: Math.random() * 0.7 + 0.2,
-          twinkle: Math.random() * Math.PI * 2,
-          twinkleSpeed: Math.random() * 0.02 + 0.005,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: 0.4 + depth * 1.6,
+          opacity: 0.3 + depth * 0.6,
+          color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
     };
@@ -62,37 +79,34 @@ function StarfieldCanvas() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      stars.forEach((star) => {
-        star.twinkle += star.twinkleSpeed;
-        const twinkleFactor = 0.6 + 0.4 * Math.sin(star.twinkle);
-        const alpha = star.opacity * twinkleFactor;
+      for (const star of stars) {
+        // Move
+        star.x += star.vx;
+        star.y += star.vy;
 
-        // Depth-based color: deeper stars are more blue, closer are whiter
-        const blue = Math.floor(180 + star.z * 75);
-        const green = Math.floor(180 + star.z * 55);
+        // Wrap around edges
+        if (star.x < -2) star.x = canvas.width + 2;
+        if (star.x > canvas.width + 2) star.x = -2;
+        if (star.y < -2) star.y = canvas.height + 2;
+        if (star.y > canvas.height + 2) star.y = -2;
 
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size * (0.5 + star.z * 0.5), 0, Math.PI * 2);
-
-        // Glow effect for bigger stars
+        // Draw glow for larger stars
         if (star.size > 1.2) {
-          const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3);
-          gradient.addColorStop(0, `rgba(${green}, ${green}, ${blue}, ${alpha})`);
-          gradient.addColorStop(1, `rgba(${green}, ${green}, ${blue}, 0)`);
-          ctx.fillStyle = gradient;
-          ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
-        } else {
-          ctx.fillStyle = `rgba(${green}, ${green}, ${blue}, ${alpha})`;
+          const grd = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 2.5);
+          grd.addColorStop(0, `${star.color},${star.opacity})`);
+          grd.addColorStop(1, `${star.color},0)`);
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
         }
 
+        // Draw star dot
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `${star.color},${star.opacity})`;
         ctx.fill();
-
-        // Some stars are square dots (like in screenshot)
-        if (star.size > 1.5 && Math.random() < 0.002) {
-          ctx.fillStyle = `rgba(100, 150, 255, ${alpha * 0.5})`;
-          ctx.fillRect(star.x - 1, star.y - 1, 2, 2);
-        }
-      });
+      }
 
       animationId = requestAnimationFrame(draw);
     };
@@ -111,7 +125,6 @@ function StarfieldCanvas() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.9 }}
     />
   );
 }
