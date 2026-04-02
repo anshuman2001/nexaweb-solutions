@@ -37,74 +37,81 @@ function StarfieldCanvas() {
     let animationId: number;
 
     type Star = {
-      x: number; y: number;
-      vx: number; vy: number;
-      size: number; opacity: number;
-      color: string;
+      angle: number;   // angle from center (radians)
+      dist: number;    // current distance from center
+      speed: number;   // pixels per frame
+      size: number;    // current dot size
+      opacity: number;
+      maxDist: number; // when to reset
+      hue: number;     // color hue (blue-purple range)
     };
 
     let stars: Star[] = [];
+    let cx = 0, cy = 0;
+
+    const resetStar = (s: Star) => {
+      s.angle = Math.random() * Math.PI * 2;
+      s.dist = Math.random() * 30 + 5;    // start near center
+      s.speed = 0.3 + Math.random() * 0.7;
+      s.size = 0;
+      s.opacity = 0;
+      s.hue = 200 + Math.random() * 60;   // 200–260: blue to purple
+    };
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      initStars();
-    };
-
-    const initStars = () => {
+      cx = canvas.width / 2;
+      cy = canvas.height / 2;
       stars = [];
-      const count = Math.floor((canvas.width * canvas.height) / 1800);
+      const count = Math.floor((canvas.width * canvas.height) / 2200);
       for (let i = 0; i < count; i++) {
-        const depth = Math.random(); // 0 = far, 1 = close
-        const speed = 0.04 + depth * 0.12; // slow gentle drift
-        const angle = Math.random() * Math.PI * 2;
-        const colors = [
-          `rgba(200,210,255`,  // cool white-blue
-          `rgba(180,200,255`,  // soft blue
-          `rgba(220,220,255`,  // near white
-          `rgba(160,180,255`,  // deeper blue
-        ];
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: 0.2 + depth * 0.8,   // much smaller: max ~1px
-          opacity: 0.25 + depth * 0.55,
-          color: colors[Math.floor(Math.random() * colors.length)],
-        });
+        const s: Star = { angle: 0, dist: 0, speed: 0, size: 0, opacity: 0, maxDist: 0, hue: 0 };
+        resetStar(s);
+        // Spread initial distances so it doesn't start empty
+        s.dist = Math.random() * Math.hypot(cx, cy) * 0.9;
+        s.maxDist = Math.hypot(cx, cy) * (0.9 + Math.random() * 0.2);
+        stars.push(s);
       }
     };
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Fade trail instead of clear — gives warp-speed streaks
+      ctx.fillStyle = 'rgba(7,9,15,0.25)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (const star of stars) {
-        // Move
-        star.x += star.vx;
-        star.y += star.vy;
+        star.dist += star.speed * (star.dist / 60 + 0.4);
 
-        // Wrap around edges
-        if (star.x < -2) star.x = canvas.width + 2;
-        if (star.x > canvas.width + 2) star.x = -2;
-        if (star.y < -2) star.y = canvas.height + 2;
-        if (star.y > canvas.height + 2) star.y = -2;
+        // Size and opacity grow as star moves outward
+        const progress = star.dist / star.maxDist;
+        star.size = progress * 1.4;
+        star.opacity = Math.min(progress * 1.5, 0.85);
 
-        // Subtle glow only for the closest/largest stars
-        if (star.size > 0.7) {
-          const grd = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 2);
-          grd.addColorStop(0, `${star.color},${star.opacity * 0.6})`);
-          grd.addColorStop(1, `${star.color},0)`);
+        const x = cx + Math.cos(star.angle) * star.dist;
+        const y = cy + Math.sin(star.angle) * star.dist;
+
+        // Reset if out of bounds
+        if (x < -5 || x > canvas.width + 5 || y < -5 || y > canvas.height + 5) {
+          resetStar(star);
+          star.maxDist = Math.hypot(cx, cy) * (0.9 + Math.random() * 0.2);
+          continue;
+        }
+
+        // Draw dot with subtle glow
+        if (star.size > 0.5) {
+          const grd = ctx.createRadialGradient(x, y, 0, x, y, star.size * 2.5);
+          grd.addColorStop(0, `hsla(${star.hue},80%,75%,${star.opacity * 0.5})`);
+          grd.addColorStop(1, `hsla(${star.hue},80%,75%,0)`);
           ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
+          ctx.arc(x, y, star.size * 2.5, 0, Math.PI * 2);
           ctx.fillStyle = grd;
           ctx.fill();
         }
 
-        // Draw star dot
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fillStyle = `${star.color},${star.opacity})`;
+        ctx.arc(x, y, Math.max(star.size, 0.2), 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${star.hue},85%,80%,${star.opacity})`;
         ctx.fill();
       }
 

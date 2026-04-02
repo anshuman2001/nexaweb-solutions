@@ -39,9 +39,9 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'bg-background/90 backdrop-blur-xl border-b border-border-subtle shadow-lg shadow-black/20'
+            ? 'bg-[#07090f]/85 backdrop-blur-2xl nav-glow-border shadow-xl shadow-black/40'
             : 'bg-transparent'
         }`}
       >
@@ -103,7 +103,7 @@ export default function Navbar() {
                 href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a free demo of your AI agents.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg bg-accent-blue text-white text-sm font-medium hover:bg-blue-500 transition-all btn-glow"
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium transition-all btn-glow btn-shimmer"
               >
                 Get Free Demo
               </a>
