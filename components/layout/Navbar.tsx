@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo + Branding */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200 rounded-lg overflow-hidden bg-white p-0.5">
                 <Image
                   src="/logo.png"
                   alt="DigiAgentix"

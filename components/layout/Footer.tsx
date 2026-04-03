@@ -156,12 +156,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <div className="relative h-12 w-44">
+              <div className="relative h-12 w-14 rounded-xl overflow-hidden bg-white p-1">
                 <Image
                   src="/logo.png"
                   alt="DigiAgentix"
                   fill
-                  className="object-contain object-left"
+                  className="object-contain"
                 />
               </div>
             </Link>
