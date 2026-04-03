@@ -195,10 +195,11 @@ body {
 .animate-float-fast { animation: float 4s ease-in-out infinite; }
 
 @keyframes orb-pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50%       { opacity: 1; transform: scale(1.08); }
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 0.8; }
 }
-.animate-orb { animation: orb-pulse 5s ease-in-out infinite; }
+/* Only animate opacity — no scale/transform to avoid GPU compositing */
+.animate-orb { animation: orb-pulse 6s ease-in-out infinite; will-change: opacity; }
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }

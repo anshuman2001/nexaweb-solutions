@@ -21,11 +21,11 @@ export default function CTASection() {
             border: '1px solid rgba(99,102,241,0.2)',
           }}
         >
-          {/* Static aurora blobs — CSS animated, no JS */}
-          <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full pointer-events-none animate-orb"
-            style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-          <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full pointer-events-none animate-orb"
-            style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(40px)', animationDelay: '4s' }} />
+          {/* Soft radial glows — no blur filter */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 65%)' }} />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 65%)' }} />
 
           {/* Animated top border glow */}
           <div className="absolute top-0 left-0 right-0 h-px"

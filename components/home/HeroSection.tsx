@@ -14,16 +14,16 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
 
-      {/* Static deep background — no animation, no lag */}
+      {/* Static background — no blur, no JS animation */}
       <div className="absolute inset-0 bg-[#07090f]">
         <div className="absolute inset-0 grid-bg opacity-50" />
-        {/* Static gradient orbs — CSS only, GPU-accelerated */}
-        <div className="absolute top-1/4 left-1/6 w-[480px] h-[480px] rounded-full pointer-events-none animate-orb"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-        <div className="absolute bottom-1/4 right-1/6 w-[520px] h-[520px] rounded-full pointer-events-none animate-orb"
-          style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%)', filter: 'blur(60px)', animationDelay: '3s' }} />
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full pointer-events-none animate-orb"
-          style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%)', filter: 'blur(50px)', animationDelay: '6s' }} />
+        {/* Pure radial gradients — NO blur filter, already soft */}
+        <div className="absolute top-1/4 left-1/6 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.10) 0%, transparent 65%)' }} />
+        <div className="absolute bottom-1/4 right-1/6 w-[650px] h-[650px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%)' }} />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 65%)' }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
