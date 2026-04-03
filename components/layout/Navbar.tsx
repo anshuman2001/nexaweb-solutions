@@ -49,13 +49,12 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo + Branding */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative h-10 w-10 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200 rounded-xl overflow-hidden ring-1 ring-white/10">
                 <Image
                   src="/logo.png"
                   alt="DigiAgentix"
                   fill
                   className="object-contain"
-                  style={{ mixBlendMode: 'screen' }}
                   priority
                 />
               </div>

@@ -156,13 +156,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <div className="relative h-14 w-14">
+              <div className="relative h-12 w-12 rounded-xl overflow-hidden ring-1 ring-white/10">
                 <Image
                   src="/logo.png"
                   alt="DigiAgentix"
                   fill
                   className="object-contain"
-                  style={{ mixBlendMode: 'screen' }}
                 />
               </div>
             </Link>
