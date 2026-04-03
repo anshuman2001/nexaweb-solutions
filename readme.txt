@@ -1,4 +1,4 @@
-cd nexaweb-solutions
+cd DigiAgentix-solutions
 
 # 2. Initialize git here
 git init
@@ -7,9 +7,9 @@ git init
 git add .
 
 # 4. Commit
-git commit -m "Initial commit: NexaWeb Solutions full-stack website"
+git commit -m "Initial commit: DigiAgentix full-stack website"
 
-git remote add origin https://github.com/YOUR_USERNAME/nexaweb-solutions.git
+git remote add origin https://github.com/YOUR_USERNAME/DigiAgentix-solutions.git
 
 # 2. Rename branch to main
 git branch -M main
@@ -17,7 +17,7 @@ git branch -M main
 # 3. Push
 git push -u origin main
 
-git remote add origin https://github.com/anshuman112001/nexaweb-solutions.git
+git remote add origin https://github.com/anshuman112001/DigiAgentix-solutions.git
 
 How to Add a New Client (takes 2 minutes)
 Step 1 — Client signs up at /portal

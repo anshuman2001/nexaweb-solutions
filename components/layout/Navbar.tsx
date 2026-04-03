@@ -52,15 +52,15 @@ export default function Navbar() {
               <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
                 <Image
                   src="/logo.png"
-                  alt="NexaWeb Solutions"
+                  alt="DigiAgentix"
                   fill
                   className="object-contain"
                   priority
                 />
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-white font-bold text-sm sm:text-base tracking-wide">NexaWeb</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">Solutions</span>
+                <span className="text-white font-bold text-sm sm:text-base tracking-wide">DigiAgentix</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">AI Agency</span>
               </div>
             </Link>
 

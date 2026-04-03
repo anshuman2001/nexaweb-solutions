@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import AdminDashboardClient from './AdminDashboardClient';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | NexaWeb Solutions',
+  title: 'Admin Dashboard | DigiAgentix',
   robots: { index: false, follow: false },
 };
 

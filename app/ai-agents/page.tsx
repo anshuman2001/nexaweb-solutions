@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import AIAgentsPageClient from './AIAgentsPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 export const metadata: Metadata = {
   title: 'AI Agents India — WhatsApp Chatbot, Customer Support, Sales Automation',
@@ -17,17 +17,17 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/ai-agents`,
   },
   openGraph: {
-    title: 'AI Agents for Indian Businesses — NexaWeb Solutions',
+    title: 'AI Agents for Indian Businesses — DigiAgentix',
     description: 'WhatsApp chatbots, customer support AI, sales agents starting ₹15,000. Hindi + English. Deployed in 2–7 days.',
     url: `${siteUrl}/ai-agents`,
-    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'NexaWeb AI Agents' }],
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'DigiAgentix AI Agents' }],
   },
 };
 
 const agentsListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'AI Agents by NexaWeb Solutions',
+  name: 'AI Agents by DigiAgentix',
   description: 'Complete list of AI agents available for Indian businesses',
   url: `${siteUrl}/ai-agents`,
   numberOfItems: 8,

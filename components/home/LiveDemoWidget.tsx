@@ -9,7 +9,7 @@ interface Message {
   content: string;
 }
 
-// ─── NexaWeb Custom Sales Agent ───────────────────────────
+// ─── DigiAgentix Custom Sales Agent ───────────────────────────
 type Stage = 'greeting' | 'name' | 'service' | 'budget' | 'timeline' | 'contact' | 'done';
 
 interface Lead {
@@ -82,13 +82,13 @@ function getAgentReply(stage: Stage, userText: string, lead: Lead): { reply: str
     const isHindi = /[^\u0000-\u007F]/.test(userText) || lower.includes('namaste') || lower.includes('helo') || lower.includes('kya');
     if (isHindi) {
       return {
-        reply: `Namaste! 🙏 Main NexaWeb Solutions ka AI Sales Assistant hoon.\nAapki business ke liye sahi solution dhundne mein help karunga!\n\nPehle, aapka naam kya hai? 😊`,
+        reply: `Namaste! 🙏 Main DigiAgentix ka AI Sales Assistant hoon.\nAapki business ke liye sahi solution dhundne mein help karunga!\n\nPehle, aapka naam kya hai? 😊`,
         nextStage: 'name',
         updatedLead,
       };
     }
     return {
-      reply: `Hi there! 👋 I'm NexaWeb's AI Sales Assistant.\nI help businesses grow with AI agents & professional websites!\n\nMay I know your name to get started? 😊`,
+      reply: `Hi there! 👋 I'm DigiAgentix's AI Sales Assistant.\nI help businesses grow with AI agents & professional websites!\n\nMay I know your name to get started? 😊`,
       nextStage: 'name',
       updatedLead,
     };
@@ -173,7 +173,7 @@ function getAgentReply(stage: Stage, userText: string, lead: Lead): { reply: str
   }
 
   return {
-    reply: `Hi! I'm NexaWeb's AI Assistant. How can I help you today? 😊`,
+    reply: `Hi! I'm DigiAgentix's AI Assistant. How can I help you today? 😊`,
     nextStage: 'greeting',
     updatedLead,
   };
@@ -183,7 +183,7 @@ function getAgentReply(stage: Stage, userText: string, lead: Lead): { reply: str
 export default function LiveDemoWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Namaste! 🙏 I'm NexaWeb's AI Sales Assistant.\nI'm here to help you find the right solution for your business!\n\nMay I know your name to get started? 😊" },
+    { role: 'assistant', content: "Namaste! 🙏 I'm DigiAgentix's AI Sales Assistant.\nI'm here to help you find the right solution for your business!\n\nMay I know your name to get started? 😊" },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -231,7 +231,7 @@ export default function LiveDemoWidget() {
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-white font-bold text-sm leading-none">NexaWeb AI</p>
+                  <p className="text-white font-bold text-sm leading-none">DigiAgentix AI</p>
                   <p className="text-blue-200 text-[11px] mt-0.5">Sales & Support Agent 🟢</p>
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default function LiveDemoWidget() {
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-center text-[10px] text-gray-600 mt-1.5">Powered by NexaWeb AI · No API needed</p>
+                <p className="text-center text-[10px] text-gray-600 mt-1.5">Powered by DigiAgentix AI · No API needed</p>
               </div>
             </motion.div>
           )}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 
-const SYSTEM_PROMPT = `You are an AI Sales & Support Assistant for NexaWeb Solutions.
+const SYSTEM_PROMPT = `You are an AI Sales & Support Assistant for DigiAgentix.
 
 Your role is to:
 1. Understand the customer's query.
@@ -35,7 +35,7 @@ Based on category:
 - Highlight benefits (fast delivery, scalable, modern tech, etc.)
 - Keep response conversational and professional
 
-NexaWeb Solutions Services & Pricing:
+DigiAgentix Services & Pricing:
 - AI Agents: Customer Support, WhatsApp Business, Sales & Lead, Meeting AI, eCommerce Shopping, Email Marketing, Content Writing, Industry-Specific
 - AI Agent pricing: ₹15,000 - ₹2,00,000 depending on complexity
 - Websites: Landing Pages (₹8,000+), Business Website (₹15,000+), eCommerce (₹25,000+)
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json({
-        reply: "Hi! I'm NexaWeb's AI Sales Assistant 🚀 We build AI agents from ₹15,000 and websites from ₹8,000. May I know your name to help you better?"
+        reply: "Hi! I'm DigiAgentix's AI Sales Assistant 🚀 We build AI agents from ₹15,000 and websites from ₹8,000. May I know your name to help you better?"
       });
     }
 

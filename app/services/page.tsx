@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ServicesPageClient from './ServicesPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 export const metadata: Metadata = {
   title: 'Web Design Services India — eCommerce, Business Websites, Landing Pages',
@@ -17,17 +17,17 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/services`,
   },
   openGraph: {
-    title: 'Web Design & Development Services — NexaWeb Solutions India',
+    title: 'Web Design & Development Services — DigiAgentix India',
     description: 'eCommerce from ₹25,000. Business websites from ₹15,000. Landing pages from ₹8,000. Built with Next.js for max speed & SEO.',
     url: `${siteUrl}/services`,
-    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'NexaWeb Web Design Services' }],
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'DigiAgentix Web Design Services' }],
   },
 };
 
 const webServicesSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Web Design Services by NexaWeb Solutions',
+  name: 'Web Design Services by DigiAgentix',
   url: `${siteUrl}/services`,
   itemListElement: [
     {

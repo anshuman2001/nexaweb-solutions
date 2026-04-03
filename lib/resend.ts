@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 export const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const FROM_EMAIL = 'NexaWeb Solutions <onboarding@resend.dev>';
+export const FROM_EMAIL = 'DigiAgentix <onboarding@resend.dev>';
 export const OWNER_EMAIL = 'info.nexawebsolution@gmail.com';
 
 export async function sendContactNotification(data: {
@@ -39,7 +39,7 @@ export async function sendContactNotification(data: {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: 'We received your inquiry - NexaWeb Solutions',
+      subject: 'We received your inquiry - DigiAgentix',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #07090f; color: #fff; padding: 32px; border-radius: 12px;">
           <h2 style="color: #2563eb; margin-bottom: 16px;">Thank you, ${data.name}! 🙏</h2>
@@ -49,7 +49,7 @@ export async function sendContactNotification(data: {
             <p style="color: #9ca3af; margin-bottom: 12px;">Your inquiry details:</p>
             <p style="color: #fff; font-weight: bold;">${data.service || 'General Inquiry'}</p>
           </div>
-          <p style="color: #6b7280; font-size: 14px; margin-top: 24px;">NexaWeb Solutions | AI Agents & Web Design | India</p>
+          <p style="color: #6b7280; font-size: 14px; margin-top: 24px;">DigiAgentix | AI Agents & Web Design | India</p>
         </div>
       `,
     });

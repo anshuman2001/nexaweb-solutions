@@ -139,7 +139,7 @@ export default function HeroSection() {
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="ml-3 text-xs text-gray-500 font-mono tracking-wide">NexaWeb AI Dashboard — Live</span>
+              <span className="ml-3 text-xs text-gray-500 font-mono tracking-wide">DigiAgentix AI Dashboard — Live</span>
               <span className="ml-auto flex items-center gap-1.5 text-xs text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 All agents online

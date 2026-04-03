@@ -159,7 +159,7 @@ export default function Footer() {
               <div className="relative h-12 w-44">
                 <Image
                   src="/logo.png"
-                  alt="NexaWeb Solutions"
+                  alt="DigiAgentix"
                   fill
                   className="object-contain object-left"
                 />
@@ -281,7 +281,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © 2026 NexaWeb Solutions. All rights reserved.
+            © 2026 DigiAgentix. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400">

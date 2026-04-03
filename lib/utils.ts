@@ -209,7 +209,7 @@ export const testimonialsData = [
     name: 'Rajesh Sharma',
     company: 'TechMart India',
     role: 'Founder & CEO',
-    content: 'NexaWeb built us a WhatsApp agent that handles 200+ customer queries daily. Our support cost dropped by 60% and customer satisfaction went up. Excellent work!',
+    content: 'DigiAgentix built us a WhatsApp agent that handles 200+ customer queries daily. Our support cost dropped by 60% and customer satisfaction went up. Excellent work!',
     rating: 5,
   },
   {
@@ -225,7 +225,7 @@ export const testimonialsData = [
     name: 'Amit Kumar',
     company: 'RealSpace Properties',
     role: 'Sales Director',
-    content: 'Our real estate AI agent qualifies leads 24/7 and books site visits. Conversion rate improved by 40%. NexaWeb team is professional and delivers on time.',
+    content: 'Our real estate AI agent qualifies leads 24/7 and books site visits. Conversion rate improved by 40%. DigiAgentix Team is professional and delivers on time.',
     rating: 5,
   },
 ];
@@ -324,7 +324,7 @@ export const blogPostsData = [
     category: 'AI Agents',
     imageUrl: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80',
     publishedAt: '2024-12-15',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 6,
   },
   {
@@ -336,7 +336,7 @@ export const blogPostsData = [
     category: 'AI Agents',
     imageUrl: 'https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&q=80',
     publishedAt: '2024-12-10',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 8,
   },
   {
@@ -348,7 +348,7 @@ export const blogPostsData = [
     category: 'Web Design',
     imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
     publishedAt: '2024-12-05',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 7,
   },
   {
@@ -360,7 +360,7 @@ export const blogPostsData = [
     category: 'Case Studies',
     imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
     publishedAt: '2024-11-28',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 10,
   },
   {
@@ -372,7 +372,7 @@ export const blogPostsData = [
     category: 'Business Tips',
     imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80',
     publishedAt: '2024-11-20',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 5,
   },
   {
@@ -384,7 +384,7 @@ export const blogPostsData = [
     category: 'Web Design',
     imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
     publishedAt: '2024-11-15',
-    author: 'NexaWeb Team',
+    author: 'DigiAgentix Team',
     readTime: 6,
   },
 ];

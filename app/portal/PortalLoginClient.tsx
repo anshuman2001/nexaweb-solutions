@@ -111,7 +111,7 @@ export default function PortalLoginClient() {
             <div className="relative h-14 w-52">
               <Image
                 src="/logo.png"
-                alt="NexaWeb Solutions"
+                alt="DigiAgentix"
                 fill
                 className="object-contain"
                 priority

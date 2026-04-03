@@ -4,9 +4,9 @@ export default function TermsPage() {
       <h1 className="text-4xl font-extrabold text-white mb-6">Terms of Service</h1>
       <div className="space-y-6 text-gray-400 text-sm leading-relaxed">
         <p>Last updated: January 2025</p>
-        <p>By using NexaWeb Solutions services, you agree to these terms.</p>
+        <p>By using DigiAgentix services, you agree to these terms.</p>
         <h2 className="text-white text-xl font-bold mt-8">Services</h2>
-        <p>NexaWeb Solutions provides AI agent development and web design services. Project timelines and deliverables are agreed upon in writing before work begins.</p>
+        <p>DigiAgentix provides AI agent development and web design services. Project timelines and deliverables are agreed upon in writing before work begins.</p>
         <h2 className="text-white text-xl font-bold mt-8">Payment</h2>
         <p>50% advance payment is required before project commencement. The remaining 50% is due upon project delivery. All prices are in Indian Rupees (INR).</p>
         <h2 className="text-white text-xl font-bold mt-8">Intellectual Property</h2>
@@ -14,7 +14,7 @@ export default function TermsPage() {
         <h2 className="text-white text-xl font-bold mt-8">Revisions</h2>
         <p>Each plan includes a specified number of revision rounds. Additional revisions are billed at ₹2,000 per round.</p>
         <h2 className="text-white text-xl font-bold mt-8">Contact</h2>
-        <p>Questions: <a href="mailto:hello@nexawebsolutions.in" className="text-accent-blue">hello@nexawebsolutions.in</a></p>
+        <p>Questions: <a href="mailto:hello@DigiAgentixsolutions.in" className="text-accent-blue">hello@DigiAgentixsolutions.in</a></p>
       </div>
     </div>
   );

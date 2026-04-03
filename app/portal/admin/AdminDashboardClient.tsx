@@ -190,7 +190,7 @@ export default function AdminDashboardClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative h-9 w-32">
-              <Image src="/logo.png" alt="NexaWeb" fill className="object-contain object-left" />
+              <Image src="/logo.png" alt="DigiAgentix" fill className="object-contain object-left" />
             </div>
             <span className="px-2 py-0.5 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">ADMIN</span>
           </div>
@@ -428,12 +428,12 @@ export default function AdminDashboardClient() {
                             <p className="text-gray-300 text-sm leading-relaxed">{contact.message || '—'}</p>
                           </div>
                           <div className="sm:col-span-2 flex gap-3">
-                            <a href={`mailto:${contact.email}?subject=Re: Your inquiry about ${contact.service || 'NexaWeb Services'}`}
+                            <a href={`mailto:${contact.email}?subject=Re: Your inquiry about ${contact.service || 'DigiAgentix Services'}`}
                               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-blue/10 border border-accent-blue/20 text-accent-blue text-sm font-medium hover:bg-accent-blue/20 transition-all">
                               <Mail className="w-4 h-4" /> Reply via Email
                             </a>
                             {contact.phone && (
-                              <a href={`https://wa.me/${contact.phone?.replace(/\D/g, '')}?text=Hi ${contact.name}, thanks for reaching out to NexaWeb Solutions!`}
+                              <a href={`https://wa.me/${contact.phone?.replace(/\D/g, '')}?text=Hi ${contact.name}, thanks for reaching out to DigiAgentix!`}
                                 target="_blank" rel="noopener noreferrer"
                                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] text-sm font-medium hover:bg-[#25D366]/20 transition-all">
                                 <MessageSquare className="w-4 h-4" /> Reply on WhatsApp

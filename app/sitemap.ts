@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { blogPostsData } from '@/lib/utils';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [

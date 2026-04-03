@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import ContactPageClient from './ContactPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 export const metadata: Metadata = {
-  title: 'Contact NexaWeb Solutions — Get Free AI Agent Demo | Noida, India',
-  description: 'Contact NexaWeb Solutions for AI agents and web design. Based in Noida, UP. WhatsApp: +91 99977 30768. Email: info.nexawebsolution@gmail.com. We reply within 2 hours.',
+  title: 'Contact DigiAgentix — Get Free AI Agent Demo | Noida, India',
+  description: 'Contact DigiAgentix for AI agents and web design. Based in Noida, UP. WhatsApp: +91 99977 30768. Email: info.nexawebsolution@gmail.com. We reply within 2 hours.',
   keywords: [
-    'contact NexaWeb Solutions', 'AI agent demo India', 'free chatbot demo',
+    'contact DigiAgentix', 'AI agent demo India', 'free chatbot demo',
     'web design consultation India', 'AI agent Noida', 'web design Noida',
     'hire AI developer India', 'WhatsApp chatbot demo', 'contact AI company India',
   ],
@@ -16,22 +16,22 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/contact`,
   },
   openGraph: {
-    title: 'Contact NexaWeb Solutions — Free AI Agent Demo',
+    title: 'Contact DigiAgentix — Free AI Agent Demo',
     description: 'Get a free demo of our AI agents. Based in Noida, India. WhatsApp +91 99977 30768. Reply within 2 hours.',
     url: `${siteUrl}/contact`,
-    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'Contact NexaWeb Solutions' }],
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'Contact DigiAgentix' }],
   },
 };
 
 const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  name: 'Contact NexaWeb Solutions',
+  name: 'Contact DigiAgentix',
   url: `${siteUrl}/contact`,
-  description: 'Get in touch with NexaWeb Solutions for AI agents and web design services in India.',
+  description: 'Get in touch with DigiAgentix for AI agents and web design services in India.',
   mainEntity: {
     '@type': 'ProfessionalService',
-    name: 'NexaWeb Solutions',
+    name: 'DigiAgentix',
     telephone: '+91-9997730768',
     email: 'info.nexawebsolution@gmail.com',
     address: {

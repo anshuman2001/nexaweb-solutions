@@ -4,16 +4,16 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import WhatsAppFloat from '@/components/layout/WhatsAppFloat';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'NexaWeb Solutions — AI Agents & Web Design for Indian Businesses',
-    template: '%s | NexaWeb Solutions',
+    default: 'DigiAgentix — AI Agents & Web Design for Indian Businesses',
+    template: '%s | DigiAgentix',
   },
   description:
-    'NexaWeb Solutions builds AI agents & professional websites for Indian businesses. WhatsApp chatbots, customer support AI, sales agents from ₹15,000. Based in Noida, UP.',
+    'DigiAgentix builds AI agents & professional websites for Indian businesses. WhatsApp chatbots, customer support AI, sales agents from ₹15,000. Based in Noida, UP.',
   keywords: [
     'AI agents India',
     'AI chatbot India',
@@ -30,22 +30,22 @@ export const metadata: Metadata = {
     'lead generation AI',
     'eCommerce website India',
     'Next.js website India',
-    'NexaWeb Solutions',
+    'DigiAgentix',
     'AI agents Noida',
     'web design Noida',
     'Hindi chatbot',
     'multilingual AI chatbot',
   ],
-  authors: [{ name: 'NexaWeb Solutions', url: siteUrl }],
-  creator: 'NexaWeb Solutions',
-  publisher: 'NexaWeb Solutions',
+  authors: [{ name: 'DigiAgentix', url: siteUrl }],
+  creator: 'DigiAgentix',
+  publisher: 'DigiAgentix',
   category: 'Technology',
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: siteUrl,
-    siteName: 'NexaWeb Solutions',
-    title: 'NexaWeb Solutions — AI Agents & Web Design for Indian Businesses',
+    siteName: 'DigiAgentix',
+    title: 'DigiAgentix — AI Agents & Web Design for Indian Businesses',
     description:
       'Build AI agents & professional websites for your business. WhatsApp chatbots, customer support AI, sales agents from ₹15,000. Noida, India.',
     images: [
@@ -53,18 +53,18 @@ export const metadata: Metadata = {
         url: `${siteUrl}/logo.png`,
         width: 1200,
         height: 630,
-        alt: 'NexaWeb Solutions — AI Agents & Web Design India',
+        alt: 'DigiAgentix — AI Agents & Web Design India',
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NexaWeb Solutions — AI Agents & Web Design India',
+    title: 'DigiAgentix — AI Agents & Web Design India',
     description: 'Build AI agents & professional websites for your Indian business. Starting ₹15,000.',
     images: [`${siteUrl}/logo.png`],
-    creator: '@nexawebsolutions',
-    site: '@nexawebsolutions',
+    creator: '@DigiAgentixsolutions',
+    site: '@DigiAgentixsolutions',
   },
   robots: {
     index: true,

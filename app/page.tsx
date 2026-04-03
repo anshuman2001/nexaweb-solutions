@@ -12,13 +12,13 @@ import LiveDemoWidget from '@/components/home/LiveDemoWidget';
 import DemoPopup from '@/components/home/DemoPopup';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': `${siteUrl}/#organization`,
-  name: 'NexaWeb Solutions',
+  name: 'DigiAgentix',
   url: siteUrl,
   logo: {
     '@type': 'ImageObject',
@@ -26,7 +26,7 @@ const organizationSchema = {
     width: 512,
     height: 512,
   },
-  description: 'NexaWeb Solutions builds AI agents and professional websites for Indian businesses. We specialize in WhatsApp chatbots, customer support AI, sales automation, and Next.js web development.',
+  description: 'DigiAgentix builds AI agents and professional websites for Indian businesses. We specialize in WhatsApp chatbots, customer support AI, sales automation, and Next.js web development.',
   foundingDate: '2021',
   foundingLocation: 'Noida, Uttar Pradesh, India',
   address: {
@@ -52,9 +52,9 @@ const organizationSchema = {
     },
   ],
   sameAs: [
-    'https://www.linkedin.com/company/nexawebsolutions',
-    'https://www.instagram.com/nexawebsolutions',
-    'https://twitter.com/nexawebsolutions',
+    'https://www.linkedin.com/company/DigiAgentixsolutions',
+    'https://www.instagram.com/DigiAgentixsolutions',
+    'https://twitter.com/DigiAgentixsolutions',
   ],
   knowsAbout: [
     'AI Agents',
@@ -77,7 +77,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   '@id': `${siteUrl}/#website`,
   url: siteUrl,
-  name: 'NexaWeb Solutions',
+  name: 'DigiAgentix',
   description: 'AI Agents & Web Design for Indian Businesses',
   publisher: { '@id': `${siteUrl}/#organization` },
   potentialAction: {
@@ -95,7 +95,7 @@ const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   '@id': `${siteUrl}/#localbusiness`,
-  name: 'NexaWeb Solutions',
+  name: 'DigiAgentix',
   image: `${siteUrl}/logo.png`,
   url: siteUrl,
   telephone: '+91-9997730768',
@@ -144,7 +144,7 @@ const localBusinessSchema = {
       '@type': 'Review',
       author: { '@type': 'Person', name: 'Rajesh Sharma' },
       reviewRating: { '@type': 'Rating', ratingValue: '5' },
-      reviewBody: 'NexaWeb built us a WhatsApp agent that handles 200+ customer queries daily. Our support cost dropped by 60%.',
+      reviewBody: 'DigiAgentix built us a WhatsApp agent that handles 200+ customer queries daily. Our support cost dropped by 60%.',
     },
     {
       '@type': 'Review',
@@ -212,7 +212,7 @@ const faqSchema = {
       name: 'How much does an AI agent cost in India?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'AI agents from NexaWeb Solutions start at ₹15,000 for a basic customer support agent. WhatsApp Business agents start at ₹20,000, and sales & lead agents start at ₹30,000. Monthly maintenance starts at ₹2,000.',
+        text: 'AI agents from DigiAgentix start at ₹15,000 for a basic customer support agent. WhatsApp Business agents start at ₹20,000, and sales & lead agents start at ₹30,000. Monthly maintenance starts at ₹2,000.',
       },
     },
     {
@@ -229,7 +229,7 @@ const faqSchema = {
 const servicesSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'NexaWeb Solutions Services',
+  name: 'DigiAgentix Services',
   description: 'AI Agents and Web Design services for Indian businesses',
   itemListElement: [
     {

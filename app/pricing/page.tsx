@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import PricingPageClient from './PricingPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nexawebsolutions.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
 
 export const metadata: Metadata = {
   title: 'Pricing — AI Agents from ₹15,000 & Websites from ₹8,000 | India',
@@ -17,17 +17,17 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/pricing`,
   },
   openGraph: {
-    title: 'AI Agent & Website Pricing — NexaWeb Solutions India',
+    title: 'AI Agent & Website Pricing — DigiAgentix India',
     description: 'Transparent pricing: AI agents from ₹15,000, websites from ₹8,000. No hidden fees. Monthly maintenance from ₹2,000.',
     url: `${siteUrl}/pricing`,
-    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'NexaWeb Pricing Plans' }],
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'DigiAgentix Pricing Plans' }],
   },
 };
 
 const pricingSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'NexaWeb Solutions Pricing Plans',
+  name: 'DigiAgentix Pricing Plans',
   url: `${siteUrl}/pricing`,
   itemListElement: [
     {
@@ -39,7 +39,7 @@ const pricingSchema = {
         price: '15000',
         priceCurrency: 'INR',
         eligibleRegion: { '@type': 'Country', name: 'India' },
-        offeredBy: { '@type': 'Organization', name: 'NexaWeb Solutions' },
+        offeredBy: { '@type': 'Organization', name: 'DigiAgentix' },
       },
     },
     {
@@ -51,7 +51,7 @@ const pricingSchema = {
         price: '35000',
         priceCurrency: 'INR',
         eligibleRegion: { '@type': 'Country', name: 'India' },
-        offeredBy: { '@type': 'Organization', name: 'NexaWeb Solutions' },
+        offeredBy: { '@type': 'Organization', name: 'DigiAgentix' },
       },
     },
     {
@@ -63,7 +63,7 @@ const pricingSchema = {
         price: '15000',
         priceCurrency: 'INR',
         eligibleRegion: { '@type': 'Country', name: 'India' },
-        offeredBy: { '@type': 'Organization', name: 'NexaWeb Solutions' },
+        offeredBy: { '@type': 'Organization', name: 'DigiAgentix' },
       },
     },
     {
@@ -75,7 +75,7 @@ const pricingSchema = {
         price: '35000',
         priceCurrency: 'INR',
         eligibleRegion: { '@type': 'Country', name: 'India' },
-        offeredBy: { '@type': 'Organization', name: 'NexaWeb Solutions' },
+        offeredBy: { '@type': 'Organization', name: 'DigiAgentix' },
       },
     },
   ],

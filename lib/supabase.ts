@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   category text,
   image_url text,
   published_at timestamptz DEFAULT now(),
-  author text DEFAULT 'NexaWeb Team',
+  author text DEFAULT 'DigiAgentix Team',
   read_time integer DEFAULT 5
 );
 
