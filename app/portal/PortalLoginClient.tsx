@@ -108,12 +108,13 @@ export default function PortalLoginClient() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center justify-center mb-6">
-            <div className="relative h-14 w-52">
+            <div className="relative h-16 w-16">
               <Image
                 src="/logo.png"
                 alt="DigiAgentix"
                 fill
                 className="object-contain"
+                style={{ mixBlendMode: 'screen' }}
                 priority
               />
             </div>
