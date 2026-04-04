@@ -121,12 +121,12 @@ export default function AIAgentsPageClient() {
                 {/* Buttons */}
                 <div className="flex gap-2">
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a demo of the ${agent.name}.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={agent.id === 'gst-reconciliation' ? '/gst-reconcile' : `https://wa.me/${whatsappNumber}?text=Hi! I'd like a demo of the ${agent.name}.`}
+                    target={agent.id === 'gst-reconciliation' ? '_self' : '_blank'}
+                    rel={agent.id === 'gst-reconciliation' ? undefined : 'noopener noreferrer'}
                     className="flex-1 text-center py-2 rounded-xl bg-accent-blue text-white text-xs font-semibold hover:bg-blue-500 transition-all"
                   >
-                    Get Demo
+                    {agent.id === 'gst-reconciliation' ? 'Try Free →' : 'Get Demo'}
                   </a>
                   <button
                     onClick={() => setSelectedAgent(agent)}
