@@ -17,19 +17,17 @@ const nextConfig = {
     ],
   },
 
-  async rewrites() {
+  async redirects() {
     return [
       {
         source: '/gst-reconcile',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
+        destination: 'https://gst-ai-agent.onrender.com',
+        permanent: false,
       },
       {
-        source: '/gst-reconcile/login',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/login',
-      },
-      {
-        source: '/gst-api/:path*',
+        source: '/gst-reconcile/:path*',
         destination: 'https://gst-ai-agent.onrender.com/:path*',
+        permanent: false,
       },
     ];
   },
