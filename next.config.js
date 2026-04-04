@@ -16,6 +16,23 @@ const nextConfig = {
       },
     ],
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/gst-reconcile',
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
+      },
+      {
+        source: '/gst-reconcile/login',
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/login',
+      },
+      {
+        source: '/gst-api/:path*',
+        destination: 'https://gst-ai-agent.onrender.com/:path*',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
