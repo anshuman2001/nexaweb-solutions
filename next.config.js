@@ -17,23 +17,23 @@ const nextConfig = {
     ],
   },
 
-  async redirects() {
+  async rewrites() {
     return [
       {
+        source: '/gst-reconcile',
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
+      },
+      {
+        source: '/gst-reconcile/:path*',
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/:path*',
+      },
+      {
         source: '/gst-ai-agent',
-        destination: 'https://gst-ai-agent.onrender.com',
-        permanent: false,
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
       },
       {
         source: '/gst-ai-agent/:path*',
-        destination: 'https://gst-ai-agent.onrender.com/:path*',
-        permanent: false,
-      },
-      // keep old URL working too
-      {
-        source: '/gst-reconcile',
-        destination: 'https://gst-ai-agent.onrender.com',
-        permanent: false,
+        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/:path*',
       },
     ];
   },
