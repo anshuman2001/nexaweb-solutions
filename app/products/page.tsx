@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const products = [
   {
     id: 'gst-reconciliation',
-    href: '/gst-reconcile',
+    href: '/gst-ai-agent',
     external: true,
     badge: 'Live',
     badgeColor: 'green',
