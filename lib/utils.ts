@@ -201,24 +201,6 @@ export const agentsData = [
       { name: 'Gym Agent', features: ['Membership plans', 'Class scheduling', 'Trainer booking', 'Progress tracking'] },
     ],
   },
-  {
-    id: 'gst-reconciliation',
-    icon: '🧾',
-    name: 'GST AI Reconciliation',
-    description: 'AI-powered GST reconciliation SaaS for CA firms & businesses. Upload invoices, auto-match GSTR-2B, detect fraud & generate PDF reports instantly.',
-    features: [
-      'Auto fuzzy invoice matching',
-      'AI fraud & anomaly detection',
-      'Any Excel column format supported',
-      'PDF audit report generation',
-      'Multi-firm / multi-user support',
-      'Claude AI explanations per mismatch',
-    ],
-    industries: ['CA Firms', 'Accountants', 'Businesses'],
-    priceRange: '₹499 / month',
-    setupTime: 'Instant access',
-    category: 'SaaS Tool',
-  },
 ];
 
 export const testimonialsData = [
