@@ -21,19 +21,19 @@ const nextConfig = {
     return [
       {
         source: '/gst-reconcile',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
+        destination: 'https://gst-ai-agent.onrender.com/',
       },
       {
         source: '/gst-reconcile/:path*',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/:path*',
+        destination: 'https://gst-ai-agent.onrender.com/:path*',
       },
       {
         source: '/gst-ai-agent',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile',
+        destination: 'https://gst-ai-agent.onrender.com/',
       },
       {
         source: '/gst-ai-agent/:path*',
-        destination: 'https://gst-ai-agent.onrender.com/gst-reconcile/:path*',
+        destination: 'https://gst-ai-agent.onrender.com/:path*',
       },
     ];
   },
