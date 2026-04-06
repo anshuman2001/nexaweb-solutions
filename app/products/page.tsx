@@ -42,8 +42,8 @@ const products = [
   },
   {
     id: 'eduaccess-ai',
-    href: 'https://eduaccess-ai.onrender.com',
-    external: true,
+    href: '/eduaccess-ai',
+    external: false,
     badge: 'Live',
     badgeColor: 'green',
     icon: '♿',
