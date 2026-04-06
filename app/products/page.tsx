@@ -52,8 +52,9 @@ const products = [
     description: 'AI-powered platform for US schools & edtech — generate WCAG 2.1 compliant alt text for images and ADA-compliant educational content in seconds.',
     features: [
       'WCAG 2.1 & ADA compliant alt text',
+      'Short alt text strictly under 200 characters',
       'Supports diagrams, charts, infographics',
-      'Short alt + long description output',
+      'Short alt + detailed long description output',
       'Blog, course & lesson content writing',
       'K-12 & higher education tone',
       'Bias-free, inclusive language engine',
