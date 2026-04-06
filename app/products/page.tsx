@@ -43,7 +43,7 @@ const products = [
   {
     id: 'eduaccess-ai',
     href: '/eduaccess-ai',
-    external: false,
+    external: true,
     badge: 'Live',
     badgeColor: 'green',
     icon: '♿',
