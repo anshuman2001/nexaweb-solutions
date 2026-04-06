@@ -38,7 +38,7 @@ const products = [
     ],
     cta: 'Try Free →',
     category: 'Finance & Compliance',
-    price: '₹499 / month',
+    price: '10 Free → ₹399/mo',
   },
   {
     id: 'eduaccess-ai',
@@ -64,7 +64,7 @@ const products = [
     ],
     cta: 'Try API →',
     category: 'Education & Accessibility',
-    price: 'Free Beta',
+    price: '5+5 Free → ₹399/mo',
   },
 ];
 
