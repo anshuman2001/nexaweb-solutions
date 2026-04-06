@@ -42,10 +42,10 @@ const products = [
   },
   {
     id: 'eduaccess-ai',
-    href: '/contact',
-    external: false,
-    badge: 'Coming Soon',
-    badgeColor: 'blue',
+    href: 'https://eduaccess-ai.onrender.com',
+    external: true,
+    badge: 'Live',
+    badgeColor: 'green',
     icon: '♿',
     name: 'EduAccess AI',
     tagline: 'Accessible Content & Alt Text Generator',
@@ -61,9 +61,9 @@ const products = [
       'Multiple variations per generation',
       'Accessibility score per output',
     ],
-    cta: 'Join Waitlist →',
+    cta: 'Try API →',
     category: 'Education & Accessibility',
-    price: 'Early Access',
+    price: 'Free Beta',
   },
 ];
 
