@@ -7,7 +7,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://digiagentix.vercel.
 
 export const metadata: Metadata = {
   title: 'Products — DigiAgentix',
-  description: 'Explore DigiAgentix software products built for Indian businesses — GST AI Reconciliation, automation tools and more.',
+  description: 'Explore DigiAgentix software products — GST AI Reconciliation for CA firms and EduAccess AI for WCAG-compliant educational content.',
   alternates: { canonical: `${siteUrl}/products` },
   openGraph: {
     title: 'Products — DigiAgentix',
@@ -39,6 +39,30 @@ const products = [
     cta: 'Try Free →',
     category: 'Finance & Compliance',
     price: '₹499 / month',
+  },
+  {
+    id: 'eduaccess-ai',
+    href: '/contact',
+    external: false,
+    badge: 'Coming Soon',
+    badgeColor: 'blue',
+    icon: '♿',
+    name: 'EduAccess AI',
+    tagline: 'Accessible Content & Alt Text Generator',
+    description: 'AI-powered platform for US schools & edtech — generate WCAG 2.1 compliant alt text for images and ADA-compliant educational content in seconds.',
+    features: [
+      'WCAG 2.1 & ADA compliant alt text',
+      'Supports diagrams, charts, infographics',
+      'Short alt + long description output',
+      'Blog, course & lesson content writing',
+      'K-12 & higher education tone',
+      'Bias-free, inclusive language engine',
+      'Multiple variations per generation',
+      'Accessibility score per output',
+    ],
+    cta: 'Join Waitlist →',
+    category: 'Education & Accessibility',
+    price: 'Early Access',
   },
 ];
 
@@ -147,9 +171,9 @@ export default function ProductsPage() {
               <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mb-4">
                 🚀
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">More Products Coming</h3>
+              <h3 className="text-lg font-bold text-white mb-2">More Products In Pipeline</h3>
               <p className="text-gray-500 text-sm max-w-xs leading-relaxed">
-                We&apos;re building more tools for Indian businesses. Stay tuned or tell us what you need.
+                We&apos;re building AI-powered tools for businesses globally. Have an idea or need a custom tool?
               </p>
               <Link href="/contact" className="mt-5 inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
                 Suggest a product <ArrowRight className="w-3.5 h-3.5" />
