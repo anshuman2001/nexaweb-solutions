@@ -53,6 +53,7 @@ const products = [
     features: [
       'WCAG 2.1 & ADA compliant alt text',
       'Short alt text strictly under 200 characters',
+      'No color-only descriptions (WCAG 1.4.1 compliant)',
       'Supports diagrams, charts, infographics',
       'Long description — no limit, adapts to image complexity',
       'Blog, course & lesson content writing',
