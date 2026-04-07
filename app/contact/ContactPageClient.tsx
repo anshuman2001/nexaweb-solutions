@@ -63,7 +63,7 @@ export default function ContactPageClient() {
               <div className="space-y-4">
                 {[
                   { icon: Phone, label:'WhatsApp', value:'+91 99977 30768', href:`https://wa.me/${whatsappNumber}` },
-                  { icon: Mail, label:'Email', value:'info.nexawebsolution@gmail.com', href:'mailto:info.nexawebsolution@gmail.com' },
+                  { icon: Mail, label:'Email', value:'info@digiagentix.com', href:'mailto:info@digiagentix.com' },
                   { icon: MapPin, label:'Location', value:'Noida, UP 🇮🇳', href:'#' },
                   { icon: Clock, label:'Working Hours', value:'Mon-Sat, 9AM - 8PM IST', href:'#' },
                 ].map(({ icon: Icon, label, value, href }) => (

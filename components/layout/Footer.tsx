@@ -101,10 +101,10 @@ export default function Footer() {
             </p>
 
             <div className="space-y-3">
-              <a href="mailto:info.nexawebsolution@gmail.com"
+              <a href="mailto:info@digiagentix.com"
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-blue-400 transition-colors">
                 <Mail className="w-4 h-4" />
-                info.nexawebsolution@gmail.com
+                info@digiagentix.com
               </a>
               <a href="https://wa.me/919997730768" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-green-400 transition-colors">
