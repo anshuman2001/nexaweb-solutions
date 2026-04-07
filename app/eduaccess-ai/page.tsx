@@ -30,7 +30,7 @@ const UsageBar = ({ label, used, limit }: { label: string; used: number; limit: 
 export default function EduAccessAIPage() {
 
   /* ── auth state */
-  const [authMode, setAuthMode]       = useState<'login' | 'register'>('login');
+  const [authMode, setAuthMode]       = useState<'login' | 'register' | 'forgot'>('login');
   const [user, setUser]               = useState<any>(null);
   const [usage, setUsage]             = useState<any>(null);
   const [token, setToken]             = useState('');
@@ -87,6 +87,21 @@ export default function EduAccessAIPage() {
   /* ── auth ── */
   const handleAuth = async () => {
     setAuthError(''); setAuthSuccess(''); setAuthLoading(true);
+
+    // ── Forgot password flow ──
+    if (authMode === 'forgot') {
+      if (!form.email) { setAuthError('Please enter your email address.'); setAuthLoading(false); return; }
+      try {
+        await fetch(`${API_BASE}/api/auth/forgot-password`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email }),
+        });
+        setAuthSuccess('Reset link sent! Check your inbox (and spam folder).');
+      } catch { setAuthSuccess('Reset link sent! Check your inbox (and spam folder).'); }
+      finally { setAuthLoading(false); }
+      return;
+    }
+
     if (authMode === 'register' && form.password !== form.confirm) {
       setAuthError('Passwords do not match.'); setAuthLoading(false); return;
     }
@@ -322,126 +337,187 @@ export default function EduAccessAIPage() {
           </div>
 
           <h2 className="text-3xl font-extrabold mb-1 text-gray-900">
-            {authMode === 'login' ? 'Welcome back' : 'Create account'}
+            {authMode === 'login' ? 'Welcome back' : authMode === 'register' ? 'Create account' : 'Reset password'}
           </h2>
           <p className="text-sm text-gray-500 mb-8">
-            {authMode === 'login' ? 'Sign in to your workspace' : 'Start with 5 free alt texts + 5 content generations'}
+            {authMode === 'login' ? 'Sign in to your workspace'
+              : authMode === 'register' ? 'Start with 5 free alt texts + 5 content generations'
+              : 'Enter your email and we\'ll send a reset link'}
           </p>
 
-          {/* Tabs */}
-          <div className="flex rounded-xl p-1 mb-7" style={{ background: '#e2e8f0' }}>
-            {(['login', 'register'] as const).map((m) => (
-              <button key={m} onClick={() => { setAuthMode(m); setAuthError(''); setAuthSuccess(''); }}
-                className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all"
-                style={{
-                  background: authMode === m ? 'white' : 'transparent',
-                  color: authMode === m ? '#1e293b' : '#64748b',
-                  boxShadow: authMode === m ? '0 1px 3px rgba(0,0,0,0.12)' : 'none',
-                }}>
-                {m === 'login' ? 'Sign In' : 'Create Account'}
-              </button>
-            ))}
-          </div>
-
-          {/* Form */}
-          <div className="space-y-4">
-            {authMode === 'register' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
-                <input value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))}
-                  placeholder="Jane Smith"
-                  className="w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all"
-                  style={{ borderColor: '#e2e8f0', background: 'white' }}
-                  onFocus={e => e.target.style.borderColor = '#6366f1'}
-                  onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
-              <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                placeholder="jane@school.edu"
-                className="w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all"
-                style={{ borderColor: '#e2e8f0', background: 'white' }}
-                onFocus={e => e.target.style.borderColor = '#6366f1'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-                onKeyDown={e => e.key === 'Enter' && handleAuth()} />
+          {/* Tabs — hide on forgot mode */}
+          {authMode !== 'forgot' && (
+            <div className="flex rounded-xl p-1 mb-7" style={{ background: '#e2e8f0' }}>
+              {(['login', 'register'] as const).map((m) => (
+                <button key={m} onClick={() => { setAuthMode(m); setAuthError(''); setAuthSuccess(''); }}
+                  className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all"
+                  style={{
+                    background: authMode === m ? 'white' : 'transparent',
+                    color: authMode === m ? '#1e293b' : '#64748b',
+                    boxShadow: authMode === m ? '0 1px 3px rgba(0,0,0,0.12)' : 'none',
+                  }}>
+                  {m === 'login' ? 'Sign In' : 'Create Account'}
+                </button>
+              ))}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-              <div className="relative">
-                <input type={showPass ? 'text' : 'password'} value={form.password}
-                  onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-                  placeholder="Min 6 characters"
-                  className="w-full px-4 py-3 pr-11 rounded-xl border text-gray-900 text-sm outline-none transition-all"
+          {/* ── FORGOT PASSWORD FORM ── */}
+          {authMode === 'forgot' && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="jane@school.edu"
+                  className="w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all"
                   style={{ borderColor: '#e2e8f0', background: 'white' }}
                   onFocus={e => e.target.style.borderColor = '#6366f1'}
                   onBlur={e => e.target.style.borderColor = '#e2e8f0'}
                   onKeyDown={e => e.key === 'Enter' && handleAuth()} />
-                <button type="button" onClick={() => setShowPass(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
               </div>
-            </div>
 
-            {authMode === 'register' && (
+              {authError && (
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                  style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626' }}>
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />{authError}
+                </div>
+              )}
+              {authSuccess && (
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                  style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a' }}>
+                  <CheckCircle className="w-4 h-4 flex-shrink-0" />{authSuccess}
+                </div>
+              )}
+
+              <button onClick={handleAuth} disabled={authLoading}
+                className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all"
+                style={{
+                  background: authLoading ? '#a5b4fc' : 'linear-gradient(135deg, #6366f1, #3b82f6)',
+                  boxShadow: authLoading ? 'none' : '0 4px 20px rgba(99,102,241,0.4)',
+                }}>
+                {authLoading
+                  ? <span className="flex items-center justify-center gap-2"><RefreshCw className="w-4 h-4 animate-spin" /> Sending link...</span>
+                  : 'Send Reset Link →'}
+              </button>
+
+              <button onClick={() => { setAuthMode('login'); setAuthError(''); setAuthSuccess(''); }}
+                className="w-full py-2.5 rounded-xl text-sm font-medium transition-colors"
+                style={{ color: '#6366f1', background: 'transparent' }}>
+                ← Back to Sign In
+              </button>
+            </div>
+          )}
+
+          {/* ── LOGIN / REGISTER FORM ── */}
+          {authMode !== 'forgot' && (
+            <div className="space-y-4">
+              {authMode === 'register' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+                  <input value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))}
+                    placeholder="Jane Smith"
+                    className="w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all"
+                    style={{ borderColor: '#e2e8f0', background: 'white' }}
+                    onFocus={e => e.target.style.borderColor = '#6366f1'}
+                    onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                </div>
+              )}
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="jane@school.edu"
+                  className="w-full px-4 py-3 rounded-xl border text-gray-900 text-sm outline-none transition-all"
+                  style={{ borderColor: '#e2e8f0', background: 'white' }}
+                  onFocus={e => e.target.style.borderColor = '#6366f1'}
+                  onBlur={e => e.target.style.borderColor = '#e2e8f0'}
+                  onKeyDown={e => e.key === 'Enter' && handleAuth()} />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-sm font-medium text-gray-700">Password</label>
+                  {authMode === 'login' && (
+                    <button type="button"
+                      onClick={() => { setAuthMode('forgot'); setAuthError(''); setAuthSuccess(''); }}
+                      className="text-xs font-medium transition-colors hover:underline"
+                      style={{ color: '#6366f1' }}>
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
                 <div className="relative">
-                  <input type={showConfirm ? 'text' : 'password'} value={form.confirm}
-                    onChange={e => setForm(f => ({ ...f, confirm: e.target.value }))}
-                    placeholder="Re-enter password"
+                  <input type={showPass ? 'text' : 'password'} value={form.password}
+                    onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                    placeholder="Min 6 characters"
                     className="w-full px-4 py-3 pr-11 rounded-xl border text-gray-900 text-sm outline-none transition-all"
-                    style={{
-                      borderColor: form.confirm && form.confirm !== form.password ? '#ef4444' : '#e2e8f0',
-                      background: 'white',
-                    }}
-                    onFocus={e => { if (!(form.confirm && form.confirm !== form.password)) e.target.style.borderColor = '#6366f1'; }}
-                    onBlur={e => { if (!(form.confirm && form.confirm !== form.password)) e.target.style.borderColor = '#e2e8f0'; }}
+                    style={{ borderColor: '#e2e8f0', background: 'white' }}
+                    onFocus={e => e.target.style.borderColor = '#6366f1'}
+                    onBlur={e => e.target.style.borderColor = '#e2e8f0'}
                     onKeyDown={e => e.key === 'Enter' && handleAuth()} />
-                  <button type="button" onClick={() => setShowConfirm(v => !v)}
+                  <button type="button" onClick={() => setShowPass(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                    {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {form.confirm && form.confirm !== form.password && (
-                  <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
-                )}
               </div>
-            )}
 
-            {/* Error / Success */}
-            {authError && (
-              <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
-                style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626' }}>
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {authError}
-              </div>
-            )}
-            {authSuccess && (
-              <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
-                style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a' }}>
-                <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                {authSuccess}
-              </div>
-            )}
+              {authMode === 'register' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
+                  <div className="relative">
+                    <input type={showConfirm ? 'text' : 'password'} value={form.confirm}
+                      onChange={e => setForm(f => ({ ...f, confirm: e.target.value }))}
+                      placeholder="Re-enter password"
+                      className="w-full px-4 py-3 pr-11 rounded-xl border text-gray-900 text-sm outline-none transition-all"
+                      style={{
+                        borderColor: form.confirm && form.confirm !== form.password ? '#ef4444' : '#e2e8f0',
+                        background: 'white',
+                      }}
+                      onFocus={e => { if (!(form.confirm && form.confirm !== form.password)) e.target.style.borderColor = '#6366f1'; }}
+                      onBlur={e => { if (!(form.confirm && form.confirm !== form.password)) e.target.style.borderColor = '#e2e8f0'; }}
+                      onKeyDown={e => e.key === 'Enter' && handleAuth()} />
+                    <button type="button" onClick={() => setShowConfirm(v => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {form.confirm && form.confirm !== form.password && (
+                    <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
+                  )}
+                </div>
+              )}
 
-            {/* Submit */}
-            <button onClick={handleAuth} disabled={authLoading}
-              className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all mt-2"
-              style={{
-                background: authLoading ? '#a5b4fc' : 'linear-gradient(135deg, #6366f1, #3b82f6)',
-                boxShadow: authLoading ? 'none' : '0 4px 20px rgba(99,102,241,0.4)',
-              }}>
-              {authLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <RefreshCw className="w-4 h-4 animate-spin" /> {authMode === 'login' ? 'Signing in...' : 'Creating account...'}
-                </span>
-              ) : authMode === 'login' ? 'Sign In →' : 'Create Account →'}
-            </button>
-          </div>
+              {/* Error / Success */}
+              {authError && (
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                  style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626' }}>
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />{authError}
+                </div>
+              )}
+              {authSuccess && (
+                <div className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm"
+                  style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a' }}>
+                  <CheckCircle className="w-4 h-4 flex-shrink-0" />{authSuccess}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button onClick={handleAuth} disabled={authLoading}
+                className="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all mt-2"
+                style={{
+                  background: authLoading ? '#a5b4fc' : 'linear-gradient(135deg, #6366f1, #3b82f6)',
+                  boxShadow: authLoading ? 'none' : '0 4px 20px rgba(99,102,241,0.4)',
+                }}>
+                {authLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    {authMode === 'login' ? 'Signing in...' : 'Creating account...'}
+                  </span>
+                ) : authMode === 'login' ? 'Sign In →' : 'Create Account →'}
+              </button>
+            </div>
+          )}
 
           {/* Free trial note */}
           {authMode === 'register' && (
