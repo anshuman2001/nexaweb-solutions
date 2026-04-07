@@ -517,7 +517,6 @@ export default function EcommerceAgentPage() {
                 style={{
                   background: p.badge ? `linear-gradient(135deg, ${p.color}10, rgba(255,255,255,0.03))` : 'rgba(255,255,255,0.03)',
                   border: `1px solid ${p.color}33`,
-                  ...(p.badge ? { ringColor: p.color } : {}),
                 }}>
                 {p.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-white"
