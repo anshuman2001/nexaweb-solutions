@@ -1,6 +1,29 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Component, ReactNode } from 'react';
+
+/* ─── Error Boundary ─────────────────────────────────────────────────────────── */
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
+  constructor(props: any) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(e: Error) { return { error: e.message }; }
+  render() {
+    if (this.state.error) return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0f1e' }}>
+        <div className="text-center p-8 max-w-md">
+          <div className="text-4xl mb-4">⚠️</div>
+          <h2 className="text-white font-bold text-xl mb-2">Something went wrong</h2>
+          <p className="text-gray-400 text-sm mb-6">{this.state.error}</p>
+          <button onClick={() => { localStorage.clear(); window.location.reload(); }}
+            className="px-6 py-3 rounded-xl text-white font-semibold text-sm"
+            style={{ background: 'linear-gradient(135deg,#6366f1,#3b82f6)' }}>
+            Clear & Reload
+          </button>
+        </div>
+      </div>
+    );
+    return this.props.children;
+  }
+}
 import {
   Eye, EyeOff, Upload, FileText, CheckCircle, Zap, RefreshCw,
   Copy, Check, LogOut, BarChart2, BookOpen, Image, ChevronRight,
@@ -27,7 +50,7 @@ const UsageBar = ({ label, used, limit }: { label: string; used: number; limit: 
 };
 
 /* ─── MAIN COMPONENT ────────────────────────────────────────────────────────── */
-export default function EduAccessAIPage() {
+function EduAccessAIPageInner() {
 
   /* ── auth state */
   const [authMode, setAuthMode]       = useState<'login' | 'register' | 'forgot'>('login');
@@ -72,9 +95,20 @@ export default function EduAccessAIPage() {
 
   /* ── restore session */
   useEffect(() => {
-    const t = localStorage.getItem('eduaccess_token');
-    const u = localStorage.getItem('eduaccess_user');
-    if (t && u) { setToken(t); setUser(JSON.parse(u)); fetchUsage(t); }
+    try {
+      const t = localStorage.getItem('eduaccess_token');
+      const u = localStorage.getItem('eduaccess_user');
+      if (t && u) {
+        const parsed = JSON.parse(u);
+        setToken(t);
+        setUser(parsed);
+        fetchUsage(t);
+      }
+    } catch {
+      // clear any corrupt localStorage data
+      localStorage.removeItem('eduaccess_token');
+      localStorage.removeItem('eduaccess_user');
+    }
   }, []);
 
   const fetchUsage = async (t: string) => {
@@ -1035,5 +1069,13 @@ export default function EduAccessAIPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function EduAccessAIPage() {
+  return (
+    <ErrorBoundary>
+      <EduAccessAIPageInner />
+    </ErrorBoundary>
   );
 }
