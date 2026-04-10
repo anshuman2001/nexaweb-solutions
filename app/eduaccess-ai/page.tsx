@@ -836,15 +836,18 @@ function EduAccessAIPageInner() {
                     <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                       <span className="text-xs font-semibold block mb-3" style={{ color: '#f59e0b' }}>VARIATIONS</span>
                       <div className="space-y-2">
-                        {altResult.variations.map((v: string, i: number) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <span className="text-xs mt-0.5 flex-shrink-0" style={{ color: '#475569' }}>#{i + 1}</span>
-                            <p className="text-sm text-gray-300 leading-relaxed flex-1">"{v}"</p>
-                            <button onClick={() => copyText(v, `var${i}`)} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
-                              {copied === `var${i}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                            </button>
-                          </div>
-                        ))}
+                        {altResult.variations.map((v: any, i: number) => {
+                          const text = typeof v === 'string' ? v : (v?.short_alt ?? '');
+                          return (
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-xs mt-0.5 flex-shrink-0" style={{ color: '#475569' }}>#{i + 1}</span>
+                              <p className="text-sm text-gray-300 leading-relaxed flex-1">"{text}"</p>
+                              <button onClick={() => copyText(text, `var${i}`)} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
+                                {copied === `var${i}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
