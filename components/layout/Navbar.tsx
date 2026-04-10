@@ -17,11 +17,14 @@ const navLinks = [
   { label: 'Contact', href: '/contact' },
 ];
 
+const STANDALONE_ROUTES = ['/eduaccess-ai'];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [lang, setLang] = useState<'en' | 'hi'>('en');
   const pathname = usePathname();
+  const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -34,6 +37,8 @@ export default function Navbar() {
   }, [pathname]);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+
+  if (isStandalone) return null;
 
   return (
     <>

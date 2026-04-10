@@ -12,7 +12,7 @@ const STANDALONE_ROUTES = [
 
 export default function ConditionalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isStandalone = STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
+  const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
 
   if (isStandalone) {
     return <>{children}</>;

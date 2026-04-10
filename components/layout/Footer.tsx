@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+const STANDALONE_ROUTES = ['/eduaccess-ai'];
 
 const footerLinks = {
   services: [
@@ -57,7 +62,11 @@ const STARS = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+
+  if (isStandalone) return null;
 
   return (
     <footer
