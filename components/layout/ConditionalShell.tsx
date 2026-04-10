@@ -8,6 +8,7 @@ import WhatsAppFloat from './WhatsAppFloat';
 /* Routes that should render WITHOUT the site Navbar / Footer / WhatsApp float */
 const STANDALONE_ROUTES = [
   '/eduaccess-ai',
+  '/ai-calling-agent',
 ];
 
 export default function ConditionalShell({ children }: { children: React.ReactNode }) {
