@@ -146,23 +146,47 @@ export default function EduAccessAIPage() {
     setImageUrl('');
   };
 
+  /* convert File → base64 string (strips data:...;base64, prefix) */
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve((reader.result as string).split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
   const generateAltText = async () => {
     setAltLoading(true); setAltError(''); setAltResult(null);
     try {
-      const fd = new FormData();
-      if (imageFile) fd.append('image_file', imageFile);
-      else fd.append('image_url', imageUrl);
-      fd.append('context', context);
-      fd.append('grade_level', gradeLevel);
-      fd.append('subject', subject);
-      fd.append('variations', '3');
+      const body: Record<string, any> = {
+        context:       context || undefined,
+        grade_level:   gradeLevel || undefined,
+        subject:       subject   || undefined,
+        num_variations: 3,
+      };
+
+      if (imageFile) {
+        body.image_base64 = await fileToBase64(imageFile);
+      } else if (imageUrl) {
+        body.image_url = imageUrl;
+      } else {
+        setAltError('Please upload an image or enter an image URL.');
+        setAltLoading(false);
+        return;
+      }
 
       const res = await fetch(`${API_BASE}/api/alt-text/generate`, {
-        method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd,
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify(body),
       });
+
       const data = await res.json();
-      if (res.status === 402) { setAltError(data.detail || 'Limit reached. Please upgrade your plan.'); return; }
-      if (!res.ok) throw new Error(data.detail || 'Generation failed');
+      if (res.status === 402) {
+        setAltError(typeof data.detail === 'string' ? data.detail : data.detail?.message || 'Limit reached. Please upgrade your plan.');
+        return;
+      }
+      if (!res.ok) throw new Error(typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail));
       setAltResult(data);
       fetchUsage(token);
     } catch (e: any) { setAltError(e.message); }
@@ -832,8 +856,8 @@ export default function EduAccessAIPage() {
                     <select value={contentType} onChange={e => setContentType(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none"
                       style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                      {['blog_post', 'lesson_plan', 'course_material', 'reading_passage', 'activity'].map(t => (
-                        <option key={t} value={t} style={{ background: '#1e293b' }}>{t.replace('_', ' ')}</option>
+                      {['blog_post', 'lesson_plan', 'course_material', 'website_page', 'quiz', 'summary'].map(t => (
+                        <option key={t} value={t} style={{ background: '#1e293b' }}>{t.replace(/_/g, ' ')}</option>
                       ))}
                     </select>
                   </div>
@@ -853,7 +877,7 @@ export default function EduAccessAIPage() {
                     <select value={audience} onChange={e => setAudience(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none"
                       style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                      {['students', 'teachers', 'parents', 'administrators'].map(a => (
+                      {['students', 'teachers', 'parents', 'general'].map(a => (
                         <option key={a} value={a} style={{ background: '#1e293b' }}>{a}</option>
                       ))}
                     </select>
@@ -863,7 +887,7 @@ export default function EduAccessAIPage() {
                     <select value={tone} onChange={e => setTone(e.target.value)}
                       className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none"
                       style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                      {['friendly', 'formal', 'encouraging', 'neutral', 'professional'].map(t => (
+                      {['friendly', 'formal', 'neutral'].map(t => (
                         <option key={t} value={t} style={{ background: '#1e293b' }}>{t}</option>
                       ))}
                     </select>
@@ -945,22 +969,63 @@ export default function EduAccessAIPage() {
                   <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-xs font-semibold" style={{ color: '#6366f1' }}>CONTENT</span>
-                      <button onClick={() => copyText(contentResult.content || contentResult.body || '', 'content')}
+                      <button onClick={() => {
+                        const full = contentResult.sections?.length
+                          ? contentResult.sections.map((s: any) => `${s.heading}\n\n${s.content}`).join('\n\n')
+                          : contentResult.content || contentResult.body || '';
+                        copyText(full, 'content');
+                      }}
                         className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-colors hover:bg-white/5"
                         style={{ color: '#64748b' }}>
                         {copied === 'content' ? <><Check className="w-3 h-3 text-emerald-400" /> Copied!</> : <><Copy className="w-3 h-3" /> Copy All</>}
                       </button>
                     </div>
-                    <div className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#cbd5e1' }}>
-                      {contentResult.content || contentResult.body}
-                    </div>
+                    {contentResult.sections?.length > 0 ? (
+                      <div className="space-y-4">
+                        {contentResult.sections.map((s: any, i: number) => (
+                          <div key={i}>
+                            {s.heading && <h4 className="text-sm font-semibold text-white mb-1">{s.heading}</h4>}
+                            <p className="text-sm leading-relaxed" style={{ color: '#cbd5e1' }}>{s.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#cbd5e1' }}>
+                        {contentResult.content || contentResult.body}
+                      </div>
+                    )}
                   </div>
+
+                  {/* Key takeaways */}
+                  {contentResult.key_takeaways?.length > 0 && (
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span className="text-xs font-semibold block mb-2" style={{ color: '#f59e0b' }}>KEY TAKEAWAYS</span>
+                      <ul className="space-y-1.5">
+                        {contentResult.key_takeaways.map((t: string, i: number) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />{t}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Meta description */}
+                  {contentResult.meta_description && (
+                    <div className="p-3 rounded-xl flex items-start gap-2" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
+                      <span className="text-xs font-semibold text-indigo-400 flex-shrink-0 mt-0.5">META:</span>
+                      <p className="text-xs text-gray-400 leading-relaxed flex-1">{contentResult.meta_description}</p>
+                      <button onClick={() => copyText(contentResult.meta_description, 'meta')} className="flex-shrink-0 text-gray-500 hover:text-white">
+                        {copied === 'meta' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      </button>
+                    </div>
+                  )}
 
                   {contentResult.word_count && (
                     <div className="flex items-center gap-4 text-xs" style={{ color: '#475569' }}>
                       <span>Words: <b style={{ color: '#94a3b8' }}>{contentResult.word_count}</b></span>
-                      {contentResult.grade_level && <span>Grade: <b style={{ color: '#94a3b8' }}>{contentResult.grade_level}</b></span>}
-                      {contentResult.content_type && <span>Type: <b style={{ color: '#94a3b8' }}>{contentResult.content_type}</b></span>}
+                      {contentResult.reading_level && <span>Level: <b style={{ color: '#94a3b8' }}>{contentResult.reading_level}</b></span>}
+                      {contentResult.bias_check && <span style={{ color: '#34d399' }}>✓ {contentResult.bias_check}</span>}
                     </div>
                   )}
                 </div>
