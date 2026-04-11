@@ -11,7 +11,7 @@ import {
   Menu, X, ArrowRight, Repeat, Timer, MailCheck, MailX, CircleDot
 } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_COLD_EMAIL_API || 'https://cold-email-backend.onrender.com';
+const API_BASE = process.env.NEXT_PUBLIC_COLD_EMAIL_API || 'https://cold-email-backend-ft53.onrender.com';
 
 /* ─── Types ───────────────────────────────────────────────────────────────── */
 type LeadStatus = 'pending' | 'sent' | 'opened' | 'clicked' | 'replied' | 'failed' | 'unsubscribed';
