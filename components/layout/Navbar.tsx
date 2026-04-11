@@ -17,7 +17,7 @@ const navLinks = [
   { label: 'Contact', href: '/contact' },
 ];
 
-const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent'];
+const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

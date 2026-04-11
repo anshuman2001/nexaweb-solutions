@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
-const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent'];
+const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 
 const footerLinks = {
   services: [

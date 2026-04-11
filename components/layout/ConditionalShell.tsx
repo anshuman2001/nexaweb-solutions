@@ -9,6 +9,7 @@ import WhatsAppFloat from './WhatsAppFloat';
 const STANDALONE_ROUTES = [
   '/eduaccess-ai',
   '/ai-calling-agent',
+  '/cold-email-agent',
 ];
 
 export default function ConditionalShell({ children }: { children: React.ReactNode }) {
