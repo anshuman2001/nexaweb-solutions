@@ -8,8 +8,37 @@ import {
   Zap, Eye, MousePointer, RefreshCw, Download, Search, Plus,
   Send, FileSpreadsheet, Sparkles, AlertCircle, CalendarDays,
   Settings, Home, TrendingUp, Copy, Check, Bell, BellOff,
-  Menu, X, ArrowRight, Repeat, Timer, MailCheck, MailX, CircleDot
+  Menu, X, ArrowRight, Repeat, Timer, MailCheck, MailX, CircleDot,
+  ShieldCheck, ShieldX, Trash2
 } from 'lucide-react';
+
+/* ─── Disposable email domains (block list) ────────────────────────────────── */
+const DISPOSABLE = new Set([
+  'mailinator.com','guerrillamail.com','temp-mail.org','throwaway.email',
+  'fakeinbox.com','trashmail.com','yopmail.com','sharklasers.com',
+  'guerrillamailblock.com','grr.la','guerrillamail.info','spam4.me',
+  'tempmail.com','dispostable.com','mailnull.com','spamgourmet.com',
+  'maildrop.cc','spamhereplease.com','spamoff.de','binkmail.com',
+  'bobmail.info','chammy.info','devnullmail.com','discard.email',
+]);
+
+/* ─── Email validator (no API, runs in browser) ────────────────────────────── */
+function validateEmail(email: string): { valid: boolean; reason: string } {
+  if (!email || typeof email !== 'string') return { valid: false, reason: 'Empty email' };
+  const trimmed = email.trim().toLowerCase();
+  // Syntax check
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!re.test(trimmed)) return { valid: false, reason: 'Invalid format' };
+  const [, domain] = trimmed.split('@');
+  // Disposable check
+  if (DISPOSABLE.has(domain)) return { valid: false, reason: 'Disposable email' };
+  // No dots in domain
+  if (!domain.includes('.')) return { valid: false, reason: 'Invalid domain' };
+  // Common typos
+  const typos: Record<string,string> = { 'gmial.com':'gmail.com','gmai.com':'gmail.com','yahooo.com':'yahoo.com','hotmial.com':'hotmail.com' };
+  if (typos[domain]) return { valid: false, reason: `Possible typo — did you mean @${typos[domain]}?` };
+  return { valid: true, reason: 'OK' };
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_COLD_EMAIL_API || 'https://cold-email-backend-ft53.onrender.com';
 
@@ -35,6 +64,8 @@ type Lead = {
   sentAt?: string;
   sentDate?: Date;
   followUps: FollowUp[];
+  emailValid?: boolean;
+  emailReason?: string;
 };
 
 type Tab = 'dashboard' | 'upload' | 'compose' | 'campaigns' | 'followups' | 'analytics' | 'settings';
@@ -140,6 +171,7 @@ export default function ColdEmailAgent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [sending, setSending] = useState(false);
+  const [validating, setValidating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [previewLead, setPreviewLead] = useState<Lead | null>(null);
   const [previewFU, setPreviewFU] = useState<{ lead: Lead; fu: FollowUp } | null>(null);
@@ -211,6 +243,27 @@ export default function ColdEmailAgent() {
       localStorage.removeItem('cold_email_leads');
       localStorage.removeItem('cold_email_log');
     } catch {}
+  };
+
+  /* ── Validate all emails (free, browser-side) ── */
+  const validateLeads = () => {
+    setValidating(true);
+    let valid = 0, invalid = 0;
+    const updated = leads.map(l => {
+      const result = validateEmail(l.email);
+      if (result.valid) valid++; else invalid++;
+      return { ...l, emailValid: result.valid, emailReason: result.reason };
+    });
+    setLeads(updated);
+    setValidating(false);
+    addLog(`✅ Validation done: ${valid} valid, ${invalid} invalid emails found`);
+  };
+
+  /* ── Remove invalid leads ── */
+  const removeInvalid = () => {
+    const before = leads.length;
+    setLeads(leads.filter(l => l.emailValid !== false));
+    addLog(`🗑 Removed ${before - leads.filter(l => l.emailValid !== false).length} invalid leads`);
   };
 
   /* ── Apply follow-up schedule to all sent leads ── */
@@ -580,6 +633,31 @@ export default function ColdEmailAgent() {
 
               {leads.length > 0 && (
                 <div className="space-y-3">
+                  {/* Validation Bar */}
+                  <div className="flex flex-wrap items-center gap-2 p-4 rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <button onClick={validateLeads} disabled={validating}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                      style={{ background: 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', opacity: validating ? 0.6 : 1 }}>
+                      <ShieldCheck className="w-4 h-4" />
+                      {validating ? 'Validating...' : 'Validate Emails (Free)'}
+                    </button>
+                    {leads.some(l => l.emailValid !== undefined) && (
+                      <>
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
+                          <ShieldCheck className="w-3.5 h-3.5" /> {leads.filter(l => l.emailValid === true).length} Valid
+                        </span>
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>
+                          <ShieldX className="w-3.5 h-3.5" /> {leads.filter(l => l.emailValid === false).length} Invalid
+                        </span>
+                        {leads.some(l => l.emailValid === false) && (
+                          <button onClick={removeInvalid} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-80" style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
+                            <Trash2 className="w-3.5 h-3.5" /> Remove Invalid
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </div>
+
                   <div className="flex items-center gap-3">
                     <div className="relative flex-1">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -600,7 +678,11 @@ export default function ColdEmailAgent() {
                             <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg,#6366f1,#3b82f6)' }}>{l.name[0]}</div>
                             <span className="text-sm text-white truncate">{l.name}</span>
                           </div>
-                          <div className="hidden sm:block col-span-3 text-xs text-gray-400 truncate">{l.email}</div>
+                          <div className="hidden sm:block col-span-3 text-xs truncate flex items-center gap-1">
+                            <span className="text-gray-400 truncate">{l.email}</span>
+                            {l.emailValid === true && <ShieldCheck className="w-3 h-3 flex-shrink-0" style={{ color: '#10b981' }} title="Valid" />}
+                            {l.emailValid === false && <ShieldX className="w-3 h-3 flex-shrink-0" style={{ color: '#ef4444' }} title={l.emailReason} />}
+                          </div>
                           <div className="hidden sm:block col-span-3 text-xs text-gray-400 truncate">{l.business}</div>
                           <div className="col-span-4 sm:col-span-2">
                             <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: STATUS[l.status].bg, color: STATUS[l.status].color }}>{STATUS[l.status].label}</span>
