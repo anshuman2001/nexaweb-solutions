@@ -213,25 +213,63 @@ export default function ColdEmailAgent() {
     reader.readAsArrayBuffer(file);
   }, []);
 
+  /* ── Fetch with timeout helper ── */
+  const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 45000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(id);
+      return res;
+    } catch (e: any) {
+      clearTimeout(id);
+      if (e?.name === 'AbortError') throw new Error('Request timed out (45s). Backend may be waking up — try again.');
+      throw e;
+    }
+  };
+
+  /* ── Wake up backend ── */
+  const wakeBackend = async (): Promise<boolean> => {
+    addLog('⏳ Waking up backend (Render free tier — up to 30s)...');
+    try {
+      const res = await fetchWithTimeout(`${API_BASE}/`, {}, 60000);
+      if (res.ok) { addLog('✅ Backend is live!'); return true; }
+      addLog(`❌ Backend returned ${res.status}. Check Render logs.`); return false;
+    } catch (e: any) {
+      addLog(`❌ Cannot reach backend: ${e.message}`);
+      addLog(`🔗 Backend URL: ${API_BASE}`);
+      return false;
+    }
+  };
+
   /* ── Generate Initial Emails ── */
   const generateEmails = async () => {
     const targets = leads.filter(l => l.status === 'pending' && !l.generatedEmail);
     if (!targets.length) return addLog('⚠️ No pending leads without emails');
     setGenerating(true); setProgress(0);
+
+    const alive = await wakeBackend();
+    if (!alive) { setGenerating(false); return; }
+
     addLog(`🤖 Generating AI emails for ${targets.length} leads...`);
     for (let i = 0; i < targets.length; i++) {
       const lead = targets[i];
       try {
-        const res = await fetch(`${API_BASE}/email/generate`, {
+        const res = await fetchWithTimeout(`${API_BASE}/email/generate`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: lead.name, business: lead.business, website: lead.website, city: lead.city, service: settings.service, sender_name: settings.senderName, tone: settings.tone }),
         });
+        if (!res.ok) { addLog(`❌ Server error ${res.status} for ${lead.name}`); continue; }
         const data = await res.json();
-        setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, generatedEmail: data.email } : l));
-        addLog(`✍️ Email generated for ${lead.name}`);
-      } catch { addLog(`❌ Failed for ${lead.name}`); }
+        if (data.email) {
+          setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, generatedEmail: data.email } : l));
+          addLog(`✍️ Email generated for ${lead.name}`);
+        } else {
+          addLog(`⚠️ No email returned for ${lead.name}: ${JSON.stringify(data)}`);
+        }
+      } catch (e: any) { addLog(`❌ Failed for ${lead.name}: ${e.message}`); }
       setProgress(Math.round(((i + 1) / targets.length) * 100));
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 500));
     }
     setGenerating(false);
     addLog('✅ All emails generated!');
@@ -244,13 +282,17 @@ export default function ColdEmailAgent() {
     );
     if (!targets.length) return addLog('⚠️ No ready follow-ups to generate. Apply schedule first.');
     setFuGenerating(true); setFuProgress(0);
+
+    const alive = await wakeBackend();
+    if (!alive) { setFuGenerating(false); return; }
+
     addLog(`🤖 Generating follow-up emails for ${targets.length} leads...`);
     let done = 0;
     for (const lead of targets) {
       const readyFUs = (lead.followUps || []).filter(fu => fu.status === 'ready' && !fu.email);
       for (const fu of readyFUs) {
         try {
-          const res = await fetch(`${API_BASE}/email/followup`, {
+          const res = await fetchWithTimeout(`${API_BASE}/email/followup`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: lead.name, business: lead.business, followup_number: selectedDays.indexOf(fu.day) + 1, sender_name: settings.senderName, day: fu.day }),
           });
@@ -259,8 +301,8 @@ export default function ColdEmailAgent() {
             ...l, followUps: l.followUps.map(f => f.day === fu.day ? { ...f, email: data.email } : f)
           } : l));
           addLog(`✍️ Follow-up Day ${fu.day} generated for ${lead.name}`);
-        } catch { addLog(`❌ Failed follow-up Day ${fu.day} for ${lead.name}`); }
-        await new Promise(r => setTimeout(r, 300));
+        } catch (e: any) { addLog(`❌ Failed follow-up Day ${fu.day} for ${lead.name}: ${e.message}`); }
+        await new Promise(r => setTimeout(r, 500));
       }
       done++;
       setFuProgress(Math.round((done / targets.length) * 100));
@@ -279,7 +321,7 @@ export default function ColdEmailAgent() {
     for (let i = 0; i < targets.length; i++) {
       const lead = targets[i];
       try {
-        const res = await fetch(`${API_BASE}/email/send`, {
+        const res = await fetchWithTimeout(`${API_BASE}/email/send`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ to_email: lead.email, to_name: lead.name, subject: settings.subject.replace('{business}', lead.business), body: lead.generatedEmail, from_email: settings.senderEmail, from_name: settings.senderName, sendgrid_key: settings.sendgridKey }),
         });
@@ -292,8 +334,8 @@ export default function ColdEmailAgent() {
           sentDate: now,
           followUps: selectedDays.map(day => ({ day, status: 'waiting' as const })),
         } : l));
-        addLog(data.success ? `✅ Sent → ${lead.email}` : `❌ Failed → ${lead.email}`);
-      } catch { addLog(`❌ Error: ${lead.email}`); }
+        addLog(data.success ? `✅ Sent → ${lead.email}` : `❌ Failed → ${lead.email}: ${data.error || ''}`);
+      } catch (e: any) { addLog(`❌ Error sending to ${lead.email}: ${e.message}`); }
       setProgress(Math.round(((i + 1) / targets.length) * 100));
       await new Promise(r => setTimeout(r, settings.delaySeconds * 1000));
     }
@@ -314,7 +356,7 @@ export default function ColdEmailAgent() {
     for (let i = 0; i < pairs.length; i++) {
       const { lead, fu } = pairs[i];
       try {
-        const res = await fetch(`${API_BASE}/email/send`, {
+        const res = await fetchWithTimeout(`${API_BASE}/email/send`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ to_email: lead.email, to_name: lead.name, subject: settings.fuSubject.replace('{business}', lead.business), body: fu.email, from_email: settings.senderEmail, from_name: settings.senderName, sendgrid_key: settings.sendgridKey }),
         });
@@ -322,8 +364,8 @@ export default function ColdEmailAgent() {
         setLeads(prev => prev.map(l => l.id === lead.id ? {
           ...l, followUps: l.followUps.map(f => f.day === fu.day ? { ...f, status: data.success ? 'sent' : 'failed', sentAt: new Date().toLocaleTimeString() } : f)
         } : l));
-        addLog(data.success ? `✅ Follow-up Day ${fu.day} sent → ${lead.email}` : `❌ Failed → ${lead.email}`);
-      } catch { addLog(`❌ Error: ${lead.email}`); }
+        addLog(data.success ? `✅ Follow-up Day ${fu.day} sent → ${lead.email}` : `❌ Failed → ${lead.email}: ${data.error || ''}`);
+      } catch (e: any) { addLog(`❌ Error sending follow-up to ${lead.email}: ${e.message}`); }
       setFuProgress(Math.round(((i + 1) / pairs.length) * 100));
       await new Promise(r => setTimeout(r, settings.delaySeconds * 1000));
     }
