@@ -124,17 +124,32 @@ export default function ColdEmailAgent() {
   const [fuSending, setFuSending] = useState(false);
   const [fuProgress, setFuProgress] = useState(0);
 
-  /* ── Settings ── */
-  const [settings, setSettings] = useState({
-    senderName: 'Anshuman — DigiAgentix',
-    senderEmail: 'info@digiagentix.com',
-    subject: "Quick question about {business}'s online presence",
-    fuSubject: 'Following up — {business}',
-    delaySeconds: 5,
-    service: 'website',
-    sendgridKey: '',
-    tone: 'friendly',
+  /* ── Settings — load from localStorage ── */
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cold_email_settings');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return {
+      senderName: 'Anshuman — DigiAgentix',
+      senderEmail: 'info@digiagentix.com',
+      subject: "Quick question about {business}'s online presence",
+      fuSubject: 'Following up — {business}',
+      delaySeconds: 5,
+      service: 'website',
+      sendgridKey: '',
+      tone: 'friendly',
+    };
   });
+  const [settingsSaved, setSettingsSaved] = useState(false);
+
+  const saveSettings = () => {
+    try {
+      localStorage.setItem('cold_email_settings', JSON.stringify(settings));
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 2500);
+    } catch {}
+  };
 
   const fileRef = useRef<HTMLInputElement>(null);
   const addLog = (msg: string) => setLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 99)]);
@@ -511,7 +526,7 @@ export default function ColdEmailAgent() {
                 <div className="grid sm:grid-cols-3 gap-4 mb-5">
                   <div>
                     <label className="text-xs text-gray-400 mb-1.5 block">Service to Pitch</label>
-                    <select value={settings.service} onChange={e => setSettings(s => ({ ...s, service: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <select value={settings.service} onChange={e => setSettings((s: typeof settings) => ({ ...s, service: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
                       <option value="website">Website Design & Development</option>
                       <option value="ai_agent">AI Agents & Automation</option>
                       <option value="both">Website + AI Agents</option>
@@ -520,7 +535,7 @@ export default function ColdEmailAgent() {
                   </div>
                   <div>
                     <label className="text-xs text-gray-400 mb-1.5 block">Tone</label>
-                    <select value={settings.tone} onChange={e => setSettings(s => ({ ...s, tone: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <select value={settings.tone} onChange={e => setSettings((s: typeof settings) => ({ ...s, tone: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
                       <option value="friendly">Friendly & Casual</option>
                       <option value="professional">Professional</option>
                       <option value="direct">Direct & Bold</option>
@@ -528,7 +543,7 @@ export default function ColdEmailAgent() {
                   </div>
                   <div>
                     <label className="text-xs text-gray-400 mb-1.5 block">Your Name</label>
-                    <input type="text" value={settings.senderName} onChange={e => setSettings(s => ({ ...s, senderName: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }} />
+                    <input type="text" value={settings.senderName} onChange={e => setSettings((s: typeof settings) => ({ ...s, senderName: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }} />
                   </div>
                 </div>
                 {generating && (
@@ -583,7 +598,7 @@ export default function ColdEmailAgent() {
                   ].map(f => (
                     <div key={f.key}>
                       <label className="text-xs text-gray-400 mb-1.5 block">{f.label}</label>
-                      <input type={f.type} value={(settings as any)[f.key]} onChange={e => setSettings(s => ({ ...s, [f.key]: f.type === 'number' ? +e.target.value : e.target.value }))} placeholder={f.placeholder} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }} />
+                      <input type={f.type} value={(settings as any)[f.key]} onChange={e => setSettings((s: typeof settings) => ({ ...s, [f.key]: f.type === 'number' ? +e.target.value : e.target.value }))} placeholder={f.placeholder} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }} />
                     </div>
                   ))}
                 </div>
@@ -726,7 +741,7 @@ export default function ColdEmailAgent() {
                 {/* Subject for follow-ups */}
                 <div className="mb-4">
                   <label className="text-xs text-gray-400 mb-1.5 block">Follow-up Subject Line</label>
-                  <input type="text" value={settings.fuSubject} onChange={e => setSettings(s => ({ ...s, fuSubject: e.target.value }))} className="w-full sm:w-96 px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }} />
+                  <input type="text" value={settings.fuSubject} onChange={e => setSettings((s: typeof settings) => ({ ...s, fuSubject: e.target.value }))} className="w-full sm:w-96 px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }} />
                 </div>
 
                 {fuSending && (
@@ -861,11 +876,19 @@ export default function ColdEmailAgent() {
                   ].map(f => (
                     <div key={f.key}>
                       <label className="text-xs text-gray-400 mb-1.5 block">{f.label}</label>
-                      <input type={f.type} value={(settings as any)[f.key]} onChange={e => setSettings(s => ({ ...s, [f.key]: f.type === 'number' ? +e.target.value : e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                      <input type={f.type} value={(settings as any)[f.key]} onChange={e => setSettings((s: typeof settings) => ({ ...s, [f.key]: f.type === 'number' ? +e.target.value : e.target.value }))} className="w-full px-4 py-2.5 rounded-xl text-sm text-white" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
                     </div>
                   ))}
                 </div>
               </div>
+              {/* Save Button */}
+              <button onClick={saveSettings} className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all w-full justify-center"
+                style={{ background: settingsSaved ? 'linear-gradient(135deg,#10b981,#059669)' : 'linear-gradient(135deg,#6366f1,#3b82f6)', color: '#fff', boxShadow: settingsSaved ? '0 0 20px rgba(16,185,129,0.3)' : '0 0 20px rgba(99,102,241,0.3)' }}>
+                {settingsSaved
+                  ? <><CheckCircle className="w-4 h-4" />Settings Saved! ✓</>
+                  : <><Check className="w-4 h-4" />Save Settings</>}
+              </button>
+
               <div className="p-5 rounded-2xl" style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)' }}>
                 <h3 className="font-semibold text-white mb-2">Get Free SendGrid API Key</h3>
                 <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
