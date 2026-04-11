@@ -255,7 +255,7 @@ export default function AICallingDashboard() {
                   <h3 className="font-semibold text-white text-sm">Recent Calls</h3>
                   <button onClick={() => setActiveTab('calls')} className="text-xs" style={{ color: '#00ff88' }}>View All →</button>
                 </div>
-                <div className="divide-y" style={{ divideColor: 'rgba(255,255,255,0.06)' }}>
+                <div className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
                   {leads.slice(0, 5).map(l => (
                     <div key={l.id} className="flex items-center gap-4 px-5 py-3">
                       <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-black" style={{ background: 'linear-gradient(135deg,#00ff88,#3b82f6)' }}>
