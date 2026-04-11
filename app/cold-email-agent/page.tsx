@@ -107,19 +107,52 @@ function FUBadge({ fu }: { fu: FollowUp }) {
 /* ─── Main Component ───────────────────────────────────────────────────────── */
 export default function ColdEmailAgent() {
   const [tab, setTab] = useState<Tab>('dashboard');
-  const [leads, setLeads] = useState<Lead[]>([]);
+
+  /* ── Leads — auto-save to localStorage ── */
+  const [leads, setLeadsRaw] = useState<Lead[]>(() => {
+    try {
+      const saved = localStorage.getItem('cold_email_leads');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.map((l: Lead) => ({ ...l, sentDate: l.sentDate ? new Date(l.sentDate) : undefined }));
+      }
+    } catch {}
+    return [];
+  });
+  const setLeads = useCallback((updater: Lead[] | ((prev: Lead[]) => Lead[])) => {
+    setLeadsRaw(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      try { localStorage.setItem('cold_email_leads', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  /* ── Activity Log — persist last 100 entries ── */
+  const [log, setLog] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('cold_email_log');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
+
   const [search, setSearch] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [sending, setSending] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [log, setLog] = useState<string[]>([]);
   const [previewLead, setPreviewLead] = useState<Lead | null>(null);
   const [previewFU, setPreviewFU] = useState<{ lead: Lead; fu: FollowUp } | null>(null);
   const [copied, setCopied] = useState('');
 
-  /* ── Follow-up Config ── */
-  const [selectedDays, setSelectedDays] = useState<number[]>([3, 7, 14]);
+  /* ── Follow-up Config — persist ── */
+  const [selectedDays, setSelectedDays] = useState<number[]>(() => {
+    try {
+      const saved = localStorage.getItem('cold_email_days');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [3, 7, 14];
+  });
   const [fuGenerating, setFuGenerating] = useState(false);
   const [fuSending, setFuSending] = useState(false);
   const [fuProgress, setFuProgress] = useState(0);
@@ -152,13 +185,32 @@ export default function ColdEmailAgent() {
   };
 
   const fileRef = useRef<HTMLInputElement>(null);
-  const addLog = (msg: string) => setLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 99)]);
+  const addLog = useCallback((msg: string) => {
+    setLog(prev => {
+      const next = [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 99)];
+      try { localStorage.setItem('cold_email_log', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
 
   /* ── Toggle follow-up day ── */
   const toggleDay = (day: number) => {
-    setSelectedDays(prev =>
-      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day].sort((a, b) => a - b)
-    );
+    setSelectedDays(prev => {
+      const next = prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day].sort((a, b) => a - b);
+      try { localStorage.setItem('cold_email_days', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  /* ── Clear all data ── */
+  const clearAll = () => {
+    if (!confirm('Clear all leads and logs? This cannot be undone.')) return;
+    setLeads([]);
+    setLog([]);
+    try {
+      localStorage.removeItem('cold_email_leads');
+      localStorage.removeItem('cold_email_log');
+    } catch {}
   };
 
   /* ── Apply follow-up schedule to all sent leads ── */
@@ -435,7 +487,13 @@ export default function ColdEmailAgent() {
           ))}
         </nav>
 
-        <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="text-xs text-center px-2 py-1.5 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', color: '#10b981', border: '1px solid rgba(16,185,129,0.15)' }}>
+            💾 Auto-saved to browser
+          </div>
+          <button onClick={clearAll} className="w-full text-center text-xs py-1.5 rounded-lg hover:bg-red-500/10 transition-colors" style={{ color: '#ef4444', border: '1px solid rgba(239,68,68,0.15)' }}>
+            🗑 Clear All Data
+          </button>
           <Link href="/" className="block text-center text-xs text-gray-500 hover:text-gray-300">← DigiAgentix Home</Link>
         </div>
       </aside>
