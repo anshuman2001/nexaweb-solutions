@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import PricingPageClient from './PricingPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
   title: 'Pricing — AI Agents from ₹15,000 & Websites from ₹8,000 | India',

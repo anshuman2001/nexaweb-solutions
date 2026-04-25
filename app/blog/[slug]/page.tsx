@@ -6,7 +6,7 @@ import { ArrowLeft, Clock, Calendar, MessageCircle } from 'lucide-react';
 import { blogPostsData } from '@/lib/utils';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://digiagentix.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export async function generateStaticParams() {
   return blogPostsData.map((post) => ({ slug: post.slug }));

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import BlogPageClient from './BlogPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
   title: 'Blog — AI Agents, WhatsApp Automation & Web Design Tips for India',

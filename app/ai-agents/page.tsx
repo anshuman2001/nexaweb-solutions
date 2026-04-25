@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import AIAgentsPageClient from './AIAgentsPageClient';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
   title: 'AI Agents India — WhatsApp Chatbot, Customer Support, Sales Automation',

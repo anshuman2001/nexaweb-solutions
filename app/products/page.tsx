@@ -3,17 +3,23 @@ import Link from 'next/link';
 import { ArrowRight, Package, CheckCircle, Zap } from 'lucide-react';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://digiagentix.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
-  title: 'Products — DigiAgentix',
-  description: 'Explore DigiAgentix software products — GST AI Reconciliation for CA firms and EduAccess AI for WCAG-compliant educational content.',
+  title: 'AI SaaS Products — GST Reconciliation, AI Calling, Cold Email Agent | DigiAgentix',
+  description: 'Ready-to-use AI software products for Indian & global businesses. GST AI Reconciliation, AI Calling Agent, Cold Email AI, EduAccess AI. Start free today.',
+  keywords: [
+    'AI SaaS products India', 'GST reconciliation AI', 'AI calling agent India',
+    'cold email AI agent', 'EduAccess AI', 'AI software India',
+    'business automation tools India', 'AI agent SaaS', 'eCommerce AI agent',
+  ],
   alternates: { canonical: `${siteUrl}/products` },
   openGraph: {
-    title: 'Products — DigiAgentix',
-    description: 'Ready-to-use software products for Indian businesses.',
+    title: 'AI SaaS Products — DigiAgentix',
+    description: 'GST AI Reconciliation, AI Calling Agent, Cold Email AI & more. Ready-to-use AI products for Indian businesses.',
     url: `${siteUrl}/products`,
     siteName: 'DigiAgentix',
+    images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'DigiAgentix AI Products' }],
   },
 };
 
@@ -149,10 +155,26 @@ const breadcrumbSchema = {
   ],
 };
 
+const productsListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'DigiAgentix AI SaaS Products',
+  url: `${siteUrl}/products`,
+  numberOfItems: 5,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, item: { '@type': 'SoftwareApplication', name: 'GST AI Reconciliation', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/gst-reconcile` } },
+    { '@type': 'ListItem', position: 2, item: { '@type': 'SoftwareApplication', name: 'AI Calling Agent', applicationCategory: 'BusinessApplication', offers: { '@type': 'Offer', price: '49999', priceCurrency: 'INR' }, url: `${siteUrl}/ai-calling-agent` } },
+    { '@type': 'ListItem', position: 3, item: { '@type': 'SoftwareApplication', name: 'Cold Email AI Agent', applicationCategory: 'BusinessApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/cold-email-agent` } },
+    { '@type': 'ListItem', position: 4, item: { '@type': 'SoftwareApplication', name: 'EduAccess AI', applicationCategory: 'EducationalApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/eduaccess-ai` } },
+    { '@type': 'ListItem', position: 5, item: { '@type': 'SoftwareApplication', name: 'eCommerce Shopping Agent', applicationCategory: 'ShoppingApplication', offers: { '@type': 'Offer', price: '25000', priceCurrency: 'INR' }, url: `${siteUrl}/ecommerce-agent` } },
+  ],
+};
+
 export default function ProductsPage() {
   return (
     <>
       <JsonLd schema={breadcrumbSchema} />
+      <JsonLd schema={productsListSchema} />
       <div className="min-h-screen bg-background pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

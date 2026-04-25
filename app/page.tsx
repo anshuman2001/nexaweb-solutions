@@ -12,7 +12,7 @@ import LiveDemoWidget from '@/components/home/LiveDemoWidget';
 import DemoPopup from '@/components/home/DemoPopup';
 import JsonLd from '@/components/seo/JsonLd';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 const organizationSchema = {
   '@context': 'https://schema.org',
