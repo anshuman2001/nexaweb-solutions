@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ConditionalShell from '@/components/layout/ConditionalShell';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
+const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -27,7 +27,8 @@ export const metadata: Metadata = {
     'sales AI agent',
     'lead generation AI',
     'eCommerce website India',
-    'Next.js website India',
+    'AI calling agent India',
+    'cold email AI agent',
     'DigiAgentix',
     'AI agents Noida',
     'web design Noida',
@@ -61,8 +62,8 @@ export const metadata: Metadata = {
     title: 'DigiAgentix — AI Agents & Web Design India',
     description: 'Build AI agents & professional websites for your Indian business. Starting ₹15,000.',
     images: [`${siteUrl}/logo.png`],
-    creator: '@DigiAgentixsolutions',
-    site: '@DigiAgentixsolutions',
+    creator: '@DigiAgentix',
+    site: '@DigiAgentix',
   },
   robots: {
     index: true,
@@ -89,11 +90,93 @@ export const metadata: Metadata = {
   },
 };
 
+/* ── JSON-LD Structured Data ─────────────────────────────────────────────── */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'DigiAgentix',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
+        width: 512,
+        height: 512,
+      },
+      description: 'AI Agents & Web Design for Indian Businesses',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Noida',
+        addressRegion: 'Uttar Pradesh',
+        addressCountry: 'IN',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'info@digiagentix.com',
+        availableLanguage: ['English', 'Hindi'],
+      },
+      sameAs: [
+        'https://www.instagram.com/digiagentix',
+        'https://www.linkedin.com/company/digiagentix',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'DigiAgentix',
+      publisher: { '@id': `${siteUrl}/#organization` },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: `${siteUrl}/blog?q={search_term_string}` },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'LocalBusiness',
+      '@id': `${siteUrl}/#localbusiness`,
+      name: 'DigiAgentix',
+      image: `${siteUrl}/logo.png`,
+      url: siteUrl,
+      telephone: '+91-XXXXXXXXXX',
+      priceRange: '₹₹',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Noida',
+        addressRegion: 'Uttar Pradesh',
+        postalCode: '201301',
+        addressCountry: 'IN',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 28.5355,
+        longitude: 77.3910,
+      },
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+        opens: '09:00',
+        closes: '19:00',
+      },
+      hasMap: 'https://maps.google.com/?q=Noida,UP,India',
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {/* Google Analytics */}
         {gaId && (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />

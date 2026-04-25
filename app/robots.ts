@@ -1,13 +1,12 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://DigiAgentixsolutions.vercel.app';
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/portal/', '/api/', '/_next/', '/admin/', '/portal/admin/'],
+        disallow: ['/portal/', '/api/', '/_next/', '/admin/'],
       },
       {
         userAgent: 'Googlebot',
@@ -15,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/portal/', '/api/'],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: 'https://digiagentix.com/sitemap.xml',
+    host: 'https://digiagentix.com',
   };
 }
