@@ -568,6 +568,81 @@ export default function BrokerNoteAI() {
               </Section>
             )}
 
+            {/* P&L Summary */}
+            {(trades.length > 0 || derivatives.length > 0) && (() => {
+              const totalBuy  = trades.reduce((s, t) => s + t.total_buy_value, 0);
+              const totalSell = trades.reduce((s, t) => s + t.total_sell_value, 0);
+              const eqPnL     = totalSell - totalBuy;
+              const foPnL     = derivatives.reduce((s, d) => s + d.net_total, 0);
+              const totalExp  = (charges.stt ?? 0) + (charges.gst ?? charges.cgst + charges.sgst ?? 0)
+                              + (charges.exchange_charges ?? 0) + (charges.sebi_fees ?? 0)
+                              + (charges.stamp_duty ?? 0) + (charges.ipf_charges ?? 0);
+              const netPnL    = eqPnL + foPnL - totalExp;
+
+              return (
+                <Section title="P&L Summary" icon={<span className="text-lg">📈</span>}>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3">
+                    {/* Equity P&L */}
+                    {trades.length > 0 && (
+                      <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+                        <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">Equity Segment</p>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between text-sm"><span className="text-gray-400">Total Buy</span><span className="text-white">₹{fmt(totalBuy)}</span></div>
+                          <div className="flex justify-between text-sm"><span className="text-gray-400">Total Sell</span><span className="text-white">₹{fmt(totalSell)}</span></div>
+                          <div className="flex justify-between text-sm font-bold pt-1 border-t border-white/10">
+                            <span className="text-white">Gross P&L</span>
+                            <span className={eqPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                              {eqPnL >= 0 ? '+' : '−'}₹{fmt(eqPnL)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {/* F&O P&L */}
+                    {derivatives.length > 0 && (
+                      <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4">
+                        <p className="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-3">F&O Segment</p>
+                        <div className="space-y-1.5">
+                          {derivatives.map((d, i) => (
+                            <div key={i} className="flex justify-between text-xs">
+                              <span className="text-gray-500 truncate max-w-[120px]" title={d.contract}>{d.contract.slice(0, 18)}…</span>
+                              <span className={d.net_total >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                                {d.net_total >= 0 ? '+' : '−'}₹{fmt(d.net_total)}
+                              </span>
+                            </div>
+                          ))}
+                          <div className="flex justify-between text-sm font-bold pt-1 border-t border-white/10">
+                            <span className="text-white">Net F&O P&L</span>
+                            <span className={foPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                              {foPnL >= 0 ? '+' : '−'}₹{fmt(foPnL)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {/* Net Settlement */}
+                    <div className="rounded-xl border border-white/10 bg-white/3 p-4">
+                      <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Net Settlement</p>
+                      <div className="space-y-1.5">
+                        {trades.length > 0 && <div className="flex justify-between text-xs"><span className="text-gray-500">Equity P&L</span><span className={eqPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}>{eqPnL >= 0 ? '+' : '−'}₹{fmt(eqPnL)}</span></div>}
+                        {derivatives.length > 0 && <div className="flex justify-between text-xs"><span className="text-gray-500">F&O P&L</span><span className={foPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}>{foPnL >= 0 ? '+' : '−'}₹{fmt(foPnL)}</span></div>}
+                        <div className="flex justify-between text-xs"><span className="text-gray-500">Total Expenses</span><span className="text-red-400">−₹{fmt(totalExp)}</span></div>
+                        <div className="flex justify-between text-sm font-bold pt-1 border-t border-white/10">
+                          <span className="text-white">Net P&L</span>
+                          <span className={netPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                            {netPnL >= 0 ? '+' : '−'}₹{fmt(netPnL)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3 italic">
+                    📌 ITR Filing: Equity gains → Schedule CG (STCG/LTCG) &nbsp;|&nbsp; F&O income → Schedule BP (Business Profession) &nbsp;|&nbsp; All expenses are tax-deductible
+                  </p>
+                </Section>
+              );
+            })()}
+
             {/* Order Details */}
             {data.order_details && data.order_details.length > 0 && (
               <Section title={`Order Details (${data.order_details.length} orders)`} icon={<FileText className="w-5 h-5 text-blue-400" />} defaultOpen={false}>
@@ -598,15 +673,32 @@ export default function BrokerNoteAI() {
             )}
 
             {/* Tally Info Banner */}
-            <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-6">
-              <h3 className="text-white font-bold mb-2">📋 How to Import Tally XML</h3>
-              <ol className="text-gray-400 text-sm space-y-1 list-decimal list-inside">
-                <li>Download the Tally XML file above</li>
-                <li>Open Tally Prime → Go to <strong className="text-white">Gateway of Tally → Import → Vouchers</strong></li>
-                <li>Select the downloaded XML file</li>
-                <li>Review and accept the imported journal entries</li>
-                <li>Create ledgers if prompted (e.g. &quot;Angel One Payable A/c&quot;, stock A/cs)</li>
-              </ol>
+            <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-6 space-y-4">
+              <div>
+                <h3 className="text-white font-bold mb-2">📋 How to Import Tally XML</h3>
+                <ol className="text-gray-400 text-sm space-y-1 list-decimal list-inside">
+                  <li>Open Excel → <strong className="text-white">&quot;Tally Journal Entry&quot;</strong> sheet → check the <strong className="text-white">Ledger Setup Guide</strong> at the bottom and create all listed ledgers in TallyPrime first</li>
+                  <li>Open Tally Prime → <strong className="text-white">Gateway of Tally → Import → Vouchers</strong></li>
+                  <li>Select the downloaded <strong className="text-white">Tally_*.xml</strong> file</li>
+                  <li>Tally will import a balanced Journal Voucher — Dr = Cr ✅</li>
+                  <li>Review entries and accept. F&O P&L, stock buys/sells and all expenses are included.</li>
+                </ol>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-blue-500/20">
+                {[
+                  { icon: '📊', label: 'Trade Summary', desc: 'Equity + F&O with subtotals' },
+                  { icon: '📒', label: 'Tally Journal', desc: 'Balanced Dr/Cr + Ledger Guide' },
+                  { icon: '📈', label: 'P&L Summary', desc: 'ITR-ready P&L breakdown' },
+                ].map(s => (
+                  <div key={s.label} className="flex items-center gap-2 text-sm">
+                    <span className="text-xl">{s.icon}</span>
+                    <div>
+                      <p className="text-white font-semibold text-xs">{s.label}</p>
+                      <p className="text-gray-500 text-xs">{s.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -616,7 +708,7 @@ export default function BrokerNoteAI() {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
               { icon: '🔍', title: 'Smart Extraction', desc: 'Automatically reads ISIN, WAP, brokerage, STT, GST, stamp duty from any broker format.' },
-              { icon: '📊', title: 'Clean Excel Output', desc: '3-sheet Excel: Trade Summary, Tally Journal Entry template, and detailed Order list.' },
+              { icon: '📊', title: 'Clean Excel Output', desc: '4-sheet Excel: Trade Summary (Equity + F&O), Tally Journal Entry with Ledger Guide, Order Details, and P&L Summary.' },
               { icon: '📒', title: 'Tally XML Import', desc: 'Ready-to-import XML for Tally Prime — journal entries for purchases, charges & broker payable.' },
             ].map(card => (
               <div key={card.title} className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-6">
