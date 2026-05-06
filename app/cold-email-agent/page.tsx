@@ -680,8 +680,8 @@ export default function ColdEmailAgent() {
                           </div>
                           <div className="hidden sm:block col-span-3 text-xs truncate flex items-center gap-1">
                             <span className="text-gray-400 truncate">{l.email}</span>
-                            {l.emailValid === true && <ShieldCheck className="w-3 h-3 flex-shrink-0" style={{ color: '#10b981' }} title="Valid" />}
-                            {l.emailValid === false && <ShieldX className="w-3 h-3 flex-shrink-0" style={{ color: '#ef4444' }} title={l.emailReason} />}
+                            {l.emailValid === true && <ShieldCheck className="w-3 h-3 flex-shrink-0" style={{ color: '#10b981' }} aria-label="Valid" />}
+                            {l.emailValid === false && <ShieldX className="w-3 h-3 flex-shrink-0" style={{ color: '#ef4444' }} aria-label={l.emailReason} />}
                           </div>
                           <div className="hidden sm:block col-span-3 text-xs text-gray-400 truncate">{l.business}</div>
                           <div className="col-span-4 sm:col-span-2">
