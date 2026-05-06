@@ -20,9 +20,22 @@ type Trade = {
   net_qty: number; net_obligation: number;
 };
 
+type Derivative = {
+  contract: string;
+  instrument: string;         // 'Futures' | 'Options'
+  buy_sell: string;           // 'BUY' | 'SELL'
+  qty: number;
+  wap: number;
+  wap_after_brokerage: number;
+  closing_rate: number;
+  net_total: number;
+};
+
 type Charges = {
   pay_obligation: number; stt: number; taxable_value: number;
-  cgst: number; sgst: number; exchange_charges: number;
+  cgst: number; sgst: number;
+  gst: number;                // combined CGST + SGST (new)
+  exchange_charges: number;
   sebi_fees: number; stamp_duty: number; ipf_charges: number;
   net_amount: number;
 };
@@ -31,6 +44,7 @@ type ExtractedData = {
   header: Record<string, string>;
   broker_info: Record<string, string>;
   trades: Trade[];
+  derivatives: Derivative[];  // NEW — F&O segment
   charges: Charges;
   order_details: Array<Record<string, string>>;
 };
@@ -326,6 +340,7 @@ export default function BrokerNoteAI() {
   const h = data?.header || {};
   const charges = data?.charges || {} as Charges;
   const trades = data?.trades || [];
+  const derivatives = data?.derivatives || [];
 
   return (
     <div className="min-h-screen bg-background pt-20 pb-16">
@@ -397,7 +412,10 @@ export default function BrokerNoteAI() {
                   <CheckCircle className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-white font-bold text-lg">Extraction Complete!</p>
-                    <p className="text-gray-400 text-sm">{file?.name} · {trades.length} trade{trades.length !== 1 ? 's' : ''} found</p>
+                    <p className="text-gray-400 text-sm">
+                      {file?.name} · {trades.length} equity trade{trades.length !== 1 ? 's' : ''}
+                      {derivatives.length > 0 && ` · ${derivatives.length} F&O contract${derivatives.length !== 1 ? 's' : ''}`}
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-3 flex-wrap">
@@ -443,15 +461,15 @@ export default function BrokerNoteAI() {
               </div>
             </Section>
 
-            {/* Trades */}
+            {/* Equity Trades */}
             {trades.length > 0 && (
-              <Section title={`Trade Summary (${trades.length} securities)`} icon={<FileText className="w-5 h-5 text-blue-400" />}>
+              <Section title={`Equity Segment — Trade Summary (${trades.length} securities)`} icon={<FileText className="w-5 h-5 text-blue-400" />}>
                 <div className="overflow-x-auto mt-2">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-white/10">
-                        {['ISIN', 'Security', 'Buy Qty', 'Buy WAP', 'Buy Value', 'Sell Qty', 'Sell WAP', 'Sell Value', 'Net Qty', 'Net Obligation'].map(h => (
-                          <th key={h} className="text-left py-2 px-3 text-xs text-gray-400 font-semibold whitespace-nowrap">{h}</th>
+                        {['ISIN', 'Security', 'Buy Qty', 'Buy WAP', 'Buy Value', 'Sell Qty', 'Sell WAP', 'Sell Value', 'Net Qty', 'Net Obligation'].map(col => (
+                          <th key={col} className="text-left py-2 px-3 text-xs text-gray-400 font-semibold whitespace-nowrap">{col}</th>
                         ))}
                       </tr>
                     </thead>
@@ -478,24 +496,64 @@ export default function BrokerNoteAI() {
               </Section>
             )}
 
+            {/* Derivative / F&O Segment */}
+            {derivatives.length > 0 && (
+              <Section title={`Derivative Segment — F&O Contracts (${derivatives.length} contracts)`} icon={<FileText className="w-5 h-5 text-purple-400" />}>
+                <div className="overflow-x-auto mt-2">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-purple-500/20">
+                        {['Contract', 'Instrument', 'B/S', 'Qty', 'WAP', 'WAP After Brokerage', 'Closing Rate', 'Net Total'].map(col => (
+                          <th key={col} className="text-left py-2 px-3 text-xs text-purple-400 font-semibold whitespace-nowrap">{col}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {derivatives.map((d, i) => (
+                        <tr key={i} className={`border-b border-white/5 ${i % 2 === 0 ? 'bg-purple-500/3' : ''}`}>
+                          <td className="py-3 px-3 text-white font-medium text-xs whitespace-nowrap max-w-[200px] truncate" title={d.contract}>{d.contract}</td>
+                          <td className="py-3 px-3">
+                            <span className={`px-2 py-0.5 rounded text-xs font-semibold ${d.instrument === 'Futures' ? 'bg-blue-500/20 text-blue-300' : 'bg-orange-500/20 text-orange-300'}`}>
+                              {d.instrument}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3">
+                            <span className={`px-2 py-0.5 rounded text-xs font-bold ${d.buy_sell === 'BUY' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                              {d.buy_sell}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 text-white text-right font-semibold">{fmtQty(d.qty)}</td>
+                          <td className="py-3 px-3 text-gray-300 text-right">₹{fmt(d.wap)}</td>
+                          <td className="py-3 px-3 text-gray-300 text-right">₹{fmt(d.wap_after_brokerage)}</td>
+                          <td className="py-3 px-3 text-gray-300 text-right">₹{fmt(d.closing_rate)}</td>
+                          <td className={`py-3 px-3 text-right font-bold ${d.net_total < 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                            {d.net_total < 0 ? '−' : '+'}₹{fmt(d.net_total)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Section>
+            )}
+
             {/* Charges */}
             {charges && Object.keys(charges).length > 0 && (
               <Section title="Charges & Levies" icon={<FileSpreadsheet className="w-5 h-5 text-blue-400" />}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                  {[
-                    ['Pay/Receive Obligation',       charges.pay_obligation, false],
-                    ['Securities Transaction Tax (STT)', charges.stt, false],
-                    ['Taxable Value of Supply',       charges.taxable_value, false],
-                    ['CGST @ 9%',                    charges.cgst, false],
-                    ['SGST @ 9%',                    charges.sgst, false],
-                    ['Exchange Transaction Charges', charges.exchange_charges, false],
-                    ['SEBI Turnover Fees',           charges.sebi_fees, false],
-                    ['Stamp Duty',                   charges.stamp_duty, false],
-                    ['IPF Charges',                  charges.ipf_charges, false],
-                  ].filter(([, v]) => (v as number) !== 0).map(([label, value]) => (
-                    <div key={label as string} className="flex justify-between items-center py-2 border-b border-white/5">
-                      <span className="text-gray-400 text-sm">{label as string}</span>
-                      <span className="text-white font-medium text-sm">₹{fmt(Math.abs(value as number))}</span>
+                  {([
+                    ['Pay / Receive Obligation',           charges.pay_obligation],
+                    ['Securities Transaction Tax (STT)',   charges.stt],
+                    ['Taxable Value of Supply',            charges.taxable_value],
+                    ['GST Expense (CGST @ 9% + SGST @ 9%)', charges.gst ?? (charges.cgst + charges.sgst)],
+                    ['Exchange Transaction Charges',       charges.exchange_charges],
+                    ['SEBI Turnover Fees',                 charges.sebi_fees],
+                    ['Stamp Duty',                         charges.stamp_duty],
+                    ['IPF / Investor Protection Fund',     charges.ipf_charges],
+                  ] as [string, number][]).filter(([, v]) => v !== 0 && v != null).map(([label, value]) => (
+                    <div key={label} className="flex justify-between items-center py-2 border-b border-white/5">
+                      <span className="text-gray-400 text-sm">{label}</span>
+                      <span className="text-white font-medium text-sm">₹{fmt(Math.abs(value))}</span>
                     </div>
                   ))}
                   {/* Net Amount — highlighted */}
