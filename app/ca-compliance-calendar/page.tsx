@@ -229,7 +229,7 @@ export default function CAComplianceCalendar() {
     try {
       const res  = await fetch(`${CA}/remind/test/${client.id}`, { method: 'POST', headers: headers() });
       const data = await res.json();
-      setSendResult({ ok: data.success, msg: data.success ? `Message sent to ${client.mobile}` : 'Sending failed — check Twilio config' });
+      setSendResult({ ok: data.success, msg: data.success ? `✅ Message sent to ${client.mobile}` : `❌ ${data.error || 'Sending failed — check Twilio config'}` });
       if (data.success) fetchLogs();
     } catch { setSendResult({ ok: false, msg: 'Network error' }); }
     finally { setSending(false); }
