@@ -8,7 +8,8 @@ import {
   Eye, EyeOff, Send, ClipboardList,
 } from 'lucide-react';
 
-const API = 'https://ca-calendar-backend.onrender.com';
+const API = 'https://brokernote-backend.onrender.com';
+const CA  = `${API}/ca`;   // CA Calendar routes prefix
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type AuthUser = { token: string; email: string; name: string; firm: string };
@@ -60,7 +61,7 @@ function AuthModal({ onSuccess }: { onSuccess: (u: AuthUser) => void }) {
       const body = tab === 'login'
         ? { email: form.email, password: form.password }
         : { email: form.email, password: form.password, name: form.name, firm: form.firm };
-      const res  = await fetch(`${API}/auth/${tab}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const res  = await fetch(`${CA}/auth/${tab}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const json = await res.json();
       if (!res.ok) throw new Error(json.detail || 'Failed');
       localStorage.setItem('ca_cal_user', JSON.stringify(json));
@@ -174,7 +175,7 @@ export default function CAComplianceCalendar() {
     if (!user) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API}/clients`, { headers: headers() });
+      const res = await fetch(`${CA}/clients`, { headers: headers() });
       const data = await res.json();
       if (res.ok) setClients(data);
     } catch { /* ignore */ } finally { setLoading(false); }
@@ -182,7 +183,7 @@ export default function CAComplianceCalendar() {
 
   const fetchLogs = useCallback(async () => {
     if (!user) return;
-    const res = await fetch(`${API}/logs`, { headers: headers() });
+    const res = await fetch(`${CA}/logs`, { headers: headers() });
     if (res.ok) setLogs(await res.json());
   }, [user, headers]);
 
@@ -197,14 +198,14 @@ export default function CAComplianceCalendar() {
 
   const toggleDone = async (client: Client) => {
     const newStatus = client.status === 'Done' ? 'Pending' : 'Done';
-    const res = await fetch(`${API}/clients/${client.id}`, {
+    const res = await fetch(`${CA}/clients/${client.id}`, {
       method: 'PUT', headers: headers(), body: JSON.stringify({ status: newStatus }),
     });
     if (res.ok) setClients(prev => prev.map(c => c.id === client.id ? { ...c, status: newStatus } : c));
   };
 
   const removeClient = async (id: number) => {
-    await fetch(`${API}/clients/${id}`, { method: 'DELETE', headers: headers() });
+    await fetch(`${CA}/clients/${id}`, { method: 'DELETE', headers: headers() });
     setClients(prev => prev.filter(c => c.id !== id));
   };
 
@@ -213,7 +214,7 @@ export default function CAComplianceCalendar() {
     if (!addForm.name || !addForm.mobile || !addForm.due_date) { setAddErr('Name, Mobile and Due Date required'); return; }
     setAdding(true);
     try {
-      const res  = await fetch(`${API}/clients`, { method: 'POST', headers: headers(), body: JSON.stringify(addForm) });
+      const res  = await fetch(`${CA}/clients`, { method: 'POST', headers: headers(), body: JSON.stringify(addForm) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Failed');
       setClients(prev => [data, ...prev]);
@@ -226,7 +227,7 @@ export default function CAComplianceCalendar() {
   const sendNow = async (client: Client) => {
     setSending(true); setSendResult(null);
     try {
-      const res  = await fetch(`${API}/remind/test/${client.id}`, { method: 'POST', headers: headers() });
+      const res  = await fetch(`${CA}/remind/test/${client.id}`, { method: 'POST', headers: headers() });
       const data = await res.json();
       setSendResult({ ok: data.success, msg: data.success ? `Message sent to ${client.mobile}` : 'Sending failed — check Twilio config' });
       if (data.success) fetchLogs();
