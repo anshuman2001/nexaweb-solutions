@@ -142,8 +142,8 @@ const products = [
   },
   {
     id: 'ca-compliance-calendar',
-    href: 'https://github.com/anshuman2001/ca-compliance-calendar',
-    external: true,
+    href: '/ca-compliance-calendar',
+    external: false,
     badge: 'Free',
     badgeColor: 'green',
     icon: '📅',
