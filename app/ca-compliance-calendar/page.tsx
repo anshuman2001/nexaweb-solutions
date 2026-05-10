@@ -1,228 +1,361 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle, Download, Github, Calendar, Bell, FileSpreadsheet, MessageCircle, Clock, Shield } from 'lucide-react';
+import {
+  Calendar, Bell, CheckCircle, Plus, Trash2, AlertTriangle,
+  Clock, MessageCircle, FileText, X,
+} from 'lucide-react';
 
-const siteUrl = 'https://digiagentix.com';
-const GITHUB_URL = 'https://github.com/anshuman2001/ca-compliance-calendar';
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-export const metadata: Metadata = {
-  title: 'CA Compliance Calendar — Free WhatsApp Reminder Tool for CA Firms | DigiAgentix',
-  description: 'Never miss a GST, ITR, TDS or ROC deadline. Auto WhatsApp reminders to all clients 7 days & 1 day before due date. Free, open-source Python tool for CA firms.',
-  keywords: ['CA compliance calendar', 'GST reminder WhatsApp', 'ITR due date reminder', 'TDS reminder tool', 'CA firm automation', 'compliance reminder India'],
-  alternates: { canonical: `${siteUrl}/ca-compliance-calendar` },
-  openGraph: {
-    title: 'CA Compliance Calendar — Free WhatsApp Reminder Tool',
-    description: 'Auto WhatsApp reminders for GST, ITR, TDS & ROC deadlines. Google Sheets client database. Free & open source.',
-    url: `${siteUrl}/ca-compliance-calendar`,
-    siteName: 'DigiAgentix',
-  },
-};
+type FilingType = 'GST' | 'ITR' | 'TDS' | 'ROC' | 'Audit' | 'Other';
+type Status = 'Pending' | 'Done';
 
-const steps = [
-  {
-    step: '01',
-    title: 'Create Google Sheet',
-    desc: 'Add a sheet named "CA Compliance Calendar" with columns: Client Name, PAN, Mobile, Filing Type, Due Date, Status.',
-    icon: <FileSpreadsheet className="w-5 h-5" />,
-  },
-  {
-    step: '02',
-    title: 'Set Up Google API',
-    desc: 'Create a Service Account in Google Cloud Console, download credentials.json, and share your sheet with the service account email.',
-    icon: <Shield className="w-5 h-5" />,
-  },
-  {
-    step: '03',
-    title: 'Configure Twilio WhatsApp',
-    desc: 'Sign up on Twilio, get your Account SID & Auth Token, and activate the WhatsApp sandbox. Copy keys to the .env file.',
-    icon: <MessageCircle className="w-5 h-5" />,
-  },
-  {
-    step: '04',
-    title: 'Deploy & Forget',
-    desc: 'Deploy to Render or Railway for free. The bot runs daily at 9 AM — sends reminders, logs every message, skips Done filings.',
-    icon: <Clock className="w-5 h-5" />,
-  },
+interface Client {
+  id: string;
+  name: string;
+  pan: string;
+  mobile: string;
+  filingType: FilingType;
+  dueDate: string;   // YYYY-MM-DD
+  status: Status;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+function daysLeft(dateStr: string): number {
+  const d = new Date(dateStr);
+  d.setHours(0, 0, 0, 0);
+  return Math.round((d.getTime() - today.getTime()) / 86400000);
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function urgencyColor(days: number, status: Status) {
+  if (status === 'Done') return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+  if (days < 0)  return 'text-red-400 bg-red-500/10 border-red-500/20';
+  if (days <= 1) return 'text-red-400 bg-red-500/10 border-red-500/20';
+  if (days <= 7) return 'text-orange-400 bg-orange-500/10 border-orange-500/20';
+  return 'text-blue-400 bg-blue-500/10 border-blue-500/20';
+}
+
+function urgencyLabel(days: number, status: Status) {
+  if (status === 'Done') return '✅ Done';
+  if (days < 0)  return `Overdue by ${Math.abs(days)}d`;
+  if (days === 0) return '⚠ Due Today!';
+  if (days === 1) return '🔴 Due Tomorrow!';
+  if (days <= 7) return `🟠 ${days} days left`;
+  return `${days} days left`;
+}
+
+function whatsappMessage(client: Client): string {
+  return `Dear ${client.name},\n\nReminder: *${client.filingType}* filing is due on *${formatDate(client.dueDate)}*.\nPlease share the required documents at the earliest.\n\n— DigiAgentix CA Tools`;
+}
+
+// ─── Sample / Demo data ───────────────────────────────────────────────────────
+
+function sampleDate(offset: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().split('T')[0];
+}
+
+const DEMO_CLIENTS: Client[] = [
+  { id: '1', name: 'Ramesh Shah',   pan: 'ABCRS1234F', mobile: '+919876543210', filingType: 'GST',   dueDate: sampleDate(1),  status: 'Pending' },
+  { id: '2', name: 'Priya Mehta',   pan: 'BCPRM5678G', mobile: '+919812345678', filingType: 'TDS',   dueDate: sampleDate(7),  status: 'Pending' },
+  { id: '3', name: 'Suresh Jain',   pan: 'CDSUJ9012H', mobile: '+919823456789', filingType: 'ITR',   dueDate: sampleDate(14), status: 'Pending' },
+  { id: '4', name: 'Kavita Desai',  pan: 'DEKAD3456I', mobile: '+919834567890', filingType: 'ROC',   dueDate: sampleDate(30), status: 'Pending' },
+  { id: '5', name: 'Amit Gupta',    pan: 'EFAMG7890J', mobile: '+919845678901', filingType: 'Audit', dueDate: sampleDate(-2), status: 'Done'    },
 ];
 
-const features = [
-  'WhatsApp alerts 7 days & 1 day before due date',
-  'Google Sheets as client database — no coding needed',
-  'Supports GST / ITR / TDS / ROC filings',
-  'Skips clients with Status = Done automatically',
-  'Auto-logs every sent message to a separate Log tab',
-  'Runs daily at 9 AM — deploy free on Render / Railway',
-  'Configurable reminder days & sender name',
-  '100% open source — your data never leaves your server',
-];
+const FILING_TYPES: FilingType[] = ['GST', 'ITR', 'TDS', 'ROC', 'Audit', 'Other'];
 
-const sheetColumns = [
-  { col: 'Client Name', example: 'Ramesh Shah', note: 'Full client name' },
-  { col: 'PAN', example: 'ABCDE1234F', note: 'For your reference' },
-  { col: 'Mobile', example: '+919876543210', note: 'With country code' },
-  { col: 'Filing Type', example: 'GST / ITR / TDS / ROC', note: 'Any label works' },
-  { col: 'Due Date', example: '20-05-2026', note: 'Format: DD-MM-YYYY' },
-  { col: 'Status', example: 'Pending / Done', note: 'Done = skip reminder' },
-];
+// ─── WhatsApp Preview Modal ───────────────────────────────────────────────────
 
-export default function CAComplianceCalendarPage() {
+function WhatsAppPreview({ client, onClose }: { client: Client; onClose: () => void }) {
+  const msg = whatsappMessage(client);
   return (
-    <div className="min-h-screen bg-background pt-24 pb-20">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4" onClick={onClose}>
+      <div className="w-full max-w-sm bg-[#0c0f1a] rounded-2xl border border-white/10 p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+            <MessageCircle className="w-5 h-5" /> WhatsApp Preview
+          </div>
+          <button onClick={onClose}><X className="w-5 h-5 text-gray-400 hover:text-white" /></button>
+        </div>
+        <div className="text-xs text-gray-500 mb-1">To: {client.mobile}</div>
+        <div className="bg-[#1a2a1a] rounded-xl p-4 text-sm text-gray-200 leading-relaxed border border-emerald-500/20 whitespace-pre-wrap">
+          {msg.split('*').map((part, i) =>
+            i % 2 === 1
+              ? <strong key={i} className="text-white">{part}</strong>
+              : part
+          )}
+        </div>
+        <p className="text-xs text-gray-500 mt-3 text-center">
+          This message would be auto-sent {daysLeft(client.dueDate) <= 1 ? 'today (1-day reminder)' : '7 days before due date'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Add Client Form ──────────────────────────────────────────────────────────
+
+const EMPTY_FORM = { name: '', pan: '', mobile: '+91', filingType: 'GST' as FilingType, dueDate: '', status: 'Pending' as Status };
+
+function AddClientForm({ onAdd }: { onAdd: (c: Client) => void }) {
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [err, setErr] = useState('');
+
+  const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setForm(prev => ({ ...prev, [k]: e.target.value }));
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.mobile || !form.dueDate) { setErr('Name, Mobile and Due Date are required.'); return; }
+    onAdd({ ...form, id: Date.now().toString() });
+    setForm(EMPTY_FORM);
+    setErr('');
+  };
+
+  const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors";
+
+  return (
+    <form onSubmit={submit} className="rounded-2xl border border-blue-500/20 bg-[#0c0f1a]/80 p-6">
+      <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Plus className="w-4 h-4 text-blue-400" /> Add Client</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">Client Name *</label>
+          <input value={form.name} onChange={set('name')} placeholder="Ramesh Shah" className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">PAN (optional)</label>
+          <input value={form.pan} onChange={set('pan')} placeholder="ABCDE1234F" className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">Mobile (with +91) *</label>
+          <input value={form.mobile} onChange={set('mobile')} placeholder="+919876543210" className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">Filing Type *</label>
+          <select value={form.filingType} onChange={set('filingType')} className={inputCls}>
+            {FILING_TYPES.map(f => <option key={f} value={f}>{f}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">Due Date *</label>
+          <input type="date" value={form.dueDate} onChange={set('dueDate')} className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-400 mb-1">Status</label>
+          <select value={form.status} onChange={set('status')} className={inputCls}>
+            <option value="Pending">Pending</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+      </div>
+      {err && <p className="text-red-400 text-xs mb-3">{err}</p>}
+      <button type="submit"
+        className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm transition-all"
+        style={{ background: 'linear-gradient(135deg, #2563eb, #4f46e5)' }}>
+        Add to Calendar
+      </button>
+    </form>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
+
+export default function CAComplianceCalendar() {
+  const [clients, setClients] = useState<Client[]>(DEMO_CLIENTS);
+  const [preview, setPreview] = useState<Client | null>(null);
+  const [filter, setFilter] = useState<'all' | 'urgent' | 'pending'>('all');
+
+  const addClient = (c: Client) => setClients(prev => [c, ...prev]);
+  const removeClient = (id: string) => setClients(prev => prev.filter(c => c.id !== id));
+  const toggleDone = (id: string) =>
+    setClients(prev => prev.map(c => c.id === id ? { ...c, status: c.status === 'Done' ? 'Pending' : 'Done' } : c));
+
+  const sorted = [...clients].sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+  const filtered = sorted.filter(c => {
+    if (filter === 'urgent')  return daysLeft(c.dueDate) <= 7 && c.status === 'Pending';
+    if (filter === 'pending') return c.status === 'Pending';
+    return true;
+  });
+
+  const urgentCount  = clients.filter(c => daysLeft(c.dueDate) <= 7 && c.status === 'Pending').length;
+  const pendingCount = clients.filter(c => c.status === 'Pending').length;
+  const doneCount    = clients.filter(c => c.status === 'Done').length;
+
+  return (
+    <div className="min-h-screen bg-background pt-20 pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/8 text-emerald-300 text-sm font-medium mb-6">
-            <Calendar className="w-4 h-4" />
-            Free & Open Source Tool
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
-            CA Compliance{' '}
-            <span className="gradient-text">Calendar</span>
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
-            Auto WhatsApp reminders for <strong className="text-white">GST, ITR, TDS & ROC</strong> deadlines.
-            Add clients to Google Sheets — the bot handles the rest. Runs free on Render.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-white font-semibold transition-all btn-glow btn-shimmer"
-              style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
-            >
-              <Download className="w-5 h-5" />
-              Download Free Tool
-            </a>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors font-medium"
-            >
-              <Github className="w-5 h-5" />
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-        {/* ── Sample WhatsApp Message ───────────────────────────────────────── */}
-        <div className="mb-14 flex justify-center">
-          <div className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-6 max-w-sm w-full">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-3 flex items-center gap-2">
-              <MessageCircle className="w-3.5 h-3.5" /> Sample WhatsApp Message
-            </p>
-            <div className="bg-[#1a2a1a] rounded-xl p-4 text-sm text-gray-200 leading-relaxed border border-emerald-500/20">
-              Dear <strong className="text-white">Ramesh Shah</strong>,<br /><br />
-              Reminder: <strong className="text-emerald-400">GST</strong> is due on{' '}
-              <strong className="text-white">20 May 2026</strong>.<br />
-              Please share documents at the earliest.<br /><br />
-              <span className="text-gray-400">— DigiAgentix CA Tools</span>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center">
+              <Calendar className="w-5 h-5 text-emerald-400" />
             </div>
-            <div className="flex items-center gap-4 mt-4 text-xs text-gray-500">
-              <span className="flex items-center gap-1"><Bell className="w-3 h-3 text-emerald-400" /> 7 days before</span>
-              <span className="flex items-center gap-1"><Bell className="w-3 h-3 text-orange-400" /> 1 day before</span>
+            <div>
+              <h1 className="text-white font-bold text-lg leading-tight">CA Compliance Calendar</h1>
+              <p className="text-gray-500 text-xs">Auto WhatsApp Reminders · DigiAgentix</p>
             </div>
           </div>
-        </div>
-
-        {/* ── Features ─────────────────────────────────────────────────────── */}
-        <div className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-8 mb-10">
-          <h2 className="text-2xl font-bold text-white mb-6">What&apos;s Included</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {features.map(f => (
-              <div key={f} className="flex items-start gap-3">
-                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-gray-300 text-sm">{f}</span>
-              </div>
-            ))}
+          <div className="hidden sm:flex items-center gap-2 text-xs text-gray-500 bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-full">
+            <Bell className="w-3.5 h-3.5 text-orange-400" />
+            <span className="text-orange-300 font-medium">{urgentCount} urgent</span> reminders
           </div>
         </div>
 
-        {/* ── Google Sheet Format ───────────────────────────────────────────── */}
-        <div className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-8 mb-10">
-          <h2 className="text-2xl font-bold text-white mb-2">Google Sheet Format</h2>
-          <p className="text-gray-400 text-sm mb-6">Create a sheet named <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">CA Compliance Calendar</code> with a tab called <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">Clients</code></p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10">
-                  {['Column', 'Example', 'Note'].map(h => (
-                    <th key={h} className="text-left py-2 px-3 text-xs text-blue-400 font-semibold">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {sheetColumns.map((row, i) => (
-                  <tr key={row.col} className={`border-b border-white/5 ${i % 2 === 0 ? 'bg-white/2' : ''}`}>
-                    <td className="py-2.5 px-3 text-white font-semibold text-xs">{row.col}</td>
-                    <td className="py-2.5 px-3 text-emerald-400 font-mono text-xs">{row.example}</td>
-                    <td className="py-2.5 px-3 text-gray-400 text-xs">{row.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {[
+            { label: 'Total Clients', value: clients.length, color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
+            { label: 'Pending Filings', value: pendingCount, color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' },
+            { label: 'Completed', value: doneCount, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+          ].map(s => (
+            <div key={s.label} className={`rounded-xl border ${s.bg} p-4 text-center`}>
+              <div className={`text-2xl font-extrabold ${s.color}`}>{s.value}</div>
+              <div className="text-gray-400 text-xs mt-0.5">{s.label}</div>
+            </div>
+          ))}
         </div>
 
-        {/* ── Setup Steps ──────────────────────────────────────────────────── */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-bold text-white mb-6">Setup in 4 Steps</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {steps.map(s => (
-              <div key={s.step} className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-2xl font-black text-white/10">{s.step}</span>
-                  <div className="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                    {s.icon}
+        {/* Demo notice */}
+        <div className="mb-6 flex items-start gap-3 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-sm text-blue-300">
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            This is a <strong className="text-white">live interactive demo</strong> — pre-loaded with sample clients. Add your own, preview WhatsApp messages, and see how reminders work.
+            {' '}<Link href="/contact" className="underline text-blue-400 hover:text-blue-300">Contact us</Link> to set up automated sending for your firm.
+          </span>
+        </div>
+
+        {/* Filter tabs */}
+        <div className="flex gap-2 mb-5">
+          {([['all', 'All Filings'], ['urgent', `🔴 Urgent (${urgentCount})`], ['pending', 'Pending']] as const).map(([val, label]) => (
+            <button key={val} onClick={() => setFilter(val)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${filter === val ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white border border-white/10'}`}>
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Compliance Calendar Table */}
+        <div className="rounded-2xl border border-white/10 bg-[#0c0f1a]/80 overflow-hidden mb-8">
+          <div className="px-6 py-4 border-b border-white/10 flex items-center gap-2">
+            <FileText className="w-4 h-4 text-blue-400" />
+            <span className="text-white font-semibold">Compliance Calendar</span>
+            <span className="text-gray-500 text-sm ml-1">({filtered.length} filings)</span>
+          </div>
+
+          {filtered.length === 0 ? (
+            <div className="px-6 py-12 text-center text-gray-500 text-sm">No filings found for this filter.</div>
+          ) : (
+            <div className="divide-y divide-white/5">
+              {filtered.map(client => {
+                const days = daysLeft(client.dueDate);
+                const cls  = urgencyColor(days, client.status);
+                return (
+                  <div key={client.id} className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 hover:bg-white/2 transition-colors">
+                    {/* Client info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-white font-semibold text-sm">{client.name}</span>
+                        {client.pan && <span className="text-gray-500 text-xs font-mono">{client.pan}</span>}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                        <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(client.dueDate)}</span>
+                        <span>{client.mobile}</span>
+                      </div>
+                    </div>
+
+                    {/* Filing type */}
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-lg bg-white/8 border border-white/10 text-white text-xs font-bold">
+                        {client.filingType}
+                      </span>
+                    </div>
+
+                    {/* Urgency badge */}
+                    <div className={`px-3 py-1 rounded-full border text-xs font-semibold ${cls} min-w-[110px] text-center`}>
+                      {urgencyLabel(days, client.status)}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setPreview(client)}
+                        title="Preview WhatsApp message"
+                        className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">
+                        <MessageCircle className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => toggleDone(client.id)}
+                        title={client.status === 'Done' ? 'Mark Pending' : 'Mark Done'}
+                        className={`p-2 rounded-lg border transition-colors ${client.status === 'Done' ? 'bg-white/5 border-white/10 text-gray-400' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20'}`}>
+                        <CheckCircle className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => removeClient(client.id)}
+                        title="Remove"
+                        className="p-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                  <h3 className="text-white font-bold">{s.title}</h3>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Add Client */}
+        <AddClientForm onAdd={addClient} />
+
+        {/* How automated reminders work */}
+        <div className="mt-10 rounded-2xl border border-white/10 bg-[#0c0f1a]/80 p-6">
+          <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> How Automated Reminders Work</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { icon: '📋', title: 'You Add Clients', desc: 'Enter client name, filing type, due date and mobile number.' },
+              { icon: '⏰', title: 'System Checks Daily', desc: 'Every morning at 9 AM, the system checks for filings due in 7 days or 1 day.' },
+              { icon: '📱', title: 'WhatsApp Sent Auto', desc: 'Client receives a WhatsApp reminder. Done filings are automatically skipped.' },
+            ].map(s => (
+              <div key={s.title} className="flex gap-3">
+                <span className="text-2xl">{s.icon}</span>
+                <div>
+                  <p className="text-white font-semibold text-sm">{s.title}</p>
+                  <p className="text-gray-400 text-xs mt-0.5 leading-relaxed">{s.desc}</p>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── Deploy Info ───────────────────────────────────────────────────── */}
-        <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-8 mb-10">
-          <h2 className="text-xl font-bold text-white mb-4">🚀 Deploy Free on Render</h2>
-          <ol className="space-y-2 text-sm text-gray-300 list-decimal list-inside">
-            <li>Fork / download the GitHub repo</li>
-            <li>Go to <strong className="text-white">render.com</strong> → New → <strong className="text-white">Background Worker</strong></li>
-            <li>Build: <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">pip install -r requirements.txt</code></li>
-            <li>Start: <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">python main.py</code></li>
-            <li>Add your <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">.env</code> variables and upload <code className="bg-white/10 px-1.5 py-0.5 rounded text-blue-300">credentials.json</code> as Secret File</li>
-            <li>Deploy — bot runs every day at 9 AM automatically ✅</li>
-          </ol>
-        </div>
-
-        {/* ── CTA ──────────────────────────────────────────────────────────── */}
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-10 text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">Free for All CA Firms</h2>
-          <p className="text-gray-400 mb-6 max-w-md mx-auto">No subscription. No hidden cost. Self-host it — your client data never leaves your server.</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-white font-semibold transition-all btn-glow"
-              style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
-            >
-              <Download className="w-5 h-5" />
-              Download Free Tool
-            </a>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors font-medium"
-            >
-              Need Custom Setup? Contact Us
-            </Link>
-          </div>
+        {/* CTA */}
+        <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center">
+          <h3 className="text-white font-bold text-xl mb-2">Want This For Your CA Firm?</h3>
+          <p className="text-gray-400 text-sm mb-5 max-w-md mx-auto">
+            We set it up for you — connected to your WhatsApp, your client list, running 24/7. No technical knowledge needed.
+          </p>
+          <Link href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-white font-semibold transition-all btn-glow"
+            style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}>
+            Get Free Setup →
+          </Link>
         </div>
 
       </div>
+
+      {/* WhatsApp Preview Modal */}
+      {preview && <WhatsAppPreview client={preview} onClose={() => setPreview(null)} />}
     </div>
   );
 }
