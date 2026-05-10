@@ -574,9 +574,10 @@ export default function BrokerNoteAI() {
               const totalSell = trades.reduce((s, t) => s + t.total_sell_value, 0);
               const eqPnL     = totalSell - totalBuy;
               const foPnL     = derivatives.reduce((s, d) => s + d.net_total, 0);
-              const totalExp  = (charges.stt ?? 0) + (charges.gst ?? charges.cgst + charges.sgst ?? 0)
-                              + (charges.exchange_charges ?? 0) + (charges.sebi_fees ?? 0)
-                              + (charges.stamp_duty ?? 0) + (charges.ipf_charges ?? 0);
+              const c = charges as Partial<Charges>;
+              const totalExp  = (c.stt || 0) + (c.gst || (c.cgst || 0) + (c.sgst || 0))
+                              + (c.exchange_charges || 0) + (c.sebi_fees || 0)
+                              + (c.stamp_duty || 0) + (c.ipf_charges || 0);
               const netPnL    = eqPnL + foPnL - totalExp;
 
               return (
