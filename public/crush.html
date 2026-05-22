@@ -7,11 +7,12 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { height: 100%; overflow: hidden; }
+
     body {
-      min-height: 100vh;
+      height: 100%;
       background: linear-gradient(135deg, #ffe0f0 0%, #ffd6e7 40%, #fff0e6 70%, #e8f5e9 100%);
       font-family: 'Georgia', serif;
-      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -232,12 +233,14 @@
       noBtn.style.top  = y + 'px';
     }
 
-    // initial position — bottom right of card
+    // initial position — safe within viewport
     window.addEventListener('load', () => {
-      const card = document.getElementById('main-card');
-      const rect = card.getBoundingClientRect();
-      noBtn.style.left = (rect.right - noBtn.offsetWidth - 10) + 'px';
-      noBtn.style.top  = (rect.bottom - noBtn.offsetHeight - 10) + 'px';
+      const btnW = noBtn.offsetWidth  || 110;
+      const btnH = noBtn.offsetHeight || 48;
+      const vw   = window.innerWidth;
+      const vh   = window.innerHeight;
+      noBtn.style.left = Math.min(vw * 0.55, vw - btnW - 24) + 'px';
+      noBtn.style.top  = Math.min(vh * 0.62, vh - btnH - 24) + 'px';
     });
 
     function escapeNo(e) {
