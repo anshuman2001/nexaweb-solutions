@@ -243,20 +243,47 @@
       noBtn.style.top  = Math.min(vh * 0.62, vh - btnH - 24) + 'px';
     });
 
+    const MAX_DODGES = 20;
+    let stable = false;
+
     function escapeNo(e) {
+      if (stable) return; // stop moving after 20
       noMoveCount++;
       const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
       const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
       placeNoBtnRandom(clientX, clientY);
 
-      // shrink label a bit to tease
-      const labels = ['Nahi 🙅', 'Mat poochho!', 'Nahi re!', 'Pakad ke dikha!', 'Chhod do! 😜', 'Kabhi nahi~ 😏'];
-      noBtn.textContent = labels[Math.min(noMoveCount, labels.length - 1)];
+      // tease labels — cycle through
+      const labels = [
+        'Nahi 🙅', 'Mat poochho!', 'Nahi re!', 'Pakad ke dikha!',
+        'Chhod do! 😜', 'Kabhi nahi~ 😏', 'Try again! 😋', 'Haar maan lo!',
+        'Itna easy nahi 😎', 'Pakdo toh sahi!', 'Nope nope!', 'Bhaago! 🏃‍♀️',
+        'Ruko mat! 💨', 'Phir try!', 'Aage badho!', 'Almost! 😅',
+        'Thoda aur!', 'Bas thodi der!', 'Last few!', 'Ek aur try!'
+      ];
+      noBtn.textContent = labels[Math.min(noMoveCount - 1, labels.length - 1)];
+
+      if (noMoveCount >= MAX_DODGES) {
+        stable = true;
+        noBtn.textContent = 'Theek hai, Nahi 💔';
+        noBtn.style.opacity = '0.85';
+      }
     }
 
     noBtn.addEventListener('mouseover', escapeNo);
-    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); escapeNo(e); }, { passive: false });
-    noBtn.addEventListener('click', escapeNo);
+    noBtn.addEventListener('touchstart', (e) => {
+      if (stable) return; // allow real tap when stable
+      e.preventDefault();
+      escapeNo(e);
+    }, { passive: false });
+    noBtn.addEventListener('click', (e) => {
+      if (stable) {
+        // she persisted — love wins anyway 💖
+        handleYes();
+        return;
+      }
+      escapeNo(e);
+    });
 
     // ---- yes button ----
     function handleYes() {
