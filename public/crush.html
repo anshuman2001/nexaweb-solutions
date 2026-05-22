@@ -217,28 +217,49 @@
     const noBtn = document.getElementById('no-btn');
     let noMoveCount = 0;
 
+    function getViewport() {
+      // use visualViewport on iOS for accurate dims
+      const vv = window.visualViewport;
+      return {
+        w: vv ? vv.width  : window.innerWidth,
+        h: vv ? vv.height : window.innerHeight,
+        offX: vv ? vv.offsetLeft : 0,
+        offY: vv ? vv.offsetTop  : 0,
+      };
+    }
+
     function placeNoBtnRandom(avoidX, avoidY) {
-      const margin = 12;
-      const btnW = noBtn.offsetWidth  || 110;
-      const btnH = noBtn.offsetHeight || 48;
-      const maxX = Math.max(margin + 1, window.innerWidth  - btnW - margin);
-      const maxY = Math.max(margin + 1, window.innerHeight - btnH - margin);
+      const margin = 16;
+      const btnW = noBtn.offsetWidth  || 130;
+      const btnH = noBtn.offsetHeight || 50;
+      const vp = getViewport();
+
+      // safe area — avoid top 80px (URL bar) and bottom 100px (toolbar/home indicator)
+      const safeTop    = vp.offY + 80;
+      const safeBottom = vp.offY + vp.h - 100;
+      const safeLeft   = vp.offX + margin;
+      const safeRight  = vp.offX + vp.w - btnW - margin;
+
+      const minX = safeLeft;
+      const maxX = Math.max(minX + 1, safeRight);
+      const minY = safeTop;
+      const maxY = Math.max(minY + 1, safeBottom - btnH);
 
       let x, y, attempts = 0;
       do {
-        x = margin + Math.random() * (maxX - margin);
-        y = margin + Math.random() * (maxY - margin);
+        x = minX + Math.random() * (maxX - minX);
+        y = minY + Math.random() * (maxY - minY);
         attempts++;
       } while (
         attempts < 15 &&
-        avoidX !== undefined &&
-        Math.abs(x - avoidX) < 140 &&
-        Math.abs(y - avoidY) < 90
+        avoidX !== undefined && avoidY !== undefined &&
+        Math.abs(x - avoidX) < 130 &&
+        Math.abs(y - avoidY) < 80
       );
 
-      // final clamp — defensive
-      x = Math.max(margin, Math.min(x, maxX));
-      y = Math.max(margin, Math.min(y, maxY));
+      // hard clamp — never escape viewport
+      x = Math.max(minX, Math.min(x, maxX));
+      y = Math.max(minY, Math.min(y, maxY));
 
       noBtn.style.left = x + 'px';
       noBtn.style.top  = y + 'px';
@@ -248,9 +269,14 @@
 
     const MAX_DODGES = 20;
     let stable = false;
+    let lastDodge = 0;
 
     function escapeNo(e) {
       if (stable) return; // stop moving after 20
+      // debounce — ignore events fired within 150ms of last dodge (same tap)
+      const now = Date.now();
+      if (now - lastDodge < 150) return;
+      lastDodge = now;
       noMoveCount++;
       // first dodge — switch from inline to fixed
       if (!noBtn.classList.contains('escaped')) {
@@ -290,12 +316,15 @@
     function clampToViewport() {
       const btnW = noBtn.offsetWidth  || 130;
       const btnH = noBtn.offsetHeight || 50;
+      const vp = getViewport();
       const curX = parseFloat(noBtn.style.left) || 0;
       const curY = parseFloat(noBtn.style.top)  || 0;
-      const x = Math.max(10, Math.min(curX, window.innerWidth  - btnW - 10));
-      const y = Math.max(10, Math.min(curY, window.innerHeight - btnH - 10));
-      noBtn.style.left = x + 'px';
-      noBtn.style.top  = y + 'px';
+      const minX = vp.offX + 16;
+      const maxX = vp.offX + vp.w - btnW - 16;
+      const minY = vp.offY + 80;
+      const maxY = vp.offY + vp.h - btnH - 100;
+      noBtn.style.left = Math.max(minX, Math.min(curX, maxX)) + 'px';
+      noBtn.style.top  = Math.max(minY, Math.min(curY, maxY)) + 'px';
     }
 
     noBtn.addEventListener('mouseover', escapeNo);
