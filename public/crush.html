@@ -218,11 +218,11 @@
     let noMoveCount = 0;
 
     function placeNoBtnRandom(avoidX, avoidY) {
-      const margin = 20;
+      const margin = 12;
       const btnW = noBtn.offsetWidth  || 110;
       const btnH = noBtn.offsetHeight || 48;
-      const maxX = window.innerWidth  - btnW - margin;
-      const maxY = window.innerHeight - btnH - margin;
+      const maxX = Math.max(margin + 1, window.innerWidth  - btnW - margin);
+      const maxY = Math.max(margin + 1, window.innerHeight - btnH - margin);
 
       let x, y, attempts = 0;
       do {
@@ -230,11 +230,15 @@
         y = margin + Math.random() * (maxY - margin);
         attempts++;
       } while (
-        attempts < 20 &&
+        attempts < 15 &&
         avoidX !== undefined &&
-        Math.abs(x - avoidX) < 180 &&
-        Math.abs(y - avoidY) < 100
+        Math.abs(x - avoidX) < 140 &&
+        Math.abs(y - avoidY) < 90
       );
+
+      // final clamp — defensive
+      x = Math.max(margin, Math.min(x, maxX));
+      y = Math.max(margin, Math.min(y, maxY));
 
       noBtn.style.left = x + 'px';
       noBtn.style.top  = y + 'px';
@@ -255,25 +259,43 @@
         noBtn.style.left = r.left + 'px';
         noBtn.style.top  = r.top + 'px';
       }
+
+      // SET TEXT FIRST so width calc uses new size — short labels only on mobile
+      const labels = [
+        'Nahi 🙅', 'Nope!', 'Nahi re!', 'Pakdo!',
+        'Chhod do! 😜', 'Kabhi nahi 😏', 'Try!', 'Haar mano!',
+        'Nope nope!', 'Pakdo toh!', 'Bhaago!', 'Phir try!',
+        'Aage!', 'Almost!', 'Thoda aur!', 'Pas mein!',
+        'Last few!', 'Ek aur!', 'Bas thoda!', 'Final!'
+      ];
+      noBtn.textContent = labels[Math.min(noMoveCount - 1, labels.length - 1)];
+
+      // force reflow so offsetWidth reflects new text
+      void noBtn.offsetWidth;
+
       const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
       const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
       placeNoBtnRandom(clientX, clientY);
-
-      // tease labels — cycle through
-      const labels = [
-        'Nahi 🙅', 'Mat poochho!', 'Nahi re!', 'Pakad ke dikha!',
-        'Chhod do! 😜', 'Kabhi nahi~ 😏', 'Try again! 😋', 'Haar maan lo!',
-        'Itna easy nahi 😎', 'Pakdo toh sahi!', 'Nope nope!', 'Bhaago! 🏃‍♀️',
-        'Ruko mat! 💨', 'Phir try!', 'Aage badho!', 'Almost! 😅',
-        'Thoda aur!', 'Bas thodi der!', 'Last few!', 'Ek aur try!'
-      ];
-      noBtn.textContent = labels[Math.min(noMoveCount - 1, labels.length - 1)];
 
       if (noMoveCount >= MAX_DODGES) {
         stable = true;
         noBtn.textContent = 'Theek hai, Nahi 💔';
         noBtn.style.opacity = '0.85';
+        // re-clamp after final text
+        void noBtn.offsetWidth;
+        clampToViewport();
       }
+    }
+
+    function clampToViewport() {
+      const btnW = noBtn.offsetWidth  || 130;
+      const btnH = noBtn.offsetHeight || 50;
+      const curX = parseFloat(noBtn.style.left) || 0;
+      const curY = parseFloat(noBtn.style.top)  || 0;
+      const x = Math.max(10, Math.min(curX, window.innerWidth  - btnW - 10));
+      const y = Math.max(10, Math.min(curY, window.innerHeight - btnH - 10));
+      noBtn.style.left = x + 'px';
+      noBtn.style.top  = y + 'px';
     }
 
     noBtn.addEventListener('mouseover', escapeNo);
