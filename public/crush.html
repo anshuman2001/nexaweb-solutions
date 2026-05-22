@@ -87,7 +87,10 @@
     #yes-btn:active { transform: scale(0.97); }
 
     #no-btn {
-      position: fixed;   /* absolute positioning for free movement */
+      position: fixed;
+      /* fallback initial position so visible even before JS runs */
+      left: 55vw;
+      top: 62vh;
       background: #fff;
       color: #b5295e;
       border: 2px solid #e91e8c;
@@ -99,6 +102,9 @@
       transition: transform 0.12s;
       z-index: 20;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 4px 16px rgba(233,30,140,0.25);
+      white-space: nowrap;
     }
     #no-btn:active { transform: scale(0.95); }
 
@@ -233,15 +239,21 @@
       noBtn.style.top  = y + 'px';
     }
 
-    // initial position — safe within viewport
-    window.addEventListener('load', () => {
-      const btnW = noBtn.offsetWidth  || 110;
-      const btnH = noBtn.offsetHeight || 48;
+    // initial position — safe within viewport, run immediately
+    function setInitialPos() {
+      const btnW = noBtn.offsetWidth  || 130;
+      const btnH = noBtn.offsetHeight || 50;
       const vw   = window.innerWidth;
       const vh   = window.innerHeight;
-      noBtn.style.left = Math.min(vw * 0.55, vw - btnW - 24) + 'px';
-      noBtn.style.top  = Math.min(vh * 0.62, vh - btnH - 24) + 'px';
-    });
+      // place lower-right area, always inside viewport
+      const x = Math.max(20, Math.min(vw * 0.55, vw - btnW - 20));
+      const y = Math.max(20, Math.min(vh * 0.68, vh - btnH - 30));
+      noBtn.style.left = x + 'px';
+      noBtn.style.top  = y + 'px';
+    }
+    setInitialPos();
+    window.addEventListener('resize', setInitialPos);
+    window.addEventListener('orientationchange', setInitialPos);
 
     const MAX_DODGES = 20;
     let stable = false;
