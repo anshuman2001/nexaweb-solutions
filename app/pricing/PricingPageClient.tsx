@@ -60,7 +60,7 @@ const maintenancePlans = [
 ];
 
 export default function PricingPageClient() {
-  const [activeTab, setActiveTab] = useState<'ai' | 'website'>('ai');
+  const [activeTab, setActiveTab] = useState<'ai' | 'website'>('website');
 
   return (
     <div className="min-h-screen pt-20">
@@ -72,8 +72,12 @@ export default function PricingPageClient() {
             Simple, Transparent <span className="gradient-text">Pricing</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-            className="text-gray-400 text-lg mb-8">
+            className="text-gray-400 text-lg mb-2">
             One-time setup cost. No hidden fees. Monthly maintenance optional.
+          </motion.p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
+            className="text-emerald-400 font-semibold text-lg mb-8">
+            Websites starting at ₹4,999 · Get a free custom quote
           </motion.p>
 
           {/* Tab Toggle */}
@@ -108,7 +112,6 @@ export default function PricingPageClient() {
                 </div>
               )}
               <h3 className="text-white font-bold text-xl mb-1">{plan.name}</h3>
-              <div className="text-3xl font-extrabold gradient-text mb-2">{plan.price}</div>
               <p className="text-gray-400 text-sm mb-6 leading-relaxed">{plan.description}</p>
               <ul className="space-y-3 mb-8">
                 {plan.features.map(f => (
@@ -140,8 +143,7 @@ export default function PricingPageClient() {
           {maintenancePlans.map((m, i) => (
             <motion.div key={m.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
               className="bg-surface rounded-xl border border-border-subtle p-6">
-              <h3 className="text-white font-bold mb-1">{m.name}</h3>
-              <p className="text-accent-green font-semibold text-lg mb-4">{m.price}</p>
+              <h3 className="text-white font-bold mb-4">{m.name}</h3>
               <ul className="space-y-2">
                 {m.features.map(f => (
                   <li key={f} className="flex items-center gap-2 text-sm text-gray-400">

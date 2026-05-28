@@ -87,8 +87,12 @@ export default function ServicesPageClient() {
             <span className="gradient-text">Modern Tech</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            className="text-gray-400 text-xl max-w-2xl mx-auto">
+            className="text-gray-400 text-xl max-w-2xl mx-auto mb-4">
             Fast, beautiful, mobile-first websites that drive results. Built with Next.js for maximum performance.
+          </motion.p>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-emerald-400 font-semibold text-2xl">
+            Starting at ₹4,999
           </motion.p>
         </div>
       </section>
@@ -112,7 +116,6 @@ export default function ServicesPageClient() {
               )}
               <div className="text-4xl mb-4">{s.icon}</div>
               <h3 className="text-white font-bold text-xl mb-1">{s.name}</h3>
-              <p className={`text-sm font-semibold mb-1 ${s.color === 'blue' ? 'text-accent-blue' : 'text-accent-green'}`}>{s.priceRange}</p>
               <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-4">
                 <Clock className="w-3.5 h-3.5" />
                 {s.timeline}

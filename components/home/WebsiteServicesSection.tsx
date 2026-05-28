@@ -45,11 +45,12 @@ export default function WebsiteServicesSection() {
         className="text-center mb-12"
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-green text-sm font-medium mb-4">
-          🌐 Secondary Service
+          🌐 Primary Service
         </div>
         <h2 className="text-3xl lg:text-4xl font-extrabold text-white mb-3">
           Professional <span className="gradient-text">Websites</span>
         </h2>
+        <p className="text-emerald-400 font-semibold text-lg mb-2">Starting at ₹4,999</p>
         <p className="text-gray-400 max-w-xl mx-auto">
           Fast, beautiful, mobile-first websites built with modern technology
         </p>
@@ -69,8 +70,7 @@ export default function WebsiteServicesSection() {
               <s.icon className={`w-5 h-5 ${s.color === 'blue' ? 'text-accent-blue' : 'text-accent-green'}`} />
             </div>
             <h3 className="font-bold text-white mb-2 group-hover:text-accent-blue transition-colors">{s.name}</h3>
-            <p className="text-gray-400 text-sm mb-3 leading-relaxed">{s.description}</p>
-            <p className="text-accent-green font-semibold text-sm">{s.price}</p>
+            <p className="text-gray-400 text-sm leading-relaxed">{s.description}</p>
           </motion.div>
         ))}
       </div>

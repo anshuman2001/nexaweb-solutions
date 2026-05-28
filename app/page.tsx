@@ -100,7 +100,7 @@ const localBusinessSchema = {
   url: siteUrl,
   telephone: '+91-9997730768',
   email: 'info.nexawebsolution@gmail.com',
-  priceRange: '₹15,000 - ₹1,50,000',
+  priceRange: 'Starting at ₹4,999',
   description: 'AI agent development and web design services for Indian businesses. We build WhatsApp chatbots, customer support AI, and professional websites.',
   address: {
     '@type': 'PostalAddress',
@@ -293,8 +293,8 @@ export default function HomePage() {
       <JsonLd schema={servicesSchema} />
       <HeroSection />
       <StatsBar />
-      <AIAgentsSection />
       <WebsiteServicesSection />
+      <AIAgentsSection />
       <HowItWorks />
       <PortfolioSection />
       <TestimonialsSection />

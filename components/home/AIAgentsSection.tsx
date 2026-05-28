@@ -16,7 +16,7 @@ export default function AIAgentsSection() {
         className="text-center mb-16"
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-blue text-sm font-medium mb-4">
-          🤖 Primary Service
+          🤖 AI Automation
         </div>
         <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-4">
           AI Agents For{' '}
@@ -49,10 +49,9 @@ export default function AIAgentsSection() {
             <div className="text-4xl mb-4">{agent.icon}</div>
 
             {/* Name & Price */}
-            <h3 className="text-white font-bold text-lg mb-1 group-hover:text-accent-blue transition-colors">
+            <h3 className="text-white font-bold text-lg mb-4 group-hover:text-accent-blue transition-colors">
               {agent.name}
             </h3>
-            <p className="text-accent-green text-sm font-semibold mb-4">{agent.priceRange}</p>
 
             {/* Features */}
             <ul className="space-y-2 mb-5">

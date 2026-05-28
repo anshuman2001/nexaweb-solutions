@@ -72,8 +72,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Automate customer support, sales & operations with AI —{' '}
-          <span className="text-emerald-400 font-semibold">starting ₹15,000</span>
+          Professional websites & AI automation for Indian businesses —{' '}
+          <span className="text-emerald-400 font-semibold">websites starting ₹4,999</span>
         </motion.p>
 
         {/* CTA Buttons */}
@@ -84,20 +84,20 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center mb-14"
         >
           <Link
-            href="/ai-agents"
+            href="/services"
             className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all btn-glow btn-shimmer text-white"
             style={{ background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)' }}
           >
-            <Bot className="w-5 h-5" />
-            Explore AI Agents
+            <Globe className="w-5 h-5" />
+            Explore Websites
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
-            href="/portfolio"
+            href="/ai-agents"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/10 text-white font-semibold text-lg hover:border-blue-500/40 hover:bg-white/5 transition-all"
           >
-            <Globe className="w-5 h-5" />
-            View Our Work
+            <Bot className="w-5 h-5" />
+            Explore AI Agents
           </Link>
         </motion.div>
 

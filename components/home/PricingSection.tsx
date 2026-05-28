@@ -62,7 +62,6 @@ export default function PricingSection() {
               </div>
             )}
             <h3 className="text-white font-bold text-xl mb-1">{plan.name}</h3>
-            <div className="text-3xl font-extrabold gradient-text mb-2">{plan.price}</div>
             <p className="text-gray-400 text-sm mb-6 leading-relaxed">{plan.description}</p>
             <ul className="space-y-3 mb-8">
               {plan.features.map(f => (
