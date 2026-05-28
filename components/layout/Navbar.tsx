@@ -8,9 +8,10 @@ import { Menu, X, Globe } from 'lucide-react';
 import Image from 'next/image';
 
 const navLinks = [
+  { label: 'Services', href: '/services' },
   { label: 'AI Agents', href: '/ai-agents' },
   { label: 'Products', href: '/products' },
-  { label: 'Services', href: '/services' },
+  { label: 'Tools', href: '/tools/data-filter' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
