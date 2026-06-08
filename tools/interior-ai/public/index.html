@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interior AI Designer — DigiAgentix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">✦</div>
+        <div>
+          <div class="brand-name">Interior AI</div>
+          <div class="brand-sub">by DigiAgentix</div>
+        </div>
+      </div>
+      <button class="settings-btn" id="settingsBtn">⚙ Settings</button>
+    </div>
+  </header>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>API Settings</h3>
+        <button class="close-btn" id="closeSettings">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label">Replicate API Token</label>
+        <input type="password" id="apiKeyInput" class="field-input" placeholder="r8_xxxxxxxxxxxxxxxxxxxx" />
+        <p class="field-hint">
+          Get your free API token at <strong>replicate.com</strong> → Account → API Tokens.<br/>
+          Your key is stored only in your browser session.
+        </p>
+        <button class="btn-primary" id="saveSettings">Save Token</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">AI Interior Designer</h1>
+      <p class="hero-sub">Upload your room photo · Describe your dream design · Get a 4K photorealistic render</p>
+    </section>
+
+    <div class="workspace">
+
+      <!-- Left Panel -->
+      <div class="panel left-panel">
+
+        <!-- Upload -->
+        <div class="section-card">
+          <div class="section-title">
+            <span class="step-badge">1</span>
+            Upload Room Photo
+          </div>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="imageInput" accept="image/*" hidden />
+            <div class="upload-content" id="uploadContent">
+              <div class="upload-icon">🏠</div>
+              <div class="upload-text">Drop your room photo here</div>
+              <div class="upload-hint">or click to browse · JPG, PNG, WEBP · Max 20MB</div>
+            </div>
+            <img id="previewImg" class="preview-img" alt="Room preview" />
+          </div>
+        </div>
+
+        <!-- Style Preset -->
+        <div class="section-card">
+          <div class="section-title">
+            <span class="step-badge">2</span>
+            Choose Style
+          </div>
+          <div class="style-grid">
+            <button class="style-chip active" data-style="modern-indian">Modern Indian Luxury</button>
+            <button class="style-chip" data-style="contemporary">Contemporary</button>
+            <button class="style-chip" data-style="minimalist">Minimalist</button>
+            <button class="style-chip" data-style="royal-indian">Royal Indian</button>
+            <button class="style-chip" data-style="scandinavian">Scandinavian</button>
+          </div>
+        </div>
+
+        <!-- Prompt -->
+        <div class="section-card">
+          <div class="section-title">
+            <span class="step-badge">3</span>
+            Describe Your Design
+          </div>
+          <textarea
+            id="promptInput"
+            class="prompt-textarea"
+            placeholder="e.g. Rectangular gypsum false ceiling with warm LED strips, walnut wood TV panel with marble laminate, beige and greige walls, L-shape premium sofa, marble dining table with ash wood chairs, crystal chandelier, warm 3000K lighting..."
+            rows="6"
+          ></textarea>
+          <div class="prompt-tags">
+            <span class="prompt-tag" data-tag="rectangular gypsum false ceiling">+ False Ceiling</span>
+            <span class="prompt-tag" data-tag="walnut wood TV panel">+ TV Panel</span>
+            <span class="prompt-tag" data-tag="marble dining table">+ Dining Table</span>
+            <span class="prompt-tag" data-tag="warm LED strip lighting">+ LED Lighting</span>
+            <span class="prompt-tag" data-tag="crystal chandelier">+ Chandelier</span>
+            <span class="prompt-tag" data-tag="L-shape premium sofa">+ Sofa</span>
+            <span class="prompt-tag" data-tag="indoor plants">+ Plants</span>
+            <span class="prompt-tag" data-tag="premium curtains">+ Curtains</span>
+          </div>
+        </div>
+
+        <!-- Strength -->
+        <div class="section-card">
+          <div class="section-title">Design Intensity</div>
+          <div class="slider-row">
+            <span class="slider-label">Subtle</span>
+            <input type="range" id="strengthSlider" min="0.3" max="0.95" step="0.05" value="0.8" class="slider" />
+            <span class="slider-label">Full Redesign</span>
+          </div>
+          <div class="slider-value" id="sliderValue">80%</div>
+        </div>
+
+        <!-- Generate -->
+        <button class="btn-generate" id="generateBtn" disabled>
+          <span id="generateBtnText">✦ Generate Design</span>
+        </button>
+
+      </div>
+
+      <!-- Right Panel -->
+      <div class="panel right-panel">
+
+        <!-- Result -->
+        <div class="result-area" id="resultArea">
+
+          <!-- Empty state -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🎨</div>
+            <div class="empty-title">Your design will appear here</div>
+            <div class="empty-hint">Upload a photo and generate to see your redesigned room</div>
+          </div>
+
+          <!-- Loading -->
+          <div class="loading-state" id="loadingState" style="display:none">
+            <div class="spinner"></div>
+            <div class="loading-title">Generating your design...</div>
+            <div class="loading-steps" id="loadingSteps">
+              <div class="loading-step active" id="step1">Analyzing room structure</div>
+              <div class="loading-step" id="step2">Applying style & materials</div>
+              <div class="loading-step" id="step3">Rendering lighting & shadows</div>
+              <div class="loading-step" id="step4">Final 4K render</div>
+            </div>
+            <div class="loading-hint">This takes 30–90 seconds</div>
+          </div>
+
+          <!-- Generated Image -->
+          <div class="result-image-wrap" id="resultWrap" style="display:none">
+            <div class="result-toolbar">
+              <div class="result-label">✦ AI Generated Design</div>
+              <div class="result-actions">
+                <button class="btn-action" id="compareBtn">⇄ Compare</button>
+                <a id="downloadBtn" class="btn-action btn-download" download="interior-design.png">↓ Download</a>
+              </div>
+            </div>
+            <div class="compare-wrap" id="compareWrap">
+              <img id="resultImg" class="result-img" alt="Generated design" />
+              <div class="compare-overlay" id="compareOverlay" style="display:none">
+                <img id="beforeImg" class="before-img" alt="Original room" />
+                <div class="compare-label before-label">BEFORE</div>
+                <div class="compare-label after-label">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div class="error-state" id="errorState" style="display:none">
+            <div class="error-icon">⚠</div>
+            <div class="error-title" id="errorTitle">Generation failed</div>
+            <div class="error-hint" id="errorHint">Check your API key in Settings and try again.</div>
+            <button class="btn-retry" id="retryBtn">Try Again</button>
+          </div>
+
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-grid" id="infoGrid">
+          <div class="info-card">
+            <div class="info-icon">⚡</div>
+            <div class="info-label">Generation Time</div>
+            <div class="info-value">30–90 sec</div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🖼</div>
+            <div class="info-label">Output Quality</div>
+            <div class="info-value">4K Photorealistic</div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">💎</div>
+            <div class="info-label">Render Engine</div>
+            <div class="info-value">AI V-Ray Style</div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🆓</div>
+            <div class="info-label">Cost per render</div>
+            <div class="info-value">~$0.05 (Replicate)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

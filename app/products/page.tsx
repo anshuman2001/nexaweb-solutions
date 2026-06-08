@@ -6,12 +6,13 @@ import JsonLd from '@/components/seo/JsonLd';
 const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
-  title: 'AI SaaS Products — GST Reconciliation, AI Calling, Cold Email Agent | DigiAgentix',
-  description: 'Ready-to-use AI software products for Indian & global businesses. GST AI Reconciliation, AI Calling Agent, Cold Email AI, EduAccess AI. Start free today.',
+  title: 'AI SaaS Products — GST Reconciliation, AI Calling, Interior AI Designer | DigiAgentix',
+  description: 'Ready-to-use AI software products for Indian & global businesses. GST AI Reconciliation, AI Calling Agent, Interior AI Designer, EduAccess AI. Start free today.',
   keywords: [
     'AI SaaS products India', 'GST reconciliation AI', 'AI calling agent India',
-    'cold email AI agent', 'EduAccess AI', 'AI software India',
-    'business automation tools India', 'AI agent SaaS', 'eCommerce AI agent',
+    'interior AI designer India', 'AI interior design tool', 'room redesign AI',
+    'EduAccess AI', 'AI software India', 'business automation tools India',
+    'AI agent SaaS', 'eCommerce AI agent',
   ],
   alternates: { canonical: `${siteUrl}/products` },
   openGraph: {
@@ -141,6 +142,30 @@ const products = [
     price: '₹49,999 – ₹1,49,999/mo',
   },
   {
+    id: 'interior-ai-designer',
+    href: '/interior-ai',
+    external: false,
+    badge: 'New',
+    badgeColor: 'blue',
+    icon: '🏠',
+    name: 'Interior AI Designer',
+    tagline: 'AI-Powered 4K Interior Redesign from Your Room Photo',
+    description: 'Upload a photo of any room and get a photorealistic 4K interior redesign in seconds. Modern Indian luxury, contemporary, minimalist and more — preserves exact room dimensions, doors and windows.',
+    features: [
+      'Upload any room photo — JPG, PNG, WEBP',
+      '4K photorealistic V-Ray quality render',
+      '5 design styles — Modern Indian Luxury, Contemporary, Minimalist, Royal Indian, Scandinavian',
+      'Preserves exact room structure, doors & windows',
+      'Before / after comparison view',
+      'Instant download of generated design',
+      'Adjustable design intensity slider',
+      'Quick-add tags — False Ceiling, TV Panel, Chandelier & more',
+    ],
+    cta: 'Try Now →',
+    category: 'Design & Real Estate',
+    price: '~₹4 / render',
+  },
+  {
     id: 'ca-compliance-calendar',
     href: '/ca-compliance-calendar',
     external: false,
@@ -204,7 +229,7 @@ const productsListSchema = {
   '@type': 'ItemList',
   name: 'DigiAgentix AI SaaS Products',
   url: `${siteUrl}/products`,
-  numberOfItems: 7,
+  numberOfItems: 8,
   itemListElement: [
     { '@type': 'ListItem', position: 1, item: { '@type': 'SoftwareApplication', name: 'GST AI Reconciliation', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/gst-reconcile` } },
     { '@type': 'ListItem', position: 2, item: { '@type': 'SoftwareApplication', name: 'BrokerNote AI', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/brokernote-ai` } },
@@ -212,6 +237,7 @@ const productsListSchema = {
     { '@type': 'ListItem', position: 4, item: { '@type': 'SoftwareApplication', name: 'Cold Email AI Agent', applicationCategory: 'BusinessApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/cold-email-agent` } },
     { '@type': 'ListItem', position: 5, item: { '@type': 'SoftwareApplication', name: 'EduAccess AI', applicationCategory: 'EducationalApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/eduaccess-ai` } },
     { '@type': 'ListItem', position: 6, item: { '@type': 'SoftwareApplication', name: 'eCommerce Shopping Agent', applicationCategory: 'ShoppingApplication', offers: { '@type': 'Offer', price: '25000', priceCurrency: 'INR' }, url: `${siteUrl}/ecommerce-agent` } },
+    { '@type': 'ListItem', position: 7, item: { '@type': 'SoftwareApplication', name: 'Interior AI Designer', applicationCategory: 'DesignApplication', offers: { '@type': 'Offer', price: '4', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/interior-ai` } },
   ],
 };
 
