@@ -19,6 +19,61 @@ interface CertData {
   issued_by: string;
 }
 
+/* Signature image with fallback placeholder */
+function SignatureImg() {
+  const [failed, setFailed] = useState(false);
+  return failed ? (
+    <div style={{
+      height:60, width:160, margin:'0 auto 2px',
+      border:'1.5px dashed #b8860b', borderRadius:6,
+      display:'flex', alignItems:'center', justifyContent:'center',
+      background:'#fffbeb',
+    }}>
+      <span style={{ fontSize:10, color:'#b8860b', fontStyle:'italic', fontFamily:'system-ui' }}>Signature</span>
+    </div>
+  ) : (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/signature.png"
+      alt="Authorized Signature"
+      style={{ height:60, maxWidth:160, objectFit:'contain', display:'block', margin:'0 auto 2px', mixBlendMode:'multiply' }}
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+/* MSME logo with fallback */
+function MsmeLogo() {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+      {!failed && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src="/msme-logo.png"
+          alt="MSME"
+          style={{ height:44, width:'auto', objectFit:'contain', display:'block' }}
+          onError={() => setFailed(true)}
+        />
+      )}
+      {failed && (
+        <div style={{
+          height:44, width:44,
+          border:'1.5px dashed #9ca3af', borderRadius:6,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          background:'#f9fafb',
+        }}>
+          <span style={{ fontSize:8, color:'#9ca3af', fontFamily:'system-ui', textAlign:'center' }}>MSME<br/>Logo</span>
+        </div>
+      )}
+      <div>
+        <div style={{ fontSize:9, color:'#374151', fontWeight:700, fontFamily:'system-ui', letterSpacing:0.5 }}>MSME Registered</div>
+        <div style={{ fontSize:8, color:'#9ca3af', fontFamily:'system-ui', marginTop:1 }}>Micro, Small & Medium Enterprises</div>
+      </div>
+    </div>
+  );
+}
+
 export default function CertificatePreviewPage() {
   const [cert, setCert]         = useState<CertData | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState('');
@@ -217,16 +272,9 @@ export default function CertificatePreviewPage() {
               </div>
 
               {/* Signature block */}
-              <div style={{ textAlign:'center', minWidth:150 }}>
-                {/* Signature image — blend mode makes dark background invisible on white cert */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/signature.png"
-                  alt="Authorized Signature"
-                  style={{ height:60, maxWidth:160, objectFit:'contain', display:'block', margin:'0 auto 2px', mixBlendMode:'multiply' }}
-                  onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-                <div style={{ width:150, height:1, background:'#374151', margin:'4px auto 5px' }} />
+              <div style={{ textAlign:'center', minWidth:160 }}>
+                <SignatureImg />
+                <div style={{ width:160, height:1, background:'#374151', margin:'4px auto 5px' }} />
                 <div style={{ fontSize:11, color:'#374151', fontWeight:700, fontFamily:'system-ui' }}>Authorized Signatory</div>
                 <div style={{ fontSize:10, color:'#6b7280', fontFamily:'system-ui', marginTop:1 }}>DigiAgentix</div>
               </div>
@@ -247,21 +295,9 @@ export default function CertificatePreviewPage() {
             </div>
 
             {/* ── MSME logo + bottom strip ── */}
-            <div style={{ marginTop:18, paddingTop:12, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+            <div style={{ marginTop:16, paddingTop:10, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
               {/* MSME Logo */}
-              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/msme-logo.png"
-                  alt="MSME Registered"
-                  style={{ height:40, objectFit:'contain' }}
-                  onError={e => { (e.target as HTMLImageElement).style.display='none'; }}
-                />
-                <div>
-                  <div style={{ fontSize:8, color:'#374151', fontWeight:700, fontFamily:'system-ui', letterSpacing:0.5 }}>MSME Registered</div>
-                  <div style={{ fontSize:7, color:'#9ca3af', fontFamily:'system-ui' }}>Micro, Small & Medium Enterprises</div>
-                </div>
-              </div>
+              <MsmeLogo />
               {/* Cert ID */}
               <div style={{ textAlign:'right', fontSize:8, color:'#d1d5db', fontFamily:'monospace' }}>
                 {cert.id} · Verify at digiagentix.com/verify?id={cert.id}
