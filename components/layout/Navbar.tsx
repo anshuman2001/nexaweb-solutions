@@ -4,27 +4,27 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 
 const navLinks = [
-  { label: 'Services', href: '/services' },
-  { label: 'AI Solutions', href: '/ai-agents' },
-  { label: 'Solutions', href: '/products' },
-  { label: 'Tools', href: '/tools/data-filter' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Home',       href: '/' },
+  { label: 'About Us',   href: '/about' },
+  { label: 'Solutions',  href: '/services' },
+  { label: 'Industries', href: '/services#industries' },
+  { label: 'Products',   href: '/products' },
+  { label: 'Careers',    href: '/#careers' },
+  { label: 'Blog',       href: '/blog' },
+  { label: 'Contact',    href: '/contact' },
 ];
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState<'en' | 'hi'>('en');
   const pathname = usePathname();
+  const isHome       = pathname === '/';
   const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
 
   useEffect(() => {
@@ -33,148 +33,172 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+  useEffect(() => { setIsOpen(false); }, [pathname]);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
 
   if (isStandalone) return null;
 
+  /* ── Enterprise (homepage) styles ── */
+  const navBg = isHome
+    ? (scrolled ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)')
+    : (scrolled ? 'rgba(7,9,15,0.92)'      : 'transparent');
+  const navBorder = isHome
+    ? (scrolled ? '1px solid #e2e8f0' : '1px solid rgba(226,232,240,0.6)')
+    : (scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none');
+  const navShadow = scrolled ? (isHome ? '0 2px 16px rgba(0,0,0,0.08)' : '0 4px 24px rgba(0,0,0,0.4)') : 'none';
+  const linkColor = isHome ? '#334155' : '#d1d5db';
+  const linkActive = isHome ? '#1e3a8a' : '#fff';
+  const logoSub    = isHome ? '#64748b' : '#94a3b8';
+
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
+        initial={{ y: -80 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? 'bg-[#07090f]/85 backdrop-blur-2xl nav-glow-border shadow-xl shadow-black/40'
-            : 'bg-transparent'
-        }`}
+        transition={{ duration: 0.4 }}
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+          background: navBg, borderBottom: navBorder,
+          boxShadow: navShadow,
+          backdropFilter: 'blur(12px)',
+          transition: 'all 0.3s ease',
+        }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo + Branding */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative h-9 w-9 flex-shrink-0 group-hover:scale-105 transition-transform duration-200 rounded-xl overflow-hidden ring-1 ring-white/10">
-                <Image
-                  src="/logo.png"
-                  alt="DigiAgentix"
-                  fill
-                  className="object-contain"
-                  priority
-                />
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
+
+            {/* Logo */}
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+              <div style={{ position: 'relative', width: 36, height: 36, borderRadius: 8, overflow: 'hidden', border: isHome ? '1px solid #e2e8f0' : '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
+                <Image src="/logo.png" alt="DigiAgentix" fill className="object-contain" priority />
               </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-white font-bold text-sm sm:text-base tracking-wide">DigiAgentix</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">Technology Solutions</span>
+              <div style={{ lineHeight: 1.2 }}>
+                <div style={{ fontWeight: 800, fontSize: 15, color: isHome ? '#0f172a' : '#fff', letterSpacing: 0.2 }}>DigiAgentix</div>
+                <div style={{ fontSize: 9, color: logoSub, letterSpacing: 2, textTransform: 'uppercase', fontWeight: 600 }}>Technology Solutions</div>
               </div>
             </Link>
 
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    pathname === link.href
-                      ? 'text-white bg-accent-blue/10 text-accent-blue'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+            {/* Desktop nav */}
+            <div className="hidden lg:flex">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {navLinks.map((link) => {
+                  const active = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      style={{
+                        padding: '8px 14px', borderRadius: 6, fontSize: 13.5, fontWeight: 600,
+                        color: active ? linkActive : linkColor,
+                        textDecoration: 'none',
+                        background: active ? (isHome ? '#e0e7ff' : 'rgba(255,255,255,0.08)') : 'transparent',
+                        transition: 'all 0.15s',
+                      }}
+                      onMouseEnter={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLAnchorElement).style.color = isHome ? '#1e3a8a' : '#fff';
+                          (e.currentTarget as HTMLAnchorElement).style.background = isHome ? '#f0f4ff' : 'rgba(255,255,255,0.06)';
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLAnchorElement).style.color = linkColor;
+                          (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                        }
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Right Side */}
-            <div className="hidden lg:flex items-center gap-3">
-              {/* Language Toggle */}
-              <button
-                onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle text-sm text-gray-400 hover:text-white hover:border-accent-blue/50 transition-all"
-              >
-                <Globe className="w-3.5 h-3.5" />
-                {lang === 'en' ? 'EN' : 'हि'}
-              </button>
-
+            {/* Right CTA */}
+            <div className="hidden lg:flex" style={{ alignItems: 'center', gap: 10 }}>
               <Link
                 href="/portal"
-                className="px-4 py-2 rounded-lg border border-border-subtle text-sm font-medium text-gray-300 hover:text-white hover:border-accent-blue/50 transition-all"
+                style={{
+                  padding: '8px 16px', borderRadius: 6, fontSize: 13, fontWeight: 600,
+                  color: linkColor, textDecoration: 'none',
+                  border: `1px solid ${isHome ? '#e2e8f0' : 'rgba(255,255,255,0.12)'}`,
+                  transition: 'all 0.15s',
+                }}
               >
                 Client Login
               </Link>
-
               <a
                 href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a consultation with DigiAgentix.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium transition-all btn-glow btn-shimmer"
+                style={{
+                  padding: '9px 20px', borderRadius: 6, fontSize: 13, fontWeight: 700,
+                  background: '#1e3a8a', color: '#fff', textDecoration: 'none',
+                  boxShadow: '0 2px 8px rgba(30,58,138,0.25)',
+                  transition: 'all 0.15s',
+                }}
               >
-                Book a Demo
+                Book a Consultation
               </a>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+              style={{
+                display: 'none', padding: 8, borderRadius: 6, border: 'none',
+                background: 'transparent', cursor: 'pointer',
+                color: isHome ? '#334155' : '#d1d5db',
+              }}
+              className="lg:hidden block"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 lg:hidden bg-surface/95 backdrop-blur-xl border-b border-border-subtle"
+            style={{
+              position: 'fixed', inset: '68px 0 auto 0', zIndex: 40,
+              background: isHome ? '#fff' : 'rgba(7,9,15,0.97)',
+              borderBottom: `1px solid ${isHome ? '#e2e8f0' : '#1e293b'}`,
+              backdropFilter: 'blur(20px)',
+            }}
           >
-            <div className="px-4 py-6 space-y-2">
+            <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 4 }}>
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                    pathname === link.href
-                      ? 'bg-accent-blue/10 text-accent-blue border border-accent-blue/20'
-                      : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                  }`}
+                  style={{
+                    padding: '12px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600,
+                    color: pathname === link.href ? '#1e3a8a' : (isHome ? '#334155' : '#d1d5db'),
+                    textDecoration: 'none',
+                    background: pathname === link.href ? '#e0e7ff' : 'transparent',
+                  }}
                 >
                   {link.label}
                 </Link>
               ))}
-
-              <div className="pt-4 space-y-3 border-t border-border-subtle mt-4">
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border-subtle text-sm text-gray-400 hover:text-white transition-all"
-                  >
-                    <Globe className="w-4 h-4" />
-                    {lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
-                  </button>
-                  <Link
-                    href="/portal"
-                    className="flex-1 text-center px-4 py-2.5 rounded-xl border border-border-subtle text-sm font-medium text-gray-300 hover:text-white transition-all"
-                  >
-                    Client Login
-                  </Link>
-                </div>
+              <div style={{ borderTop: `1px solid ${isHome ? '#e2e8f0' : '#1e293b'}`, marginTop: 8, paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <Link href="/portal" style={{ padding: '12px 16px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: isHome ? '#334155' : '#d1d5db', textDecoration: 'none', border: `1px solid ${isHome ? '#e2e8f0' : '#334155'}`, textAlign: 'center' }}>
+                  Client Login
+                </Link>
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999'}?text=Hi! I'd like to schedule a consultation with DigiAgentix.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full text-center px-4 py-3 rounded-xl bg-accent-blue text-white text-sm font-semibold hover:bg-blue-500 transition-all"
+                  href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a consultation.`}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ padding: '13px 16px', borderRadius: 8, fontSize: 14, fontWeight: 700, background: '#1e3a8a', color: '#fff', textDecoration: 'none', textAlign: 'center' }}
                 >
-                  Book a Demo
+                  Book a Consultation
                 </a>
               </div>
             </div>

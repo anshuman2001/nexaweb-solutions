@@ -1,13 +1,16 @@
 import HeroSection from '@/components/home/HeroSection';
-import StatsBar from '@/components/home/StatsBar';
-import AIAgentsSection from '@/components/home/AIAgentsSection';
-import WebsiteServicesSection from '@/components/home/WebsiteServicesSection';
-import HowItWorks from '@/components/home/HowItWorks';
-import PortfolioSection from '@/components/home/PortfolioSection';
-import TestimonialsSection from '@/components/home/TestimonialsSection';
-import PricingSection from '@/components/home/PricingSection';
-import FAQSection from '@/components/home/FAQSection';
-import CTASection from '@/components/home/CTASection';
+import {
+  ClientLogosBar,
+  CertificationsBar,
+  AboutSection,
+  SolutionsSection,
+  IndustriesSection,
+  ProductsSection,
+  WhyUsSection,
+  CaseStudiesSection,
+  CareersSection,
+  EnterpriseContactSection,
+} from '@/components/home/EnterpriseSections';
 import LiveDemoWidget from '@/components/home/LiveDemoWidget';
 import DemoPopup from '@/components/home/DemoPopup';
 import JsonLd from '@/components/seo/JsonLd';
@@ -285,24 +288,25 @@ const servicesSchema = {
 
 export default function HomePage() {
   return (
-    <>
+    <div style={{ background: '#fff' }}>
       <JsonLd schema={organizationSchema} />
       <JsonLd schema={websiteSchema} />
       <JsonLd schema={localBusinessSchema} />
       <JsonLd schema={faqSchema} />
       <JsonLd schema={servicesSchema} />
       <HeroSection />
-      <StatsBar />
-      <WebsiteServicesSection />
-      <AIAgentsSection />
-      <HowItWorks />
-      <PortfolioSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <FAQSection />
-      <CTASection />
+      <ClientLogosBar />
+      <CertificationsBar />
+      <AboutSection />
+      <SolutionsSection />
+      <IndustriesSection />
+      <ProductsSection />
+      <WhyUsSection />
+      <CaseStudiesSection />
+      <CareersSection />
+      <EnterpriseContactSection />
       <LiveDemoWidget />
       <DemoPopup />
-    </>
+    </div>
   );
 }
