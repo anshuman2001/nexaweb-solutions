@@ -258,23 +258,12 @@ export default function CertificatePreviewPage() {
 
               {/* Official seal */}
               <div style={{ textAlign:'center' }}>
-                <div style={{
-                  width:96, height:96, borderRadius:'50%',
-                  border:'2.5px solid #b8860b',
-                  background:'linear-gradient(135deg,#eff6ff,#dbeafe)',
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  margin:'0 auto 5px',
-                  overflow:'hidden',
-                  padding:8,
-                }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/logo.png"
-                    alt="DigiAgentix"
-                    style={{ width:'100%', height:'100%', objectFit:'contain' }}
-                  />
-                </div>
-                <div style={{ fontSize:9, color:'#9ca3af', letterSpacing:2, textTransform:'uppercase', fontFamily:'system-ui' }}>Official Seal</div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/seal.png"
+                  alt="Official Seal"
+                  style={{ width:110, height:110, objectFit:'contain', display:'block', margin:'0 auto' }}
+                />
               </div>
 
               {/* Signature block */}
@@ -286,23 +275,21 @@ export default function CertificatePreviewPage() {
               </div>
             </div>
 
-            {/* ── QR code row ── */}
-            <div style={{ display:'flex', justifyContent:'flex-end', alignItems:'center', gap:8, marginTop:18 }}>
-              <div style={{ textAlign:'right' }}>
-                <div style={{ fontSize:9, color:'#9ca3af', letterSpacing:0.5, fontFamily:'system-ui' }}>Scan to verify authenticity</div>
-                <div style={{ fontSize:8, color:'#d1d5db', fontFamily:'monospace', marginTop:1 }}>digiagentix.com/verify</div>
-              </div>
-              {qrDataUrl && (
-                <div style={{ border:'1px solid #e5e7eb', borderRadius:6, padding:3, background:'#fff' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={qrDataUrl} alt="QR" style={{ width:68, height:68, display:'block' }} />
-                </div>
-              )}
-            </div>
-
-            {/* ── MSME logo bottom strip ── */}
-            <div style={{ marginTop:16, paddingTop:10, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'flex-start' }}>
+            {/* ── MSME (left) + QR code (right) — same row ── */}
+            <div style={{ marginTop:18, paddingTop:12, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
               <MsmeLogo />
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:9, color:'#9ca3af', letterSpacing:0.5, fontFamily:'system-ui' }}>Scan to verify authenticity</div>
+                  <div style={{ fontSize:8, color:'#d1d5db', fontFamily:'monospace', marginTop:1 }}>digiagentix.com/verify</div>
+                </div>
+                {qrDataUrl && (
+                  <div style={{ border:'1px solid #e5e7eb', borderRadius:6, padding:3, background:'#fff' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={qrDataUrl} alt="QR" style={{ width:68, height:68, display:'block' }} />
+                  </div>
+                )}
+              </div>
             </div>
 
           </div>
