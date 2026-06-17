@@ -260,7 +260,7 @@ export default function CertificatePreviewPage() {
               <div style={{ textAlign:'center' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/seal.png"
+                  src="/Seal.png"
                   alt="Official Seal"
                   style={{ width:110, height:110, objectFit:'contain', display:'block', margin:'0 auto' }}
                 />
