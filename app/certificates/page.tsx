@@ -248,17 +248,25 @@ export default function CertificatesPage() {
                 <p className="text-green-400 text-xs font-bold mb-1">Certificate Ready!</p>
                 <p className="text-white text-sm font-mono font-bold">{newCert.id}</p>
                 <p className="text-slate-400 text-xs mb-3">{newCert.student_name} · {newCert.internship_role}</p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setQrModal(newCert as unknown as Cert)}
-                    className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-xs font-semibold transition">
-                    📱 QR Code
-                  </button>
-                  <button
-                    onClick={() => { navigator.clipboard.writeText(verifyUrl(newCert.id)); }}
-                    className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-xs font-semibold transition">
-                    🔗 Copy URL
-                  </button>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={`/certificate-preview?id=${newCert.id}`}
+                    target="_blank"
+                    className="w-full bg-amber-600 hover:bg-amber-500 text-white py-2 rounded-lg text-xs font-bold text-center transition">
+                    📄 Generate & Download Certificate
+                  </a>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setQrModal(newCert as unknown as Cert)}
+                      className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-xs font-semibold transition">
+                      📱 QR Code
+                    </button>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(verifyUrl(newCert.id)); }}
+                      className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-xs font-semibold transition">
+                      🔗 Copy URL
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -316,6 +324,13 @@ export default function CertificatesPage() {
 
                 {/* Actions */}
                 <div className="flex gap-2 flex-shrink-0">
+                  <a
+                    href={`/certificate-preview?id=${cert.id}`}
+                    target="_blank"
+                    title="Generate & Download Certificate PDF"
+                    className="bg-amber-600/20 hover:bg-amber-600/40 border border-amber-500/20 text-amber-400 px-3 py-2 rounded-lg text-xs font-semibold transition">
+                    📄 Cert
+                  </a>
                   <button
                     onClick={() => setQrModal(cert)}
                     title="View QR Code"
