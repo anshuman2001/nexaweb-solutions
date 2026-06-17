@@ -36,7 +36,7 @@ function SignatureImg() {
     <img
       src="/signature.png"
       alt="Authorized Signature"
-      style={{ height:60, maxWidth:160, objectFit:'contain', display:'block', margin:'0 auto 2px', mixBlendMode:'multiply' }}
+      style={{ height:60, maxWidth:160, objectFit:'contain', display:'block', margin:'0 auto 2px', mixBlendMode:'screen' }}
       onError={() => setFailed(true)}
     />
   );
