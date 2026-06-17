@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/cold-email-agent`,        lastModified: now, changeFrequency: 'weekly',  priority: 0.85 },
     { url: `${baseUrl}/brokernote-ai`,           lastModified: now, changeFrequency: 'weekly',  priority: 0.85 },
     { url: `${baseUrl}/ca-compliance-calendar`, lastModified: now, changeFrequency: 'weekly',  priority: 0.85 },
+    { url: `${baseUrl}/verify`,                 lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/gst-reconcile`,           lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/privacy`,                 lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },
     { url: `${baseUrl}/terms`,                   lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },
