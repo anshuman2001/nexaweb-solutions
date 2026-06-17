@@ -259,14 +259,20 @@ export default function CertificatePreviewPage() {
               {/* Official seal */}
               <div style={{ textAlign:'center' }}>
                 <div style={{
-                  width:90, height:90, borderRadius:'50%',
-                  border:'2px solid #b8860b',
+                  width:96, height:96, borderRadius:'50%',
+                  border:'2.5px solid #b8860b',
                   background:'linear-gradient(135deg,#eff6ff,#dbeafe)',
-                  display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+                  display:'flex', alignItems:'center', justifyContent:'center',
                   margin:'0 auto 5px',
+                  overflow:'hidden',
+                  padding:8,
                 }}>
-                  <div style={{ fontSize:20, fontWeight:900, color:'#1e3a8a', fontFamily:'system-ui' }}>DA</div>
-                  <div style={{ fontSize:6.5, color:'#6b7280', letterSpacing:1.5, textTransform:'uppercase', fontFamily:'system-ui', marginTop:3 }}>DigiAgentix</div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/logo.png"
+                    alt="DigiAgentix"
+                    style={{ width:'100%', height:'100%', objectFit:'contain' }}
+                  />
                 </div>
                 <div style={{ fontSize:9, color:'#9ca3af', letterSpacing:2, textTransform:'uppercase', fontFamily:'system-ui' }}>Official Seal</div>
               </div>
@@ -294,14 +300,9 @@ export default function CertificatePreviewPage() {
               )}
             </div>
 
-            {/* ── MSME logo + bottom strip ── */}
-            <div style={{ marginTop:16, paddingTop:10, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-              {/* MSME Logo */}
+            {/* ── MSME logo bottom strip ── */}
+            <div style={{ marginTop:16, paddingTop:10, borderTop:'1px dashed #e5e7eb', display:'flex', alignItems:'center', justifyContent:'flex-start' }}>
               <MsmeLogo />
-              {/* Cert ID */}
-              <div style={{ textAlign:'right', fontSize:8, color:'#d1d5db', fontFamily:'monospace' }}>
-                {cert.id} · Verify at digiagentix.com/verify?id={cert.id}
-              </div>
             </div>
 
           </div>
