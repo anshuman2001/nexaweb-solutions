@@ -11,8 +11,6 @@ import {
   CareersSection,
   EnterpriseContactSection,
 } from '@/components/home/EnterpriseSections';
-import LiveDemoWidget from '@/components/home/LiveDemoWidget';
-import DemoPopup from '@/components/home/DemoPopup';
 import JsonLd from '@/components/seo/JsonLd';
 
 const siteUrl = 'https://digiagentix.com';
@@ -305,8 +303,6 @@ export default function HomePage() {
       <CaseStudiesSection />
       <CareersSection />
       <EnterpriseContactSection />
-      <LiveDemoWidget />
-      <DemoPopup />
     </div>
   );
 }

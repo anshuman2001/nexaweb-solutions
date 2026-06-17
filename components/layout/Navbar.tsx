@@ -8,14 +8,14 @@ import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 
 const navLinks = [
-  { label: 'Home',       href: '/' },
-  { label: 'About Us',   href: '/about' },
-  { label: 'Solutions',  href: '/services' },
-  { label: 'Industries', href: '/services#industries' },
-  { label: 'Products',   href: '/products' },
-  { label: 'Careers',    href: '/#careers' },
-  { label: 'Blog',       href: '/blog' },
-  { label: 'Contact',    href: '/contact' },
+  { label: 'Home',         href: '/' },
+  { label: 'About Us',     href: '/about' },
+  { label: 'Solutions',    href: '/services' },
+  { label: 'Industries',   href: '/#industries' },
+  { label: 'Products',     href: '/products' },
+  { label: 'Case Studies', href: '/portfolio' },
+  { label: 'Blog',         href: '/blog' },
+  { label: 'Contact',      href: '/contact' },
 ];
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
