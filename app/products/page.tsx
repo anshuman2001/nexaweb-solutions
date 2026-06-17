@@ -6,8 +6,8 @@ import JsonLd from '@/components/seo/JsonLd';
 const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
-  title: 'AI SaaS Products — GST Reconciliation, AI Calling, Interior AI Designer | DigiAgentix',
-  description: 'Ready-to-use AI software products for Indian & global businesses. GST AI Reconciliation, AI Calling Agent, Interior AI Designer, EduAccess AI. Start free today.',
+  title: 'AI SaaS Products — GST Reconciliation, BrokerNote AI, Internship Certificate & more | DigiAgentix',
+  description: 'Ready-to-use AI software products for Indian & global businesses. GST AI, BrokerNote, CA Calendar, Certificate Generator, AI Calling Agent & more. Start free today.',
   keywords: [
     'AI SaaS products India', 'GST reconciliation AI', 'AI calling agent India',
     'interior AI designer India', 'AI interior design tool', 'room redesign AI',
@@ -213,6 +213,50 @@ const products = [
     category: 'Education & Accessibility',
     price: '5+5 Free → ₹399/mo',
   },
+  {
+    id: 'cold-email-agent',
+    href: '/cold-email-agent',
+    external: false,
+    badge: 'Free',
+    badgeColor: 'green',
+    icon: '📧',
+    name: 'Cold Email AI Agent',
+    tagline: 'AI-Powered Cold Email Outreach Automation',
+    description: 'Generate hyper-personalised cold email sequences using AI. Upload leads, auto-write emails for each prospect, and launch outreach campaigns in minutes.',
+    features: [
+      'AI writes personalised email per prospect',
+      'Upload CSV — auto-personalise at scale',
+      'Multi-step follow-up sequence generator',
+      'Subject line A/B testing with AI',
+      'Industry-specific tone & template library',
+      '100% free — no credit card required',
+    ],
+    cta: 'Try Free →',
+    category: 'Sales & Outreach',
+    price: 'Free',
+  },
+  {
+    id: 'internship-certificate',
+    href: '/certificates',
+    external: false,
+    badge: 'Free',
+    badgeColor: 'green',
+    icon: '🎓',
+    name: 'Internship Certificate Generator',
+    tagline: 'Issue & Verify Digital Internship Certificates',
+    description: 'Issue professional internship certificates with a unique QR code. Anyone can scan to instantly verify the student\'s details on a live verification page — no fake certificates possible.',
+    features: [
+      'Beautiful A4 certificate design with gold borders',
+      'Unique QR code on every certificate',
+      'Live verification page — scan & get ✅ Verified badge',
+      'Instant PDF download / print from browser',
+      'Admin panel to issue, manage & revoke certs',
+      '100% free — powered by DigiAgentix',
+    ],
+    cta: 'Issue Certificate →',
+    category: 'HR & Internship',
+    price: 'Free',
+  },
 ];
 
 const breadcrumbSchema = {
@@ -229,15 +273,18 @@ const productsListSchema = {
   '@type': 'ItemList',
   name: 'DigiAgentix AI SaaS Products',
   url: `${siteUrl}/products`,
-  numberOfItems: 8,
+  numberOfItems: 10,
   itemListElement: [
-    { '@type': 'ListItem', position: 1, item: { '@type': 'SoftwareApplication', name: 'GST AI Reconciliation', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/gst-reconcile` } },
-    { '@type': 'ListItem', position: 2, item: { '@type': 'SoftwareApplication', name: 'BrokerNote AI', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/brokernote-ai` } },
-    { '@type': 'ListItem', position: 3, item: { '@type': 'SoftwareApplication', name: 'AI Calling Agent', applicationCategory: 'BusinessApplication', offers: { '@type': 'Offer', price: '49999', priceCurrency: 'INR' }, url: `${siteUrl}/ai-calling-agent` } },
-    { '@type': 'ListItem', position: 4, item: { '@type': 'SoftwareApplication', name: 'Cold Email AI Agent', applicationCategory: 'BusinessApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/cold-email-agent` } },
-    { '@type': 'ListItem', position: 5, item: { '@type': 'SoftwareApplication', name: 'EduAccess AI', applicationCategory: 'EducationalApplication', offers: { '@type': 'Offer', price: '399', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/eduaccess-ai` } },
-    { '@type': 'ListItem', position: 6, item: { '@type': 'SoftwareApplication', name: 'eCommerce Shopping Agent', applicationCategory: 'ShoppingApplication', offers: { '@type': 'Offer', price: '25000', priceCurrency: 'INR' }, url: `${siteUrl}/ecommerce-agent` } },
-    { '@type': 'ListItem', position: 7, item: { '@type': 'SoftwareApplication', name: 'Interior AI Designer', applicationCategory: 'DesignApplication', offers: { '@type': 'Offer', price: '4', priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/interior-ai` } },
+    { '@type': 'ListItem', position: 1,  item: { '@type': 'SoftwareApplication', name: 'GST AI Reconciliation',          applicationCategory: 'FinanceApplication',    offers: { '@type': 'Offer', price: '399',   priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/gst-reconcile` } },
+    { '@type': 'ListItem', position: 2,  item: { '@type': 'SoftwareApplication', name: 'BrokerNote AI',                  applicationCategory: 'FinanceApplication',    offers: { '@type': 'Offer', price: '0',     priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/brokernote-ai` } },
+    { '@type': 'ListItem', position: 3,  item: { '@type': 'SoftwareApplication', name: 'CA Compliance Calendar',         applicationCategory: 'FinanceApplication',    offers: { '@type': 'Offer', price: '0',     priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/ca-compliance-calendar` } },
+    { '@type': 'ListItem', position: 4,  item: { '@type': 'SoftwareApplication', name: 'Internship Certificate Generator',applicationCategory: 'BusinessApplication',   offers: { '@type': 'Offer', price: '0',     priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/certificates` } },
+    { '@type': 'ListItem', position: 5,  item: { '@type': 'SoftwareApplication', name: 'Cold Email AI Agent',            applicationCategory: 'BusinessApplication',   offers: { '@type': 'Offer', price: '0',     priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/cold-email-agent` } },
+    { '@type': 'ListItem', position: 6,  item: { '@type': 'SoftwareApplication', name: 'AI Calling Agent',               applicationCategory: 'BusinessApplication',   offers: { '@type': 'Offer', price: '49999', priceCurrency: 'INR' },                                              url: `${siteUrl}/ai-calling-agent` } },
+    { '@type': 'ListItem', position: 7,  item: { '@type': 'SoftwareApplication', name: 'eCommerce Shopping Agent',       applicationCategory: 'ShoppingApplication',   offers: { '@type': 'Offer', price: '25000', priceCurrency: 'INR' },                                              url: `${siteUrl}/ecommerce-agent` } },
+    { '@type': 'ListItem', position: 8,  item: { '@type': 'SoftwareApplication', name: 'Interior AI Designer',           applicationCategory: 'DesignApplication',     offers: { '@type': 'Offer', price: '4',     priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/interior-ai` } },
+    { '@type': 'ListItem', position: 9,  item: { '@type': 'SoftwareApplication', name: 'EduAccess AI',                   applicationCategory: 'EducationalApplication',offers: { '@type': 'Offer', price: '399',   priceCurrency: 'INR', availability: 'https://schema.org/InStock' }, url: `${siteUrl}/eduaccess-ai` } },
+    { '@type': 'ListItem', position: 10, item: { '@type': 'SoftwareApplication', name: 'DigiAgentix Content Agent',      applicationCategory: 'BusinessApplication',   offers: { '@type': 'Offer', price: '10000', priceCurrency: 'INR' },                                              url: `${siteUrl}/content-agent` } },
   ],
 };
 
