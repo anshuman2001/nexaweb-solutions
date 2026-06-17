@@ -38,24 +38,24 @@ export default function CTASection() {
           <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-purple-500/40 rounded-br-xl" />
 
           <div className="relative z-10">
-            <div className="text-5xl mb-6">🚀</div>
+            <div className="text-5xl mb-6">🏢</div>
 
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/25 bg-purple-500/8 text-purple-300 text-xs font-medium mb-5">
               <Sparkles className="w-3.5 h-3.5" />
-              Free Consultation Available
+              Discovery Consultation Available
             </div>
 
             <h2 className="text-3xl lg:text-5xl font-extrabold text-white mb-4 leading-tight">
-              Ready to Automate<br />
-              <span className="gradient-text-luxury">Your Business?</span>
+              Ready to Transform<br />
+              <span className="gradient-text-luxury">Your Operations?</span>
             </h2>
             <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-              Get a free consultation call. We&apos;ll analyze your business and show you exactly how AI can save you time and money.
+              Book a discovery call. Our technology consultants will assess your current systems and design a transformation roadmap tailored to your business.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to automate my business with AI. Can we schedule a free consultation?`}
+                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a discovery consultation with DigiAgentix.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-lg transition-all btn-shimmer shadow-lg shadow-green-900/20"
@@ -69,13 +69,13 @@ export default function CTASection() {
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-lg transition-all btn-glow btn-shimmer"
                 style={{ background: 'linear-gradient(135deg, #2563eb, #4f46e5)' }}
               >
-                Get Free Demo
+                Book a Discovery Call
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
 
             <p className="text-gray-600 text-sm mt-6">
-              ⚡ We reply within 2 hours &nbsp;•&nbsp; Free consultation &nbsp;•&nbsp; No obligation
+              ⚡ We respond within 2 hours &nbsp;•&nbsp; No obligation &nbsp;•&nbsp; Free consultation
             </p>
           </div>
         </motion.div>

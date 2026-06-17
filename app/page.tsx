@@ -26,7 +26,7 @@ const organizationSchema = {
     width: 512,
     height: 512,
   },
-  description: 'DigiAgentix builds AI agents and professional websites for Indian businesses. We specialize in WhatsApp chatbots, customer support AI, sales automation, and Next.js web development.',
+  description: 'DigiAgentix is an enterprise technology solutions company delivering AI solutions, intelligent automation, software development, cloud infrastructure, and digital transformation services for SMEs and enterprises.',
   foundingDate: '2021',
   foundingLocation: 'Noida, Uttar Pradesh, India',
   address: {
@@ -57,12 +57,12 @@ const organizationSchema = {
     'https://twitter.com/DigiAgentixsolutions',
   ],
   knowsAbout: [
-    'AI Agents',
-    'WhatsApp Business Automation',
-    'Customer Support Chatbots',
-    'Web Design',
-    'Next.js Development',
-    'Business Automation',
+    'AI Solutions',
+    'Intelligent Automation',
+    'Software Development',
+    'Cloud Infrastructure',
+    'Digital Transformation',
+    'Enterprise Consulting',
   ],
   areaServed: {
     '@type': 'Country',
@@ -78,7 +78,7 @@ const websiteSchema = {
   '@id': `${siteUrl}/#website`,
   url: siteUrl,
   name: 'DigiAgentix',
-  description: 'AI Agents & Web Design for Indian Businesses',
+  description: 'Enterprise Technology Solutions — AI, Automation & Digital Transformation',
   publisher: { '@id': `${siteUrl}/#organization` },
   potentialAction: {
     '@type': 'SearchAction',
@@ -101,7 +101,7 @@ const localBusinessSchema = {
   telephone: '+91-9997730768',
   email: 'info.nexawebsolution@gmail.com',
   priceRange: 'Starting at ₹4,999',
-  description: 'AI agent development and web design services for Indian businesses. We build WhatsApp chatbots, customer support AI, and professional websites.',
+  description: 'Enterprise technology solutions including AI automation, software development, cloud infrastructure, and digital transformation consulting for businesses of all sizes.',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Noida',

@@ -2,12 +2,12 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Bot, Zap, Globe } from 'lucide-react';
+import { ArrowRight, Building2, Zap, CalendarCheck } from 'lucide-react';
 
 const badges = [
-  { icon: '🤖', text: '24/7 AI Support' },
-  { icon: '🇮🇳', text: 'Hindi + English' },
-  { icon: '💬', text: 'WhatsApp Ready' },
+  { icon: '🏢', text: 'Enterprise Solutions' },
+  { icon: '🤖', text: 'AI & Automation' },
+  { icon: '☁️', text: 'Cloud & Software' },
 ];
 
 export default function HeroSection() {
@@ -36,7 +36,7 @@ export default function HeroSection() {
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-blue-500/30 bg-blue-500/8 text-blue-300 text-sm font-medium mb-8"
         >
           <Zap className="w-4 h-4" />
-          India&apos;s Leading AI Agent Builder
+          Enterprise Technology Solutions
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
         </motion.div>
 
@@ -47,13 +47,11 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight mb-6"
         >
-          We Build{' '}
-          <span className="gradient-text-luxury">AI Agents</span>
-          {' & '}
+          Technology That{' '}
           <br className="hidden sm:block" />
-          Websites That{' '}
+          Moves{' '}
           <span className="relative inline-block">
-            <span className="gradient-text">Grow</span>
+            <span className="gradient-text">Business</span>
             <motion.div
               className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full"
               style={{ background: 'linear-gradient(90deg, #3b82f6, #a78bfa, #34d399)' }}
@@ -62,7 +60,8 @@ export default function HeroSection() {
               transition={{ duration: 1, delay: 0.9 }}
             />
           </span>
-          {' '}Your Business
+          {' '}
+          <span className="gradient-text-luxury">Forward</span>
         </motion.h1>
 
         {/* Subheadline */}
@@ -72,8 +71,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Professional websites & AI automation for Indian businesses —{' '}
-          <span className="text-emerald-400 font-semibold">websites starting ₹4,999</span>
+          DigiAgentix delivers AI solutions, intelligent automation, and enterprise software —
+          engineered to transform how organizations operate.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -88,16 +87,16 @@ export default function HeroSection() {
             className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all btn-glow btn-shimmer text-white"
             style={{ background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)' }}
           >
-            <Globe className="w-5 h-5" />
-            Explore Websites
+            <Building2 className="w-5 h-5" />
+            Explore Solutions
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
-            href="/ai-agents"
+            href="/contact"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/10 text-white font-semibold text-lg hover:border-blue-500/40 hover:bg-white/5 transition-all"
           >
-            <Bot className="w-5 h-5" />
-            Explore AI Agents
+            <CalendarCheck className="w-5 h-5" />
+            Schedule a Consultation
           </Link>
         </motion.div>
 

@@ -9,8 +9,8 @@ import Image from 'next/image';
 
 const navLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'AI Agents', href: '/ai-agents' },
-  { label: 'Products', href: '/products' },
+  { label: 'AI Solutions', href: '/ai-agents' },
+  { label: 'Solutions', href: '/products' },
   { label: 'Tools', href: '/tools/data-filter' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Pricing', href: '/pricing' },
@@ -67,7 +67,7 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="text-white font-bold text-sm sm:text-base tracking-wide">DigiAgentix</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">AI Agency</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">Technology Solutions</span>
               </div>
             </Link>
 
@@ -107,12 +107,12 @@ export default function Navbar() {
               </Link>
 
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a free demo of your AI agents.`}
+                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a consultation with DigiAgentix.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium transition-all btn-glow btn-shimmer"
               >
-                Get Free Demo
+                Book a Demo
               </a>
             </div>
 
@@ -169,12 +169,12 @@ export default function Navbar() {
                   </Link>
                 </div>
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999'}?text=Hi! I'd like a free demo.`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999'}?text=Hi! I'd like to schedule a consultation with DigiAgentix.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center px-4 py-3 rounded-xl bg-accent-blue text-white text-sm font-semibold hover:bg-blue-500 transition-all"
                 >
-                  Get Free Demo
+                  Book a Demo
                 </a>
               </div>
             </div>
