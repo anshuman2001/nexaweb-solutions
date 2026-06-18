@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, ShieldX, Search, CheckCircle2, XCircle, AlertCircle, Calendar, Clock, Building2, User, Hash, Mail, ExternalLink } from 'lucide-react';
 
-const API = 'https://brokernote-backend.onrender.com';
+const API = '';
 
 const NAVY = '#1e3a8a';
 const BLUE = '#2563eb';
@@ -67,7 +67,7 @@ export default function VerifyPage() {
     setError('');
     setSearched(true);
     try {
-      const res = await fetch(`${API}/certs/verify/${sid}`);
+      const res = await fetch(`/api/certs/verify/${sid}`);
       if (res.ok) {
         setCert(await res.json());
       } else if (res.status === 404) {
