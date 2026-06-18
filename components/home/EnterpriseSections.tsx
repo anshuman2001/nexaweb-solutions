@@ -58,15 +58,14 @@ const sectors = [
 
 export function ClientLogosBar() {
   return (
-    <section style={{ background: '#fff', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: '22px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: MUTED, letterSpacing: 1, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+    <section style={{ background: '#fff', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: '20px 24px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', textAlign: 'center' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: MUTED, letterSpacing: 1, textTransform: 'uppercase', display: 'block', marginBottom: 14 }}>
           Serving clients across
         </span>
-        <div style={{ width: 1, height: 20, background: BORDER }} />
-        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="flex flex-wrap gap-x-6 gap-y-3 items-center justify-center">
           {sectors.map(({ icon: Icon, label }) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
               <Icon size={14} color={MUTED} />
               <span style={{ fontSize: 13, fontWeight: 600, color: SLATE }}>{label}</span>
             </div>
@@ -92,7 +91,7 @@ export function CertificationsBar() {
   return (
     <section style={{ background: LIGHTER, padding: '40px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 16 }}>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {certs.map(({ icon: Icon, label, sub }, i) => (
             <FadeIn key={label} delay={i * 0.07}>
               <div style={{
@@ -122,7 +121,7 @@ export function CertificationsBar() {
 export function AboutSection() {
   return (
     <section id="about" style={{ background: '#fff', padding: '80px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
         <FadeIn>
           <SectionLabel text="About Us" />
           <h2 style={{ fontSize: 'clamp(28px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 20 }}>
