@@ -21,9 +21,9 @@ const navLinks = [
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 // Light hero bg — transparent w/ dark text, scrolls to dark navy
-const MIXED_LIGHT_PAGES = ['/services'];
+const MIXED_LIGHT_PAGES = ['/services', '/products'];
 // Dark hero bg — transparent w/ light text, scrolls to dark navy
-const MIXED_DARK_PAGES  = ['/products'];
+const MIXED_DARK_PAGES: string[]  = [];
 
 export default function Navbar() {
   const [isOpen, setIsOpen]     = useState(false);

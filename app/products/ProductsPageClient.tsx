@@ -10,20 +10,33 @@ import {
   BadgeCheck, Users, Package, Layers, Zap, Headphones,
 } from 'lucide-react';
 
-/* ── Tokens ── */
-const NAVY = '#1e3a8a';
-const BLUE = '#2563eb';
+/* ── Design tokens (matches Solutions / Homepage) ── */
+const NAVY    = '#1e3a8a';
+const BLUE    = '#2563eb';
+const SLATE   = '#334155';
+const MUTED   = '#64748b';
+const BORDER  = '#e2e8f0';
+const LIGHTER = '#f1f5f9';
 
 function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.6, delay }}
     >
       {children}
     </motion.div>
+  );
+}
+
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+      <div style={{ width: 24, height: 2, background: BLUE, borderRadius: 2 }} />
+      <span style={{ fontSize: 12, fontWeight: 700, color: BLUE, letterSpacing: 2, textTransform: 'uppercase' }}>{text}</span>
+    </div>
   );
 }
 
@@ -39,7 +52,6 @@ interface Product {
   external: boolean;
   badge: BadgeVariant;
   icon: React.ElementType;
-  iconColor: string;
   name: string;
   tagline: string;
   description: string;
@@ -58,7 +70,6 @@ const products: Product[] = [
     external: true,
     badge: 'Featured',
     icon: Receipt,
-    iconColor: '#60a5fa',
     name: 'GST AI Reconciliation',
     tagline: 'AI-Powered GST Reconciliation Platform',
     description: 'Upload invoices, auto-match GSTR-2B, detect anomalies, and generate PDF audit reports. Built for CA firms, accountants, and finance teams.',
@@ -82,7 +93,6 @@ const products: Product[] = [
     external: false,
     badge: 'Popular',
     icon: FileSpreadsheet,
-    iconColor: '#34d399',
     name: 'BrokerNote AI',
     tagline: 'Stock Contract Note Extractor for CA Firms',
     description: 'Upload Angel One, Zerodha, Upstox contract note PDFs — AI extracts all trade data instantly. Download clean Excel and Tally Prime XML import files.',
@@ -106,7 +116,6 @@ const products: Product[] = [
     external: true,
     badge: 'Enterprise',
     icon: PenTool,
-    iconColor: '#a78bfa',
     name: 'DigiAgentix Content Agent',
     tagline: 'AI Content Writing Platform for Businesses',
     description: 'Generate SEO blogs, product descriptions, social media posts, and ad copy in Hindi & English — with templates, brand voice training, and bulk generation.',
@@ -130,7 +139,6 @@ const products: Product[] = [
     external: true,
     badge: 'Enterprise',
     icon: ShoppingBag,
-    iconColor: '#fb923c',
     name: 'eCommerce Shopping Agent',
     tagline: 'AI Sales Agent for Online Stores',
     description: 'Full-stack AI shopping agent that boosts sales, recovers abandoned carts, handles support in Hindi & English, and cuts costs with smart hybrid AI.',
@@ -154,10 +162,9 @@ const products: Product[] = [
     external: true,
     badge: 'Best Seller',
     icon: PhoneCall,
-    iconColor: '#f472b6',
     name: 'AI Calling Agent',
     tagline: 'Scale Sales Outreach with Human-like AI Calls',
-    description: 'Human-like AI calls your leads 24/7 in Hindi & English — 10,000 concurrent calls, real-time CRM updates, WhatsApp follow-up.',
+    description: 'Human-like AI calls your leads 24/7 in Hindi & English — 10,000 concurrent calls, real-time CRM updates, and WhatsApp follow-up.',
     features: [
       'Human-like voice — ElevenLabs Hindi & English',
       '10,000 concurrent calls simultaneously',
@@ -178,7 +185,6 @@ const products: Product[] = [
     external: false,
     badge: 'Popular',
     icon: Home,
-    iconColor: '#facc15',
     name: 'Interior AI Designer',
     tagline: 'AI-Powered 4K Interior Redesign',
     description: 'Upload a photo of any room and get a photorealistic 4K interior redesign in seconds — preserving exact room dimensions, doors, and windows.',
@@ -202,7 +208,6 @@ const products: Product[] = [
     external: false,
     badge: 'Popular',
     icon: CalendarCheck,
-    iconColor: '#2dd4bf',
     name: 'CA Compliance Calendar',
     tagline: 'Auto WhatsApp Reminders for Filing Deadlines',
     description: 'Never miss a GST, ITR, TDS, or ROC deadline. Add clients to Google Sheets — the bot auto-sends WhatsApp reminders 7 days and 1 day before every due date.',
@@ -226,7 +231,6 @@ const products: Product[] = [
     external: true,
     badge: 'Featured',
     icon: GraduationCap,
-    iconColor: '#818cf8',
     name: 'EduAccess AI',
     tagline: 'Accessible Content & Alt Text Generator',
     description: 'AI-powered platform for US schools & edtech — generate WCAG 2.1 compliant alt text and ADA-compliant educational content in seconds.',
@@ -250,7 +254,6 @@ const products: Product[] = [
     external: false,
     badge: 'Popular',
     icon: Mail,
-    iconColor: '#60a5fa',
     name: 'Cold Email AI Agent',
     tagline: 'AI-Powered Cold Email Outreach Automation',
     description: 'Generate hyper-personalised cold email sequences using AI. Upload leads, auto-write emails for each prospect, and launch outreach campaigns in minutes.',
@@ -274,7 +277,6 @@ const products: Product[] = [
     external: false,
     badge: 'Popular',
     icon: Award,
-    iconColor: '#fbbf24',
     name: 'Internship Certificate Generator',
     tagline: 'Issue & Verify Digital Internship Certificates',
     description: 'Issue professional internship certificates with unique QR codes. Anyone can scan to instantly verify on a live page — no fake certificates possible.',
@@ -296,46 +298,44 @@ const products: Product[] = [
 
 const FILTER_TABS = ['All', 'Finance', 'AI Agents', 'Marketing', 'eCommerce', 'Education', 'Design', 'HR'];
 
-const BADGE_STYLES: Record<BadgeVariant, string> = {
-  'Featured':    'bg-blue-500/15 border-blue-500/30 text-blue-300',
-  'Popular':     'bg-amber-500/15 border-amber-500/30 text-amber-300',
-  'Enterprise':  'bg-violet-500/15 border-violet-500/30 text-violet-300',
-  'Best Seller': 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300',
-  'Recommended': 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300',
+/* Badge styles for light backgrounds */
+const BADGE_STYLES: Record<BadgeVariant, { bg: string; border: string; color: string }> = {
+  'Featured':    { bg: '#e0e7ff', border: '#c7d2fe', color: NAVY },
+  'Popular':     { bg: '#fef3c7', border: '#fde68a', color: '#92400e' },
+  'Enterprise':  { bg: '#ede9fe', border: '#ddd6fe', color: '#5b21b6' },
+  'Best Seller': { bg: '#d1fae5', border: '#a7f3d0', color: '#065f46' },
+  'Recommended': { bg: '#e0f2fe', border: '#bae6fd', color: '#0c4a6e' },
 };
 
 const whyItems = [
-  { icon: Zap,          label: 'Easy Setup',                 sub: 'Get started in days, not months' },
-  { icon: Package,      label: 'AI Powered',                 sub: 'Latest AI models under the hood' },
-  { icon: BadgeCheck,   label: 'Affordable Pricing',         sub: 'Designed for SME budgets' },
-  { icon: Layers,       label: 'Secure & Reliable',          sub: 'Enterprise-grade security' },
-  { icon: Users,        label: 'Built for Indian Businesses', sub: 'Localised for India-specific needs' },
-  { icon: Headphones,     label: 'Dedicated Support',        sub: 'WhatsApp & phone support' },
+  { icon: Zap,        label: 'Easy Setup',                 sub: 'Get started in days, not months' },
+  { icon: Package,    label: 'AI Powered',                 sub: 'Latest AI models under the hood' },
+  { icon: BadgeCheck, label: 'Affordable Pricing',         sub: 'Designed for SME budgets' },
+  { icon: Layers,     label: 'Secure & Reliable',          sub: 'Enterprise-grade security' },
+  { icon: Users,      label: 'Built for Indian Businesses', sub: 'Localised for India-specific needs' },
+  { icon: Headphones, label: 'Dedicated Support',          sub: 'WhatsApp & phone support' },
 ];
 
 /* ══════════════════════════════════════════
-   HERO (dark)
+   HERO (light — matches Solutions page)
 ══════════════════════════════════════════ */
 function Hero() {
   const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
   return (
-    <section style={{ background: 'linear-gradient(135deg, #07090f 0%, #0a0d1a 60%, #0f172a 100%)', paddingTop: 112, paddingBottom: 88, position: 'relative', overflow: 'hidden' }}>
-      {/* Subtle radial glow */}
-      <div style={{ position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)', width: 600, height: 400, background: 'radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+    <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 88 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.3)', borderRadius: 20, padding: '6px 18px', marginBottom: 28 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#e0e7ff', border: '1px solid #c7d2fe', borderRadius: 20, padding: '6px 18px', marginBottom: 28 }}>
             <span style={{ width: 8, height: 8, background: BLUE, borderRadius: '50%', display: 'inline-block' }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#93c5fd' }}>Enterprise Technology Products</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>Enterprise Technology Products</span>
           </div>
 
-          <h1 style={{ fontSize: 'clamp(32px,5.5vw,60px)', fontWeight: 800, color: '#fff', lineHeight: 1.1, marginBottom: 20, letterSpacing: -0.5 }}>
+          <h1 style={{ fontSize: 'clamp(32px,5.5vw,60px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.1, marginBottom: 20, letterSpacing: -0.5 }}>
             AI Products Built for<br />
-            <span style={{ background: 'linear-gradient(135deg, #60a5fa, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Modern Businesses</span>
+            <span style={{ background: `linear-gradient(135deg, ${NAVY}, ${BLUE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Modern Businesses</span>
           </h1>
 
-          <p style={{ fontSize: 'clamp(16px,2vw,19px)', color: '#94a3b8', lineHeight: 1.75, maxWidth: 620, margin: '0 auto 40px' }}>
+          <p style={{ fontSize: 'clamp(16px,2vw,19px)', color: '#475569', lineHeight: 1.75, maxWidth: 620, margin: '0 auto 40px' }}>
             Ready-to-use AI and automation products designed to increase efficiency, reduce costs, and accelerate business growth.
           </p>
 
@@ -343,25 +343,24 @@ function Hero() {
             <a
               href={`https://wa.me/${wa}?text=Hi! I'd like to book a demo of DigiAgentix products.`}
               target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: BLUE, color: '#fff', padding: '14px 28px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(37,99,235,0.35)' }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: NAVY, color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 16px rgba(30,58,138,0.35)' }}
             >
               <Phone size={16} /> Schedule a Demo
             </a>
             <a
               href={`https://wa.me/${wa}?text=Hi DigiAgentix! I have a question about your products.`}
               target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'transparent', color: '#d1d5db', padding: '14px 28px', borderRadius: 8, fontWeight: 600, fontSize: 15, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: `2px solid ${NAVY}` }}
             >
               <MessageCircle size={16} /> WhatsApp Us
             </a>
           </div>
 
-          {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
             {['MSME Registered', 'India-Based Team', '10+ SaaS Products', 'Enterprise Ready'].map(label => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <CheckCircle2 size={14} color="#60a5fa" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>{label}</span>
+                <CheckCircle2 size={14} color={BLUE} />
+                <span style={{ fontSize: 13, fontWeight: 600, color: SLATE }}>{label}</span>
               </div>
             ))}
           </div>
@@ -372,7 +371,7 @@ function Hero() {
 }
 
 /* ══════════════════════════════════════════
-   PRODUCTS GRID
+   PRODUCTS GRID (light cards)
 ══════════════════════════════════════════ */
 function ProductsGrid() {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -380,21 +379,34 @@ function ProductsGrid() {
   const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
 
   return (
-    <section style={{ background: '#07090f', padding: '72px 24px' }}>
+    <section style={{ background: LIGHTER, padding: '72px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
 
-        {/* Filter tabs */}
+        {/* Section header */}
         <FadeIn>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 56 }}>
+          <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 40px' }}>
+            <SectionLabel text="Our Products" />
+            <h2 style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 12 }}>
+              Purpose-Built for Every Business Need
+            </h2>
+            <p style={{ fontSize: 15, color: MUTED, lineHeight: 1.7 }}>
+              Filter by category to find the right product for your team.
+            </p>
+          </div>
+        </FadeIn>
+
+        {/* Filter tabs */}
+        <FadeIn delay={0.05}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 48 }}>
             {FILTER_TABS.map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveFilter(tab)}
                 style={{
                   padding: '8px 20px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                  background: activeFilter === tab ? BLUE : 'rgba(255,255,255,0.05)',
-                  color: activeFilter === tab ? '#fff' : '#94a3b8',
-                  border: activeFilter === tab ? `1px solid ${BLUE}` : '1px solid rgba(255,255,255,0.08)',
+                  background: activeFilter === tab ? NAVY : '#fff',
+                  color: activeFilter === tab ? '#fff' : MUTED,
+                  border: activeFilter === tab ? `1px solid ${NAVY}` : `1px solid ${BORDER}`,
                   transition: 'all 0.15s',
                 } as React.CSSProperties}
               >
@@ -408,75 +420,73 @@ function ProductsGrid() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filtered.map((product, i) => {
             const Icon = product.icon;
+            const badgeStyle = BADGE_STYLES[product.badge];
             const isPrimary = product.cta === 'Schedule Demo' || product.cta === 'Request Access';
             return (
               <FadeIn key={product.id} delay={i * 0.06}>
                 <div
                   style={{
-                    background: '#0c0f1a', border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: 16, padding: '28px 26px',
-                    display: 'flex', flexDirection: 'column',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                    transition: 'border-color 0.2s, box-shadow 0.2s',
-                    position: 'relative', overflow: 'hidden',
+                    background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+                    padding: '28px 24px', display: 'flex', flexDirection: 'column', height: '100%',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                    transition: 'box-shadow 0.2s, transform 0.2s, border-color 0.2s',
                   }}
                   onMouseEnter={e => {
                     const d = e.currentTarget as HTMLDivElement;
-                    d.style.borderColor = 'rgba(59,130,246,0.4)';
-                    d.style.boxShadow = '0 12px 40px rgba(0,0,0,0.45)';
+                    d.style.boxShadow = '0 16px 40px rgba(30,58,138,0.12)';
+                    d.style.transform = 'translateY(-3px)';
+                    d.style.borderColor = '#93c5fd';
                   }}
                   onMouseLeave={e => {
                     const d = e.currentTarget as HTMLDivElement;
-                    d.style.borderColor = 'rgba(255,255,255,0.08)';
-                    d.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                    d.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                    d.style.transform = 'translateY(0)';
+                    d.style.borderColor = BORDER;
                   }}
                 >
-                  {/* Top accent line */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.4), transparent)' }} />
-
                   {/* Badge + Category */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${BADGE_STYLES[product.badge]}`}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 12px', borderRadius: 20, fontSize: 11, fontWeight: 700, background: badgeStyle.bg, border: `1px solid ${badgeStyle.border}`, color: badgeStyle.color }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'currentColor', display: 'inline-block' }} />
                       {product.badge}
                     </span>
-                    <span style={{ fontSize: 11, color: '#475569', border: '1px solid rgba(255,255,255,0.08)', padding: '3px 10px', borderRadius: 20 }}>
+                    <span style={{ fontSize: 11, color: MUTED, border: `1px solid ${BORDER}`, padding: '3px 10px', borderRadius: 20 }}>
                       {product.category}
                     </span>
                   </div>
 
                   {/* Icon + Name */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 16 }}>
-                    <div style={{ width: 52, height: 52, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon size={22} color={product.iconColor} />
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 14 }}>
+                    <div style={{ width: 52, height: 52, background: '#e0e7ff', border: '1px solid #c7d2fe', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon size={22} color={NAVY} />
                     </div>
                     <div>
-                      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 4, lineHeight: 1.3 }}>{product.name}</h2>
-                      <p style={{ fontSize: 12, fontWeight: 600, color: '#60a5fa', letterSpacing: 0.2 }}>{product.tagline}</p>
+                      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 4, lineHeight: 1.3 }}>{product.name}</h2>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: BLUE, letterSpacing: 0.2 }}>{product.tagline}</p>
                     </div>
                   </div>
 
-                  <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.7, marginBottom: 20 }}>{product.description}</p>
+                  <p style={{ fontSize: 14, color: MUTED, lineHeight: 1.7, marginBottom: 18 }}>{product.description}</p>
 
                   {/* Features */}
-                  <div style={{ flex: 1, marginBottom: 24 }}>
+                  <div style={{ flex: 1, marginBottom: 22 }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                       {product.features.map(f => (
                         <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                          <CheckCircle2 size={13} color="#34d399" style={{ flexShrink: 0, marginTop: 2 }} />
-                          <span style={{ fontSize: 13, color: '#d1d5db', lineHeight: 1.45 }}>{f}</span>
+                          <CheckCircle2 size={13} color={BLUE} style={{ flexShrink: 0, marginTop: 2 }} />
+                          <span style={{ fontSize: 13, color: SLATE, lineHeight: 1.45 }}>{f}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Price + CTA */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 20 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', borderTop: `1px solid ${BORDER}`, paddingTop: 18 }}>
                     <div>
-                      <div style={{ fontSize: 11, color: '#475569', marginBottom: 2, textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 600 }}>Pricing</div>
+                      <div style={{ fontSize: 10, color: MUTED, marginBottom: 2, textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 700 }}>Pricing</div>
                       <div style={{
-                        fontSize: 14, fontWeight: 700,
-                        color: product.priceType === 'free' ? '#34d399' : product.priceType === 'from' ? '#60a5fa' : '#94a3b8',
+                        fontSize: 13, fontWeight: 700,
+                        color: product.priceType === 'free' ? '#059669' : product.priceType === 'from' ? NAVY : MUTED,
                       }}>
                         {product.price}
                       </div>
@@ -487,11 +497,11 @@ function ProductsGrid() {
                       rel={product.external ? 'noopener noreferrer' : undefined}
                       style={{
                         display: 'inline-flex', alignItems: 'center', gap: 7,
-                        padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                        padding: '10px 18px', borderRadius: 8, fontSize: 13, fontWeight: 700,
                         textDecoration: 'none', transition: 'all 0.15s',
                         ...(isPrimary
-                          ? { background: BLUE, color: '#fff', boxShadow: '0 2px 12px rgba(37,99,235,0.35)' }
-                          : { background: 'transparent', color: '#93c5fd', border: '1px solid rgba(37,99,235,0.35)' }),
+                          ? { background: NAVY, color: '#fff', boxShadow: '0 2px 8px rgba(30,58,138,0.25)' }
+                          : { background: 'transparent', color: NAVY, border: `1.5px solid ${NAVY}` }),
                       }}
                     >
                       {product.cta} <ArrowRight size={13} />
@@ -502,17 +512,17 @@ function ProductsGrid() {
             );
           })}
 
-          {/* Coming Soon card */}
+          {/* Coming Soon */}
           <FadeIn delay={0.05}>
-            <div style={{ background: '#0c0f1a', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: 16, padding: '40px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 300 }}>
-              <div style={{ width: 56, height: 56, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                <Package size={24} color="#475569" />
+            <div style={{ background: '#fff', border: `1px dashed ${BORDER}`, borderRadius: 16, padding: '40px 28px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: 280 }}>
+              <div style={{ width: 52, height: 52, background: LIGHTER, border: `1px solid ${BORDER}`, borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
+                <Package size={22} color={MUTED} />
               </div>
-              <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', marginBottom: 10 }}>More Products In Pipeline</h3>
-              <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.65, maxWidth: 280, marginBottom: 20 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>More Products In Pipeline</h3>
+              <p style={{ fontSize: 13, color: MUTED, lineHeight: 1.65, maxWidth: 260, marginBottom: 18 }}>
                 We are building more AI-powered tools for businesses globally. Have an idea or need a custom product?
               </p>
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#60a5fa', textDecoration: 'none', fontWeight: 600 }}>
+              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: BLUE, textDecoration: 'none', fontWeight: 600 }}>
                 Suggest a product <ArrowRight size={13} />
               </Link>
             </div>
@@ -524,22 +534,19 @@ function ProductsGrid() {
 }
 
 /* ══════════════════════════════════════════
-   WHY SECTION
+   WHY SECTION (light)
 ══════════════════════════════════════════ */
 function WhySection() {
   return (
-    <section style={{ background: '#0a0d1a', padding: '80px 24px', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <section style={{ background: '#fff', padding: '80px 24px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <FadeIn>
-          <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <div style={{ width: 24, height: 2, background: BLUE, borderRadius: 2 }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#60a5fa', letterSpacing: 2, textTransform: 'uppercase' }}>Why Choose Us</span>
-            </div>
-            <h2 style={{ fontSize: 'clamp(24px,4vw,38px)', fontWeight: 800, color: '#fff', lineHeight: 1.2, marginBottom: 12 }}>
+          <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 52px' }}>
+            <SectionLabel text="Why Choose Us" />
+            <h2 style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 12 }}>
               Why Businesses Use DigiAgentix Products
             </h2>
-            <p style={{ fontSize: 16, color: '#64748b', lineHeight: 1.7, maxWidth: 540, margin: '0 auto' }}>
+            <p style={{ fontSize: 15, color: MUTED, lineHeight: 1.7, maxWidth: 480, margin: '0 auto' }}>
               Trusted by SMEs, CA firms, and enterprises across India.
             </p>
           </div>
@@ -548,13 +555,13 @@ function WhySection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {whyItems.map(({ icon: Icon, label, sub }, i) => (
             <FadeIn key={label} delay={i * 0.07}>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '22px 20px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 40, height: 40, background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Icon size={17} color="#60a5fa" />
+              <div style={{ background: LIGHTER, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '22px 20px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                <div style={{ width: 42, height: 42, background: '#e0e7ff', border: '1px solid #c7d2fe', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon size={18} color={NAVY} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{label}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>{sub}</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>{label}</div>
+                  <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.5 }}>{sub}</div>
                 </div>
               </div>
             </FadeIn>
@@ -566,7 +573,7 @@ function WhySection() {
 }
 
 /* ══════════════════════════════════════════
-   CTA
+   CTA (dark navy — matches Solutions)
 ══════════════════════════════════════════ */
 function CTA() {
   const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
@@ -585,13 +592,13 @@ function CTA() {
             <a
               href={`https://wa.me/${wa}?text=Hi! I'd like to book a consultation for a custom solution.`}
               target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '14px 28px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
             >
               <Phone size={16} /> Book Consultation
             </a>
             <Link
               href="/contact"
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'transparent', color: '#fff', padding: '14px 28px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: '2px solid rgba(255,255,255,0.3)' }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'transparent', color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: '2px solid rgba(255,255,255,0.3)' }}
             >
               Contact Sales <ArrowRight size={16} />
             </Link>
@@ -607,7 +614,7 @@ function CTA() {
 ══════════════════════════════════════════ */
 export default function ProductsPageClient() {
   return (
-    <div style={{ background: '#07090f' }}>
+    <div style={{ background: '#fff' }}>
       <Hero />
       <ProductsGrid />
       <WhySection />
