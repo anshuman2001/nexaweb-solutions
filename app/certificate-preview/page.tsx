@@ -304,11 +304,12 @@ export default function CertificatePreviewPage() {
           #cert-page, #cert-page * { visibility: visible; }
           #cert-page {
             position: fixed !important;
-            inset: 0 !important;
-            width: 100vw !important;
-            min-height: 100vh !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
             box-shadow: none !important;
-            padding: 36px 56px !important;
+            overflow: hidden !important;
           }
         }
       `}</style>
