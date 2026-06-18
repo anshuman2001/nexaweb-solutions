@@ -300,6 +300,13 @@ export default function CertificatePreviewPage() {
       <style>{`
         @media print {
           @page { size: A4 portrait; margin: 0; }
+          html, body {
+            width: 210mm !important;
+            height: 297mm !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
           body * { visibility: hidden; }
           #cert-page, #cert-page * { visibility: visible; }
           #cert-page {
