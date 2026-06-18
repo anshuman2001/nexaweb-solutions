@@ -8,36 +8,26 @@ import { usePathname } from 'next/navigation';
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 
 const footerLinks = {
-  company: [
-    { label: 'About Us',  href: '/about' },
-    { label: 'Careers',   href: '/#careers' },
-    { label: 'Blog',      href: '/blog' },
-    { label: 'Contact',   href: '/contact' },
-  ],
   solutions: [
-    { label: 'AI & Machine Learning', href: '/services' },
-    { label: 'Automation',            href: '/services' },
-    { label: 'Software Development',  href: '/services' },
-    { label: 'Cloud Solutions',       href: '/services' },
-    { label: 'Consulting',            href: '/services' },
+    { label: 'AI Customer Support',    href: '/services' },
+    { label: 'WhatsApp Automation',    href: '/services' },
+    { label: 'Lead Generation',        href: '/services' },
+    { label: 'Business Websites',      href: '/services' },
+    { label: 'Software Development',   href: '/services' },
+    { label: 'Cloud & Transformation', href: '/services' },
   ],
-  products: [
-    { label: 'AI Agents Suite', href: '/ai-agents' },
-    { label: 'BrokerNote',      href: '/brokernote-ai' },
-    { label: 'ComplianceIQ',    href: '/ca-compliance-calendar' },
-  ],
-  resources: [
-    { label: 'Case Studies',    href: '/portfolio' },
-    { label: 'Documentation',   href: '/blog' },
-    { label: 'Insights',        href: '/blog' },
+  company: [
+    { label: 'About Us', href: '/about' },
+    { label: 'Careers',  href: '/#careers' },
+    { label: 'Blog',     href: '/blog' },
+    { label: 'Contact',  href: '/contact' },
   ],
   legal: [
-    { label: 'Privacy Policy',    href: '/privacy' },
+    { label: 'Privacy Policy',     href: '/privacy' },
     { label: 'Terms & Conditions', href: '/terms' },
   ],
 };
 
-// Static star positions — no JS, no canvas, no animation lag
 const STARS = [
   { top: '8%', left: '5%', size: 1.5, opacity: 0.6 },
   { top: '15%', left: '18%', size: 1, opacity: 0.4 },
@@ -64,11 +54,6 @@ const STARS = [
   { top: '90%', left: '15%', size: 2, opacity: 0.4 },
   { top: '92%', left: '48%', size: 1, opacity: 0.3 },
   { top: '88%', left: '95%', size: 1.5, opacity: 0.45 },
-  { top: '25%', left: '95%', size: 1, opacity: 0.4 },
-  { top: '62%', left: '30%', size: 1, opacity: 0.35 },
-  { top: '14%', left: '55%', size: 1.5, opacity: 0.5 },
-  { top: '45%', left: '98%', size: 1, opacity: 0.3 },
-  { top: '78%', left: '62%', size: 2, opacity: 0.4 },
 ];
 
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
@@ -117,7 +102,7 @@ export default function Footer() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer */}
-        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
+        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
 
           {/* Brand — spans 2 cols */}
           <div className="lg:col-span-2">
@@ -126,11 +111,21 @@ export default function Footer() {
                 <Image src="/logo.png" alt="DigiAgentix" fill className="object-contain" />
               </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
-              Enterprise technology solutions company delivering AI, automation, software development, and digital transformation services for SMEs and enterprises.
+            <p className="text-gray-400 text-sm leading-relaxed mb-5 max-w-xs">
+              Enterprise technology solutions company delivering AI, automation, software development, and digital transformation for SMEs and businesses across India.
             </p>
 
-            <div className="space-y-3">
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-2 mb-5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 font-medium">
+                MSME Registered
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs text-green-300 font-medium">
+                India-Based Team
+              </span>
+            </div>
+
+            <div className="space-y-3 mb-6">
               <a href="mailto:info@digiagentix.com"
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-blue-400 transition-colors">
                 <Mail className="w-4 h-4" />
@@ -147,7 +142,24 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            {/* CTAs */}
+            <div className="flex flex-col gap-2 mb-6">
+              <a
+                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to chat with DigiAgentix.`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 transition-all w-fit">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                Chat on WhatsApp
+              </a>
+              <a
+                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to book a consultation.`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-300 text-sm font-medium hover:bg-blue-600/30 transition-all w-fit">
+                Book a Consultation
+              </a>
+            </div>
+
+            <div className="flex gap-3">
               {[
                 { icon: Linkedin,  label: 'LinkedIn',  href: '#' },
                 { icon: Instagram, label: 'Instagram', href: '#' },
@@ -162,32 +174,17 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <FooterColumn title="Company"   links={footerLinks.company} />
           <FooterColumn title="Solutions" links={footerLinks.solutions} />
-          <FooterColumn title="Products"  links={footerLinks.products} />
-
-          {/* Resources + Legal stacked */}
-          <div className="space-y-8">
-            <FooterColumn title="Resources" links={footerLinks.resources} />
-            <FooterColumn title="Legal"     links={footerLinks.legal} />
-          </div>
+          <FooterColumn title="Company"   links={footerLinks.company} />
+          <FooterColumn title="Legal"     links={footerLinks.legal} />
         </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-white/10 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">© 2026 DigiAgentix. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400">
-              Made with care in India 🇮🇳
-            </span>
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to connect with DigiAgentix.`}
-              target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium hover:bg-green-500/20 transition-all">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              Chat on WhatsApp
-            </a>
-          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400">
+            Made with care in India 🇮🇳
+          </span>
         </div>
       </div>
     </footer>
