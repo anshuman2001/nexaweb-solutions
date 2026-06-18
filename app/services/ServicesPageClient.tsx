@@ -1,20 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import {
-  Brain, Cog, Code2, Cloud, RefreshCw, Briefcase,
-  ArrowRight, CheckCircle2, ChevronRight, CalendarCheck,
-  Target, Shield, BarChart3, Users, Layers,
+  Brain, MessageCircle, TrendingUp, Globe, Code2, Cloud,
+  CheckCircle2, ChevronDown, Phone,
+  BadgeCheck, Users, Zap, Headphones, Award, Handshake, Shield,
 } from 'lucide-react';
 
 /* ── Design tokens (matches homepage) ── */
-const NAVY   = '#1e3a8a';
-const BLUE   = '#2563eb';
-const SLATE  = '#334155';
-const MUTED  = '#64748b';
-const BORDER = '#e2e8f0';
-const LIGHT  = '#f8fafc';
+const NAVY    = '#1e3a8a';
+const BLUE    = '#2563eb';
+const SLATE   = '#334155';
+const MUTED   = '#64748b';
+const BORDER  = '#e2e8f0';
 const LIGHTER = '#f1f5f9';
 
 function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -30,11 +29,11 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-function SectionLabel({ text, dark = false }: { text: string; dark?: boolean }) {
+function SectionLabel({ text }: { text: string }) {
   return (
     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-      <div style={{ width: 24, height: 2, background: dark ? '#60a5fa' : BLUE, borderRadius: 2 }} />
-      <span style={{ fontSize: 12, fontWeight: 700, color: dark ? '#60a5fa' : BLUE, letterSpacing: 2, textTransform: 'uppercase' }}>{text}</span>
+      <div style={{ width: 24, height: 2, background: BLUE, borderRadius: 2 }} />
+      <span style={{ fontSize: 12, fontWeight: 700, color: BLUE, letterSpacing: 2, textTransform: 'uppercase' }}>{text}</span>
     </div>
   );
 }
@@ -42,105 +41,121 @@ function SectionLabel({ text, dark = false }: { text: string; dark?: boolean }) 
 /* ══════════════════════════════════════════
    DATA
 ══════════════════════════════════════════ */
-const solutions = [
+const services = [
   {
     icon: Brain,
-    title: 'AI & Machine Learning',
-    tagline: 'Intelligent systems that learn and decide',
-    desc: 'We design and deploy custom AI models, NLP systems, and predictive analytics platforms that give your business the ability to act on data with speed and confidence.',
-    capabilities: [
-      'Custom ML model development & training',
-      'Natural language processing (NLP)',
-      'Predictive analytics & forecasting',
-      'Computer vision & image intelligence',
-      'AI-powered decision automation',
-      'Model monitoring & retraining',
+    title: 'AI Customer Support',
+    tagline: 'Automate inquiries, delight customers 24/7',
+    desc: 'Deploy AI-powered chatbots and virtual assistants that handle customer questions around the clock across WhatsApp, your website, and email — freeing your team for high-value work.',
+    benefits: [
+      '24/7 customer support without extra staff',
+      'Instant responses to common queries',
+      'Handles hundreds of conversations at once',
+      'Seamless handoff to human agents when needed',
     ],
-    outcomes: ['Faster decision-making', 'Reduced operational error', 'Revenue from data assets'],
   },
   {
-    icon: Cog,
-    title: 'Intelligent Automation',
-    tagline: 'Eliminate repetition. Accelerate throughput.',
-    desc: 'From document processing to multi-channel AI-driven operations — we automate the workflows that consume your team\'s time, reduce errors, and keep your business running 24/7.',
-    capabilities: [
-      'Robotic process automation (RPA)',
-      'Intelligent document processing',
-      'Multi-channel workflow automation',
-      'API integration & orchestration',
-      'AI agent deployment & management',
-      'Business rule engine configuration',
+    icon: MessageCircle,
+    title: 'WhatsApp Automation',
+    tagline: 'Turn WhatsApp into a business growth engine',
+    desc: 'Automate lead follow-ups, appointment reminders, order updates, and customer communication on WhatsApp — the channel your customers already use every day.',
+    benefits: [
+      'Instant automated lead follow-up',
+      'Appointment & payment reminders',
+      'Order status and delivery updates',
+      'Bulk messaging with personalisation',
     ],
-    outcomes: ['60–80% task time reduction', 'Near-zero processing errors', '24/7 operational continuity'],
+  },
+  {
+    icon: TrendingUp,
+    title: 'Lead Generation Systems',
+    tagline: 'More qualified leads, less manual effort',
+    desc: 'We build automated lead capture and nurturing pipelines that identify, qualify, and follow up with prospects across your digital channels — so your sales team talks to buyers, not browsers.',
+    benefits: [
+      'Automated lead capture from website & ads',
+      'Smart qualification and scoring',
+      'CRM integration and sync',
+      'Follow-up sequences that convert',
+    ],
+  },
+  {
+    icon: Globe,
+    title: 'Business Websites',
+    tagline: 'Professional websites that convert visitors',
+    desc: 'Fast, modern, mobile-first websites built to represent your brand professionally and turn visitors into customers — with SEO, analytics, and easy content management built in.',
+    benefits: [
+      'Mobile-first, fast-loading design',
+      'SEO optimised from day one',
+      'Contact forms and WhatsApp integration',
+      'Easy to manage and update',
+    ],
   },
   {
     icon: Code2,
-    title: 'Software Development',
-    tagline: 'Custom enterprise software, built to last',
-    desc: 'We build production-grade web applications, enterprise SaaS platforms, internal tools, and APIs that are designed to scale with your business and integrate with your existing systems.',
-    capabilities: [
-      'Enterprise web application development',
-      'SaaS platform architecture & build',
-      'REST & GraphQL API development',
-      'Internal tooling & admin systems',
-      'Database design & optimisation',
-      'Legacy system modernisation',
+    title: 'Custom Software Development',
+    tagline: 'Software built exactly for your business',
+    desc: 'We design and build custom web applications, internal tools, and business management systems tailored to your exact workflows — no bloated off-the-shelf software that only half-fits your needs.',
+    benefits: [
+      'Built around your actual workflows',
+      'Scales as your business grows',
+      'Integrates with tools you already use',
+      'Ongoing support and improvements',
     ],
-    outcomes: ['Reduced vendor dependency', 'Faster internal operations', 'Scalable custom infrastructure'],
   },
   {
     icon: Cloud,
-    title: 'Cloud Solutions',
-    tagline: 'Scalable infrastructure for modern workloads',
-    desc: 'We architect, migrate, and manage cloud infrastructure across AWS, GCP, and Azure — building DevOps pipelines, serverless functions, and managed services that keep your business running at scale.',
-    capabilities: [
-      'Cloud migration strategy & execution',
-      'AWS / GCP / Azure architecture',
-      'Serverless & containerised deployments',
-      'CI/CD pipeline implementation',
-      'Cost optimisation & right-sizing',
-      'Infrastructure as code (IaC)',
+    title: 'Cloud & Digital Transformation',
+    tagline: 'Modernise your business for the digital age',
+    desc: 'Move your operations to the cloud, digitise your processes, and future-proof your infrastructure — with a clear migration roadmap and hands-on support from planning to go-live.',
+    benefits: [
+      'Reduce IT infrastructure costs',
+      'Better data security and backups',
+      'Work and collaborate from anywhere',
+      'Modern, scalable infrastructure',
     ],
-    outcomes: ['30–50% infrastructure cost savings', 'Improved reliability & uptime', 'Faster release cycles'],
-  },
-  {
-    icon: RefreshCw,
-    title: 'Digital Transformation',
-    tagline: 'End-to-end modernisation of your business',
-    desc: 'We partner with you to systematically modernise your operations, customer-facing systems, and internal workflows — from initial audit to full deployment, with measurable milestones at every stage.',
-    capabilities: [
-      'Digital maturity assessment',
-      'Technology roadmap development',
-      'Legacy process redesign',
-      'Customer experience modernisation',
-      'Change management support',
-      'KPI-driven transformation tracking',
-    ],
-    outcomes: ['Measurable operational improvement', 'Reduced legacy overhead', 'Future-ready architecture'],
-  },
-  {
-    icon: Briefcase,
-    title: 'Enterprise Consulting',
-    tagline: 'Independent technology advisory you can trust',
-    desc: 'Our consulting practice offers CTO-level technology guidance without the full-time cost — technology assessments, vendor evaluations, architecture reviews, and strategic roadmaps for businesses navigating complex decisions.',
-    capabilities: [
-      'Technology stack assessment & audit',
-      'Vendor evaluation & selection',
-      'Architecture design & review',
-      'Build vs. buy analysis',
-      'IT strategy & roadmap planning',
-      'Security & compliance advisory',
-    ],
-    outcomes: ['Informed, risk-aware decisions', 'Reduced wasted investment', 'Aligned IT & business strategy'],
   },
 ];
 
-const process = [
-  { step: '01', title: 'Discovery',    desc: 'We begin by thoroughly understanding your business, current systems, pain points, and desired outcomes before recommending any technology.' },
-  { step: '02', title: 'Strategy',     desc: 'We design a tailored technology approach — architecture, timeline, resource plan, and measurable success criteria agreed upfront.' },
-  { step: '03', title: 'Build',        desc: 'Our engineering team builds iteratively, with regular demos, code reviews, and milestone sign-offs throughout the engagement.' },
-  { step: '04', title: 'Deploy',       desc: 'We manage go-live end-to-end — testing, staging, production deployment, and hypercare in the weeks following launch.' },
-  { step: '05', title: 'Optimise',     desc: 'Post-launch, we monitor performance, gather operational feedback, and continuously improve the solution as your business evolves.' },
+const whyChoose = [
+  { icon: BadgeCheck,  label: 'MSME Registered',        sub: 'Verified & compliant Indian company' },
+  { icon: Users,       label: 'India-Based Team',        sub: 'Local expertise, no outsourcing' },
+  { icon: Award,       label: '50+ Projects Delivered',  sub: 'Proven track record across industries' },
+  { icon: Zap,         label: 'Affordable for SMEs',     sub: 'Enterprise quality, SME-friendly pricing' },
+  { icon: TrendingUp,  label: 'Fast Turnaround',         sub: 'Most projects live in 2–6 weeks' },
+  { icon: Headphones,  label: 'Dedicated Support',       sub: 'WhatsApp & phone support always on' },
+  { icon: Shield,      label: 'Enterprise-Grade Quality', sub: 'Rigorous testing and security practices' },
+  { icon: Handshake,   label: 'Long-Term Partnership',   sub: 'We grow alongside your business' },
+];
+
+const steps = [
+  { num: '01', title: 'Discovery Call',        desc: 'We start with a free 30-minute call to understand your business, goals, and the specific problem you want to solve.' },
+  { num: '02', title: 'Requirement Analysis',  desc: 'Our team documents your exact requirements, maps your current workflows, and identifies the best technology approach.' },
+  { num: '03', title: 'Solution Design',       desc: 'We present a clear proposal — scope, timeline, investment, and expected outcomes — no technical jargon, just plain language.' },
+  { num: '04', title: 'Development & Testing', desc: 'Our engineers build your solution iteratively with regular progress updates and demos so you are never in the dark.' },
+  { num: '05', title: 'Deployment & Support',  desc: 'We go live together, train your team, and provide ongoing WhatsApp and phone support to ensure everything runs smoothly.' },
+];
+
+const faqs = [
+  {
+    q: 'How much does it cost?',
+    a: 'Our pricing is flexible and designed to be accessible for SMEs. Most projects start from ₹25,000 and scale based on scope. We provide a detailed, fixed-price quote before any work begins — no surprises.',
+  },
+  {
+    q: 'How long does a typical project take?',
+    a: 'Simple automation or chatbot projects typically take 1–2 weeks. Custom software and websites take 3–6 weeks. We share a clear timeline during our discovery call and keep you updated throughout.',
+  },
+  {
+    q: 'Do you provide support after the project is live?',
+    a: 'Yes — all our projects include post-launch support. We are reachable on WhatsApp and phone. For ongoing maintenance and updates, we offer affordable monthly support plans.',
+  },
+  {
+    q: 'Can you customise the solution for my specific business?',
+    a: 'Absolutely. Every solution we build is custom-made for your business. We do not use generic templates or off-the-shelf tools that only half-fit. Your solution reflects your exact workflows and brand.',
+  },
+  {
+    q: 'Is DigiAgentix suitable for small businesses and startups?',
+    a: 'Yes — we specifically serve SMEs, startups, and growing businesses across India. Our pricing, timelines, and communication style are designed for teams who want results without the complexity of a large IT vendor.',
+  },
 ];
 
 /* ══════════════════════════════════════════
@@ -149,112 +164,83 @@ const process = [
 function Hero() {
   const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
   return (
-    <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 60%, #e8efff 100%)', paddingTop: 104, paddingBottom: 80 }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 88 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#e0e7ff', border: '1px solid #c7d2fe', borderRadius: 20, padding: '6px 18px', marginBottom: 28 }}>
+            <span style={{ width: 8, height: 8, background: BLUE, borderRadius: '50%', display: 'inline-block' }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>Technology Solutions for Indian Businesses</span>
+          </div>
 
-          <motion.div initial={{ opacity: 0, x: -32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#e0e7ff', border: '1px solid #c7d2fe', borderRadius: 20, padding: '6px 16px', marginBottom: 24 }}>
-              <span style={{ width: 8, height: 8, background: BLUE, borderRadius: '50%', display: 'inline-block' }} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>Technology Solutions</span>
-            </div>
+          <h1 style={{ fontSize: 'clamp(32px,5.5vw,60px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.1, marginBottom: 20, letterSpacing: -0.5 }}>
+            Technology Solutions That<br />
+            <span style={{ background: `linear-gradient(135deg, ${NAVY}, ${BLUE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Drive Business Growth</span>
+          </h1>
 
-            <h1 style={{ fontSize: 'clamp(30px,5vw,56px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.1, marginBottom: 20, letterSpacing: -0.5 }}>
-              Enterprise Technology<br />
-              <span style={{ color: NAVY }}>Services That</span>{' '}
-              <span style={{ background: `linear-gradient(135deg, ${BLUE}, #6366f1)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Drive Results</span>
-            </h1>
+          <p style={{ fontSize: 'clamp(16px,2vw,19px)', color: '#475569', lineHeight: 1.75, marginBottom: 40, maxWidth: 620, margin: '0 auto 40px' }}>
+            From AI-powered automation to custom software and cloud solutions — we build technology that helps Indian businesses save time, reduce costs, and grow faster.
+          </p>
 
-            <p style={{ fontSize: 'clamp(15px,2vw,18px)', color: '#475569', lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
-              From AI and automation to cloud infrastructure and digital transformation — we deliver end-to-end technology solutions that create measurable business outcomes.
-            </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+            <a
+              href={`https://wa.me/${wa}?text=Hi! I'd like to book a free consultation with DigiAgentix.`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: NAVY, color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 16px rgba(30,58,138,0.35)' }}
+            >
+              <Phone size={16} /> Book a Free Consultation
+            </a>
+            <a
+              href={`https://wa.me/${wa}?text=Hi! I have a question about DigiAgentix services.`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: `2px solid ${NAVY}` }}
+            >
+              <MessageCircle size={16} /> WhatsApp Us
+            </a>
+          </div>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-10">
-              <a
-                href={`https://wa.me/${wa}?text=Hi! I'd like to discuss a technology project.`}
-                target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: NAVY, color: '#fff', padding: '14px 28px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 14px rgba(30,58,138,0.35)' }}
-              >
-                <CalendarCheck size={16} /> Schedule a Consultation
-              </a>
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '14px 28px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: `2px solid ${NAVY}` }}>
-                Contact Us <ArrowRight size={16} />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { icon: Target,   label: 'Outcomes First',    sub: 'KPI-driven engagements' },
-                { icon: Shield,   label: 'Enterprise Grade',  sub: 'Security-first delivery' },
-                { icon: BarChart3, label: 'Measurable ROI',  sub: 'Avg. 3× return' },
-              ].map(({ icon: Icon, label, sub }) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                  <div style={{ width: 34, height: 34, background: '#e0e7ff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
-                    <Icon size={15} color={NAVY} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: '#0f172a' }}>{label}</div>
-                    <div style={{ fontSize: 10, color: MUTED }}>{sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right — service overview card */}
-          <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.15 }}>
-            <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e2e8f0', boxShadow: '0 20px 60px rgba(30,58,138,0.10)', padding: 28 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: BLUE, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 18 }}>Our Practice Areas</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                {solutions.map(({ icon: Icon, title, tagline }, i) => (
-                  <div key={title} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 0', borderBottom: i < solutions.length - 1 ? `1px solid ${BORDER}` : 'none' }}>
-                    <div style={{ width: 38, height: 38, background: '#e0e7ff', borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon size={17} color={NAVY} />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>{title}</div>
-                      <div style={{ fontSize: 11, color: MUTED, marginTop: 1 }}>{tagline}</div>
-                    </div>
-                    <ChevronRight size={14} color={MUTED} />
-                  </div>
-                ))}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+            {['MSME Registered', 'India-Based Team', '50+ Projects Delivered', 'Pan India Service'].map(label => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <CheckCircle2 size={14} color={BLUE} />
+                <span style={{ fontSize: 13, fontWeight: 600, color: SLATE }}>{label}</span>
               </div>
-            </div>
-          </motion.div>
-        </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 /* ══════════════════════════════════════════
-   SOLUTIONS GRID
+   SERVICES GRID
 ══════════════════════════════════════════ */
-function SolutionsGrid() {
+function ServicesGrid() {
   return (
     <section style={{ background: LIGHTER, padding: '88px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <FadeIn>
           <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 56px' }}>
-            <SectionLabel text="Our Services" />
+            <SectionLabel text="What We Do" />
             <h2 style={{ fontSize: 'clamp(26px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
-              End-to-End Technology Services
+              Solutions Built for Your Business
             </h2>
             <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.7 }}>
-              Six practice areas. One integrated team. Every service designed to connect directly to your business goals.
+              Six practical services designed to help Indian businesses automate operations, reach more customers, and grow efficiently.
             </p>
           </div>
         </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {solutions.map(({ icon: Icon, title, tagline, desc, capabilities, outcomes }, i) => (
+          {services.map(({ icon: Icon, title, tagline, desc, benefits }, i) => (
             <FadeIn key={title} delay={i * 0.07}>
-              <div style={{
-                background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
-                padding: '28px 24px', height: '100%', display: 'flex', flexDirection: 'column',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                transition: 'box-shadow 0.2s, transform 0.2s, border-color 0.2s',
-              }}
+              <div
+                style={{
+                  background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+                  padding: '28px 24px', height: '100%', display: 'flex', flexDirection: 'column',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  transition: 'box-shadow 0.2s, transform 0.2s, border-color 0.2s',
+                }}
                 onMouseEnter={e => {
                   const d = e.currentTarget as HTMLDivElement;
                   d.style.boxShadow = '0 16px 40px rgba(30,58,138,0.12)';
@@ -268,35 +254,19 @@ function SolutionsGrid() {
                   d.style.borderColor = BORDER;
                 }}
               >
-                {/* Icon + title */}
-                <div style={{ width: 50, height: 50, background: '#e0e7ff', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
-                  <Icon size={22} color={NAVY} />
+                <div style={{ width: 52, height: 52, background: '#e0e7ff', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
+                  <Icon size={23} color={NAVY} />
                 </div>
                 <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>{title}</h3>
                 <p style={{ fontSize: 12, fontWeight: 600, color: BLUE, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>{tagline}</p>
                 <p style={{ fontSize: 14, color: MUTED, lineHeight: 1.7, marginBottom: 20 }}>{desc}</p>
-
-                {/* Capabilities */}
-                <div style={{ marginBottom: 20, flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: MUTED, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>What We Deliver</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                    {capabilities.map(c => (
-                      <div key={c} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                        <CheckCircle2 size={13} color={BLUE} style={{ flexShrink: 0, marginTop: 2 }} />
-                        <span style={{ fontSize: 13, color: SLATE, lineHeight: 1.4 }}>{c}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Outcomes */}
-                <div style={{ background: '#f0f4ff', border: '1px solid #c7d2fe', borderRadius: 10, padding: '12px 14px' }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: NAVY, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>Business Outcomes</div>
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {outcomes.map(o => (
-                      <span key={o} style={{ fontSize: 11, background: '#fff', color: NAVY, border: '1px solid #c7d2fe', borderRadius: 20, padding: '3px 10px', fontWeight: 600 }}>{o}</span>
-                    ))}
-                  </div>
+                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {benefits.map(b => (
+                    <div key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                      <CheckCircle2 size={14} color={BLUE} style={{ flexShrink: 0, marginTop: 2 }} />
+                      <span style={{ fontSize: 13, color: SLATE, lineHeight: 1.4 }}>{b}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </FadeIn>
@@ -308,39 +278,70 @@ function SolutionsGrid() {
 }
 
 /* ══════════════════════════════════════════
-   HOW WE WORK
+   WHY CHOOSE
+══════════════════════════════════════════ */
+function WhyChoose() {
+  return (
+    <section style={{ background: '#fff', padding: '88px 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <FadeIn>
+          <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 56px' }}>
+            <SectionLabel text="Why DigiAgentix" />
+            <h2 style={{ fontSize: 'clamp(26px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
+              Why Businesses Choose Us
+            </h2>
+            <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.7 }}>
+              We are not just a technology vendor — we are a long-term growth partner for your business.
+            </p>
+          </div>
+        </FadeIn>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {whyChoose.map(({ icon: Icon, label, sub }, i) => (
+            <FadeIn key={label} delay={i * 0.06}>
+              <div style={{ background: LIGHTER, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '24px 20px' }}>
+                <div style={{ width: 44, height: 44, background: '#e0e7ff', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                  <Icon size={19} color={NAVY} />
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>{label}</div>
+                <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.5 }}>{sub}</div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════
+   PROCESS
 ══════════════════════════════════════════ */
 function HowWeWork() {
   return (
-    <section style={{ background: '#fff', padding: '88px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+    <section style={{ background: LIGHTER, padding: '88px 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <FadeIn>
           <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 56px' }}>
             <SectionLabel text="Our Process" />
             <h2 style={{ fontSize: 'clamp(26px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
-              How We Deliver
+              How We Work With You
             </h2>
             <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.7 }}>
-              A disciplined, transparent delivery process — from your first call to continuous post-launch improvement.
+              A simple, transparent process from your first call to a running solution — and beyond.
             </p>
           </div>
         </FadeIn>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {process.map(({ step, title, desc }, i) => (
-            <FadeIn key={step} delay={i * 0.08}>
-              <div style={{ position: 'relative' }}>
-                {/* Connector line (desktop only) */}
-                {i < process.length - 1 && (
-                  <div className="hidden lg:block" style={{ position: 'absolute', top: 24, left: '100%', width: '100%', height: 1, background: `linear-gradient(90deg, ${BORDER}, transparent)`, zIndex: 0 }} />
-                )}
-                <div style={{ background: LIGHTER, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '24px 20px', height: '100%', position: 'relative', zIndex: 1 }}>
-                  <div style={{ width: 48, height: 48, background: NAVY, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{step}</span>
-                  </div>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{title}</h3>
-                  <p style={{ fontSize: 13, color: MUTED, lineHeight: 1.6 }}>{desc}</p>
+          {steps.map(({ num, title, desc }, i) => (
+            <FadeIn key={num} delay={i * 0.08}>
+              <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '24px 20px', height: '100%' }}>
+                <div style={{ width: 48, height: 48, background: NAVY, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{num}</span>
                 </div>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{title}</h3>
+                <p style={{ fontSize: 13, color: MUTED, lineHeight: 1.6 }}>{desc}</p>
               </div>
             </FadeIn>
           ))}
@@ -351,61 +352,45 @@ function HowWeWork() {
 }
 
 /* ══════════════════════════════════════════
-   ENGAGEMENT MODELS
+   FAQ
 ══════════════════════════════════════════ */
-function EngagementModels() {
+function FAQ() {
+  const [open, setOpen] = useState<number | null>(null);
   return (
-    <section style={{ background: LIGHTER, padding: '80px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+    <section style={{ background: '#fff', padding: '88px 24px' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto' }}>
         <FadeIn>
-          <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 48px' }}>
-            <SectionLabel text="How We Engage" />
-            <h2 style={{ fontSize: 'clamp(26px,4vw,40px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 14 }}>
-              Flexible Engagement Models
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <SectionLabel text="FAQ" />
+            <h2 style={{ fontSize: 'clamp(26px,4vw,40px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 12 }}>
+              Frequently Asked Questions
             </h2>
             <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.7 }}>
-              We structure our engagements to match your project type, team size, and operational preferences.
+              Everything you need to know before getting started.
             </p>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              icon: Target,
-              title: 'Fixed-Scope Project',
-              desc: 'A defined deliverable with agreed timeline, milestones, and investment. Ideal for well-scoped builds — new platforms, automation systems, or specific integrations.',
-              best: 'Best for: New platforms, defined requirements',
-            },
-            {
-              icon: Users,
-              title: 'Dedicated Team',
-              desc: 'A dedicated team of engineers, consultants, or specialists embedded in your workflow. Fully managed by DigiAgentix, reporting directly to your stakeholders.',
-              best: 'Best for: Ongoing development, scale-ups',
-              featured: true,
-            },
-            {
-              icon: Layers,
-              title: 'Advisory & Consulting',
-              desc: 'Strategic technology guidance, architecture reviews, and roadmap planning — without a full development engagement. CTO-level advisory at a fraction of the cost.',
-              best: 'Best for: Strategy, audits, complex decisions',
-            },
-          ].map(({ icon: Icon, title, desc, best, featured }) => (
-            <FadeIn key={title} delay={0.08}>
-              <div style={{
-                background: featured ? NAVY : '#fff',
-                border: `1px solid ${featured ? NAVY : BORDER}`,
-                borderRadius: 16, padding: '32px 26px', height: '100%',
-                boxShadow: featured ? '0 12px 40px rgba(30,58,138,0.22)' : '0 2px 8px rgba(0,0,0,0.04)',
-              }}>
-                <div style={{ width: 48, height: 48, background: featured ? 'rgba(255,255,255,0.12)' : '#e0e7ff', borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                  <Icon size={22} color={featured ? '#93c5fd' : NAVY} />
-                </div>
-                <h3 style={{ fontSize: 18, fontWeight: 800, color: featured ? '#fff' : '#0f172a', marginBottom: 12 }}>{title}</h3>
-                <p style={{ fontSize: 14, color: featured ? '#94a3b8' : MUTED, lineHeight: 1.7, marginBottom: 20 }}>{desc}</p>
-                <div style={{ paddingTop: 16, borderTop: `1px solid ${featured ? 'rgba(255,255,255,0.1)' : BORDER}` }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: featured ? '#60a5fa' : BLUE }}>{best}</span>
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {faqs.map(({ q, a }, i) => (
+            <FadeIn key={i} delay={i * 0.05}>
+              <div style={{ background: LIGHTER, border: `1px solid ${open === i ? '#93c5fd' : BORDER}`, borderRadius: 12, overflow: 'hidden', transition: 'border-color 0.2s' }}>
+                <button
+                  onClick={() => setOpen(open === i ? null : i)}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', gap: 12 }}
+                >
+                  <span style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', lineHeight: 1.4 }}>{q}</span>
+                  <ChevronDown
+                    size={18}
+                    color={MUTED}
+                    style={{ flexShrink: 0, transform: open === i ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.25s' }}
+                  />
+                </button>
+                {open === i && (
+                  <div style={{ padding: '0 20px 18px', fontSize: 14, color: SLATE, lineHeight: 1.7 }}>
+                    {a}
+                  </div>
+                )}
               </div>
             </FadeIn>
           ))}
@@ -418,33 +403,37 @@ function EngagementModels() {
 /* ══════════════════════════════════════════
    CTA
 ══════════════════════════════════════════ */
-function ServicesCTA() {
+function CTA() {
   const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
   return (
     <section style={{ background: NAVY, padding: '88px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
         <FadeIn>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#93c5fd', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 16 }}>Start a Conversation</div>
-          <h2 style={{ fontSize: 'clamp(26px,4vw,46px)', fontWeight: 800, color: '#fff', lineHeight: 1.15, marginBottom: 20 }}>
-            Ready to Discuss Your Project?
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#93c5fd', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 16 }}>Get Started Today</div>
+          <h2 style={{ fontSize: 'clamp(26px,4vw,48px)', fontWeight: 800, color: '#fff', lineHeight: 1.15, marginBottom: 18 }}>
+            Ready to Transform<br />Your Business?
           </h2>
-          <p style={{ fontSize: 17, color: '#93c5fd', lineHeight: 1.7, marginBottom: 44, maxWidth: 540, margin: '0 auto 44px' }}>
-            Book a 30-minute discovery call. We&apos;ll listen to your requirements, assess feasibility, and outline an approach — no obligation, no pressure.
+          <p style={{ fontSize: 17, color: '#94a3b8', lineHeight: 1.7, maxWidth: 500, margin: '0 auto 44px' }}>
+            Book a free 30-minute consultation. We will listen, suggest the right solution, and give you a clear quote — no pressure, no obligation.
           </p>
-          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 32 }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <a
-              href={`https://wa.me/${wa}?text=Hi! I'd like to discuss a technology project with DigiAgentix.`}
+              href={`https://wa.me/${wa}?text=Hi! I'd like to book a free consultation with DigiAgentix.`}
               target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
             >
-              <CalendarCheck size={16} /> Book a Discovery Call
+              <Phone size={16} /> Book a Free Consultation
             </a>
-            <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: '2px solid rgba(255,255,255,0.35)' }}>
-              Send an Enquiry <ArrowRight size={16} />
-            </Link>
+            <a
+              href={`https://wa.me/${wa}?text=Hi DigiAgentix! I'd like to learn more about your services.`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'transparent', color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: '2px solid rgba(255,255,255,0.35)' }}
+            >
+              <MessageCircle size={16} /> WhatsApp Us
+            </a>
           </div>
-          <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {['No commitment required', 'Response within 24 hours', '50+ projects delivered'].map(t => (
+          <div className="flex flex-wrap gap-6 justify-center">
+            {['Free consultation, no obligation', 'Response within a few hours', 'Pan India service'].map(t => (
               <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <CheckCircle2 size={13} color="#60a5fa" />
                 <span style={{ fontSize: 13, color: '#cbd5e1' }}>{t}</span>
@@ -464,10 +453,11 @@ export default function ServicesPageClient() {
   return (
     <div style={{ background: '#fff' }}>
       <Hero />
-      <SolutionsGrid />
+      <ServicesGrid />
+      <WhyChoose />
       <HowWeWork />
-      <EngagementModels />
-      <ServicesCTA />
+      <FAQ />
+      <CTA />
     </div>
   );
 }
