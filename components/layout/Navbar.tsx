@@ -40,14 +40,19 @@ export default function Navbar() {
 
   if (isStandalone) return null;
 
-  /* ── Enterprise (homepage) styles ── */
+  /* ── Enterprise styles ──
+     Homepage: white background (light theme)
+     All other pages: always dark navy — consistent from load, no flash */
   const navBg = isHome
     ? (scrolled ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)')
-    : (scrolled ? 'rgba(7,9,15,0.92)'      : 'transparent');
+    : '#0f172a';
   const navBorder = isHome
     ? (scrolled ? '1px solid #e2e8f0' : '1px solid rgba(226,232,240,0.6)')
-    : (scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none');
-  const navShadow = scrolled ? (isHome ? '0 2px 16px rgba(0,0,0,0.08)' : '0 4px 24px rgba(0,0,0,0.4)') : 'none';
+    : '1px solid rgba(255,255,255,0.06)';
+  const navShadow = isHome
+    ? (scrolled ? '0 2px 16px rgba(0,0,0,0.08)' : 'none')
+    : '0 4px 24px rgba(0,0,0,0.35)';
+  const navHeight = !isHome && scrolled ? 60 : 68;
   const linkColor = isHome ? '#334155' : '#d1d5db';
   const linkActive = isHome ? '#1e3a8a' : '#fff';
   const logoSub    = isHome ? '#64748b' : '#94a3b8';
@@ -67,7 +72,7 @@ export default function Navbar() {
         }}
       >
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: navHeight, transition: 'height 0.3s ease' }}>
 
             {/* Logo */}
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
