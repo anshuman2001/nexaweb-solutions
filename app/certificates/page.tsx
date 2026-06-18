@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 
-const API = 'https://brokernote-backend.onrender.com';
+const API = '';
 
 interface Cert {
   id: string;
@@ -59,7 +59,7 @@ export default function CertificatesPage() {
   async function fetchCerts(t = token) {
     setLoadingCerts(true);
     try {
-      const res = await fetch(`${API}/certs`, { headers: { Authorization: `Bearer ${t}` } });
+      const res = await fetch(`/api/certs`, { headers: { Authorization: `Bearer ${t}` } });
       if (res.ok) setCerts(await res.json());
     } catch { /* ignore */ }
     setLoadingCerts(false);
@@ -67,7 +67,7 @@ export default function CertificatesPage() {
 
   async function doAuth() {
     setAuthLoading(true); setAuthError('');
-    const url = authMode === 'login' ? `${API}/auth/login` : `${API}/auth/signup`;
+    const url = authMode === 'login' ? `/api/auth/login` : `/api/auth/signup`;
     const body: Record<string, string> = { email: authForm.email, password: authForm.password };
     if (authMode === 'signup') { body.name = authForm.name; body.firm = authForm.firm; }
     try {
@@ -84,7 +84,7 @@ export default function CertificatesPage() {
   async function issueCert() {
     setIssuing(true); setIssueMsg(''); setNewCert(null);
     try {
-      const res = await fetch(`${API}/certs/issue`, {
+      const res = await fetch(`/api/certs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(form),
@@ -104,7 +104,7 @@ export default function CertificatesPage() {
   async function revoke(id: string) {
     if (!confirm(`Revoke certificate ${id}? This cannot be undone.`)) return;
     setRevoking(id);
-    await fetch(`${API}/certs/${id}/revoke`, {
+    await fetch(`/api/certs/${id}/revoke`, {
       method: 'PUT', headers: { Authorization: `Bearer ${token}` }
     });
     fetchCerts();
@@ -395,7 +395,7 @@ export default function CertificatesPage() {
             <div className="bg-white rounded-xl p-4 flex items-center justify-center mb-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${API}/certs/qr/${qrModal.id}`}
+                src={`/api/certs/qr/${qrModal.id}`}
                 alt={`QR Code for ${qrModal.id}`}
                 className="w-48 h-48"
               />
@@ -414,7 +414,7 @@ export default function CertificatesPage() {
 
             <div className="flex gap-3">
               <a
-                href={`${API}/certs/qr/${qrModal.id}`}
+                href={`/api/certs/qr/${qrModal.id}`}
                 download={`QR_${qrModal.id}.png`}
                 className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl text-sm font-semibold text-center transition">
                 ⬇ Download QR

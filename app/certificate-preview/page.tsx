@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const API = 'https://brokernote-backend.onrender.com';
+const API = '';
 
 interface CertData {
   id: string;
@@ -85,11 +85,11 @@ export default function CertificatePreviewPage() {
     if (!id) { setError('No certificate ID provided.'); setLoading(false); return; }
     const upper = id.toUpperCase();
 
-    fetch(`${API}/certs/verify/${upper}`)
+    fetch(`/api/certs/verify/${upper}`)
       .then(r => r.ok ? r.json() : Promise.reject('not_found'))
       .then(data => {
         setCert(data);
-        return fetch(`${API}/certs/qr/${upper}`);
+        return fetch(`/api/certs/qr/${upper}`);
       })
       .then(r => r.blob())
       .then(blob => new Promise<string>(res => {
