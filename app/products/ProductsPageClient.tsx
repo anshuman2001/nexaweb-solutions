@@ -271,32 +271,9 @@ const products: Product[] = [
     price: 'Free Forever',
     priceType: 'free',
   },
-  {
-    id: 'internship-certificate',
-    href: '/certificates',
-    external: false,
-    badge: 'Popular',
-    icon: Award,
-    name: 'Internship Certificate Generator',
-    tagline: 'Issue & Verify Digital Internship Certificates',
-    description: 'Issue professional internship certificates with unique QR codes. Anyone can scan to instantly verify on a live page — no fake certificates possible.',
-    features: [
-      'Beautiful A4 certificate design with gold borders',
-      'Unique QR code on every certificate',
-      'Live verification page — scan & get verified badge',
-      'Instant PDF download / print from browser',
-      'Admin panel to issue, manage & revoke certs',
-      'No subscription required',
-    ],
-    cta: 'Learn More',
-    category: 'HR & Internship',
-    filterKey: 'HR',
-    price: 'Free Forever',
-    priceType: 'free',
-  },
 ];
 
-const FILTER_TABS = ['All', 'Finance', 'AI Agents', 'Marketing', 'eCommerce', 'Education', 'Design', 'HR'];
+const FILTER_TABS = ['All', 'Finance', 'AI Agents', 'Marketing', 'eCommerce', 'Education', 'Design'];
 
 /* Badge styles for light backgrounds */
 const BADGE_STYLES: Record<BadgeVariant, { bg: string; border: string; color: string }> = {
