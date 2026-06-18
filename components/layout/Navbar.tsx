@@ -8,14 +8,15 @@ import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 
 const navLinks = [
-  { label: 'Home',         href: '/' },
-  { label: 'About Us',     href: '/about' },
-  { label: 'Solutions',    href: '/services' },
-  { label: 'Industries',   href: '/#industries' },
-  { label: 'Products',     href: '/products' },
-  { label: 'Case Studies', href: '/portfolio' },
-  { label: 'Blog',         href: '/blog' },
-  { label: 'Contact',      href: '/contact' },
+  { label: 'Home',      href: '/' },
+  { label: 'About Us',  href: '/about' },
+  { label: 'Solutions', href: '/services' },
+  { label: 'Industries',href: '/#industries' },
+  { label: 'Products',  href: '/products' },
+  { label: 'Resources', href: '/portfolio' },
+  { label: 'Careers',   href: '/#careers' },
+  { label: 'Blog',      href: '/blog' },
+  { label: 'Contact',   href: '/contact' },
 ];
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
@@ -89,7 +90,7 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       style={{
-                        padding: '8px 14px', borderRadius: 6, fontSize: 13.5, fontWeight: 600,
+                        padding: '8px 10px', borderRadius: 6, fontSize: 13, fontWeight: 600,
                         color: active ? linkActive : linkColor,
                         textDecoration: 'none',
                         background: active ? (isHome ? '#e0e7ff' : 'rgba(255,255,255,0.08)') : 'transparent',

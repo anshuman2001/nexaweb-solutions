@@ -24,7 +24,7 @@ export default function HeroSection() {
   return (
     <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 60%, #e8efff 100%)', paddingTop: 96, paddingBottom: 80 }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
           {/* Left — text */}
           <motion.div initial={{ opacity: 0, x: -32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
@@ -36,21 +36,21 @@ export default function HeroSection() {
             </div>
 
             {/* Headline */}
-            <h1 style={{ fontSize: 'clamp(36px,5vw,60px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.1, marginBottom: 20, letterSpacing: -1 }}>
+            <h1 style={{ fontSize: 'clamp(30px,5vw,60px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.1, marginBottom: 20, letterSpacing: -1 }}>
               Technology That<br />
               <span style={{ color: NAVY }}>Moves Business</span>{' '}
               <span style={{ background: `linear-gradient(135deg, ${BLUE}, #6366f1)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Forward</span>
             </h1>
 
             {/* Sub */}
-            <p style={{ fontSize: 18, color: '#475569', lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
+            <p style={{ fontSize: 'clamp(15px,2vw,18px)', color: '#475569', lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
               DigiAgentix delivers AI solutions, intelligent automation, cloud services, and enterprise software engineered to accelerate business growth.
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 44 }}>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-10">
               <Link href="/services" style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 background: NAVY, color: '#fff', padding: '14px 28px',
                 borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none',
                 boxShadow: '0 4px 14px rgba(30,58,138,0.35)',
@@ -58,7 +58,7 @@ export default function HeroSection() {
                 Explore Solutions <ArrowRight size={16} />
               </Link>
               <Link href="/contact" style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 background: '#fff', color: NAVY, padding: '14px 28px',
                 borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none',
                 border: `2px solid ${NAVY}`,
@@ -68,7 +68,7 @@ export default function HeroSection() {
             </div>
 
             {/* Trust badges */}
-            <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {trustBadges.map(({ icon: Icon, label, sub }) => (
                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 36, height: 36, background: '#e0e7ff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

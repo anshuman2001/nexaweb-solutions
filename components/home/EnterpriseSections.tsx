@@ -58,15 +58,14 @@ const sectors = [
 
 export function ClientLogosBar() {
   return (
-    <section style={{ background: '#fff', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: '22px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: MUTED, letterSpacing: 1, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+    <section style={{ background: '#fff', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: '20px 24px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', textAlign: 'center' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: MUTED, letterSpacing: 1, textTransform: 'uppercase', display: 'block', marginBottom: 14 }}>
           Serving clients across
         </span>
-        <div style={{ width: 1, height: 20, background: BORDER }} />
-        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="flex flex-wrap gap-x-6 gap-y-3 items-center justify-center">
           {sectors.map(({ icon: Icon, label }) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
               <Icon size={14} color={MUTED} />
               <span style={{ fontSize: 13, fontWeight: 600, color: SLATE }}>{label}</span>
             </div>
@@ -92,7 +91,7 @@ export function CertificationsBar() {
   return (
     <section style={{ background: LIGHTER, padding: '40px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 16 }}>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {certs.map(({ icon: Icon, label, sub }, i) => (
             <FadeIn key={label} delay={i * 0.07}>
               <div style={{
@@ -122,7 +121,7 @@ export function CertificationsBar() {
 export function AboutSection() {
   return (
     <section id="about" style={{ background: '#fff', padding: '80px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
         <FadeIn>
           <SectionLabel text="About Us" />
           <h2 style={{ fontSize: 'clamp(28px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 20 }}>
@@ -371,15 +370,15 @@ export function IndustriesSection() {
 }
 
 /* ═══════════════════════════════════════════════
-   6. PRODUCTS SECTION — top 3 only, enterprise names
+   6. PRODUCTS SECTION — 3 featured platforms
 ═══════════════════════════════════════════════ */
 const products = [
   {
-    title: 'BrokerNote',
-    nameTag: 'Real Estate Intelligence Platform',
-    category: 'Real Estate · PropTech',
-    desc: 'AI-powered property research and compliance platform for real estate brokers — automating due diligence and deal documentation.',
-    href: '/brokernote-ai',
+    title: 'AI Agents Suite',
+    nameTag: 'Intelligent Automation Platform',
+    category: 'Cross-Industry · AI & Automation',
+    desc: 'A comprehensive suite of purpose-built AI agents — customer support, sales, WhatsApp, meeting, and industry-specific agents — deployable across your existing workflows.',
+    href: '/ai-agents',
     badge: 'Live',
   },
   {
@@ -391,11 +390,11 @@ const products = [
     badge: 'Live',
   },
   {
-    title: 'OutreachIQ',
-    nameTag: 'Automated Outreach Platform',
-    category: 'Sales & Marketing · Automation',
-    desc: 'AI-driven outbound calling and email platform that qualifies leads, books appointments, and integrates with existing CRMs.',
-    href: '/ai-calling-agent',
+    title: 'BrokerNote',
+    nameTag: 'Real Estate Intelligence Platform',
+    category: 'Real Estate · PropTech',
+    desc: 'AI-powered property research and compliance platform for real estate brokers — automating due diligence and deal documentation.',
+    href: '/brokernote-ai',
     badge: 'Live',
   },
 ];
@@ -405,60 +404,83 @@ export function ProductsSection() {
     <section id="products" style={{ background: LIGHTER, padding: '80px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <FadeIn>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
-            <div>
-              <SectionLabel text="Our Products" />
-              <h2 style={{ fontSize: 'clamp(28px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, maxWidth: 500 }}>
-                Proprietary Technology Platforms
-              </h2>
-            </div>
-            <Link href="/products" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: BLUE, fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
-              View All Platforms <ChevronRight size={16} />
-            </Link>
+          <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 48px' }}>
+            <SectionLabel text="Technology Platforms & Products" />
+            <h2 style={{ fontSize: 'clamp(28px,4vw,42px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
+              Technology Platforms &amp; Products
+            </h2>
+            <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.7 }}>
+              Explore our portfolio of AI-powered business solutions and enterprise technology platforms.
+            </p>
           </div>
         </FadeIn>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20 }}>
           {products.map(({ title, nameTag, category, desc, href, badge }, i) => (
             <FadeIn key={title} delay={i * 0.09}>
-              <Link href={href} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-                <div style={{
-                  background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14,
-                  padding: '26px', height: '100%', display: 'flex', flexDirection: 'column',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                  transition: 'box-shadow 0.2s, transform 0.2s',
+              <div style={{
+                background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14,
+                padding: '26px', height: '100%', display: 'flex', flexDirection: 'column',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                transition: 'box-shadow 0.2s, transform 0.2s',
+              }}
+                onMouseEnter={e => {
+                  const d = e.currentTarget as HTMLDivElement;
+                  d.style.boxShadow = '0 12px 32px rgba(30,58,138,0.12)';
+                  d.style.transform = 'translateY(-2px)';
                 }}
-                  onMouseEnter={e => {
-                    const d = e.currentTarget as HTMLDivElement;
-                    d.style.boxShadow = '0 12px 32px rgba(30,58,138,0.12)';
-                    d.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={e => {
-                    const d = e.currentTarget as HTMLDivElement;
-                    d.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-                    d.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                    <span style={{ fontSize: 11, color: BLUE, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.8 }}>{category}</span>
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
-                      background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0',
-                    }}>
-                      {badge}
-                    </span>
-                  </div>
-                  <h3 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', marginBottom: 2 }}>{title}</h3>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: MUTED, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>{nameTag}</p>
-                  <p style={{ fontSize: 14, color: MUTED, lineHeight: 1.65, flex: 1 }}>{desc}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 18, color: BLUE, fontSize: 13, fontWeight: 700 }}>
-                    Request a Demo <ArrowRight size={13} />
-                  </div>
+                onMouseLeave={e => {
+                  const d = e.currentTarget as HTMLDivElement;
+                  d.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                  d.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                  <span style={{ fontSize: 11, color: BLUE, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.8 }}>{category}</span>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                    background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0',
+                  }}>
+                    {badge}
+                  </span>
                 </div>
-              </Link>
+                <h3 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', marginBottom: 2 }}>{title}</h3>
+                <p style={{ fontSize: 12, fontWeight: 600, color: MUTED, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>{nameTag}</p>
+                <p style={{ fontSize: 14, color: MUTED, lineHeight: 1.65, flex: 1 }}>{desc}</p>
+                <Link href={href} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  marginTop: 18, color: BLUE, fontSize: 13, fontWeight: 700, textDecoration: 'none',
+                }}>
+                  Learn More <ArrowRight size={13} />
+                </Link>
+              </div>
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={0.28}>
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <Link href="/products" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              border: `2px solid ${NAVY}`, color: NAVY, padding: '12px 28px',
+              borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none',
+              transition: 'background 0.15s, color 0.15s',
+            }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = NAVY;
+                el.style.color = '#fff';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = 'transparent';
+                el.style.color = NAVY;
+              }}
+            >
+              View All Products <ArrowRight size={16} />
+            </Link>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
@@ -601,7 +623,7 @@ export function CaseStudiesSection() {
 ═══════════════════════════════════════════════ */
 export function CareersSection() {
   return (
-    <section style={{ background: LIGHTER, padding: '48px 24px', borderTop: `1px solid ${BORDER}` }}>
+    <section id="careers" style={{ background: LIGHTER, padding: '48px 24px', borderTop: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ width: 48, height: 48, background: '#e0e7ff', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
