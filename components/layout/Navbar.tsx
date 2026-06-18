@@ -148,7 +148,7 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               style={{
-                display: 'none', padding: 8, borderRadius: 6, border: 'none',
+                padding: 8, borderRadius: 6, border: 'none',
                 background: 'transparent', cursor: 'pointer',
                 color: isHome ? '#334155' : '#d1d5db',
               }}
