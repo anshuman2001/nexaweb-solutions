@@ -7,6 +7,10 @@ import { blogPostsData } from '@/lib/utils';
 import JsonLd from '@/components/seo/JsonLd';
 
 const siteUrl = 'https://digiagentix.com';
+const NAVY = '#1e3a8a';
+const SLATE = '#334155';
+const MUTED = '#64748b';
+const BORDER = '#e2e8f0';
 
 export async function generateStaticParams() {
   return blogPostsData.map((post) => ({ slug: post.slug }));
@@ -125,52 +129,64 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
   return (
     <>
       <JsonLd schema={[articleSchema, breadcrumbSchema]} />
-      <div className="min-h-screen bg-background pt-24 pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 group">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 80 }}>
+        <div style={{ maxWidth: 768, margin: '0 auto', padding: '0 24px' }}>
+          <Link
+            href="/blog"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: MUTED, textDecoration: 'none', marginBottom: 32, fontSize: 14, fontWeight: 500 }}
+          >
+            <ArrowLeft style={{ width: 16, height: 16 }} />
             Back to Blog
           </Link>
 
-          <div className="mb-4">
-            <span className="badge-blue px-3 py-1 rounded-full text-xs font-medium">{post.category}</span>
+          <div style={{ marginBottom: 14 }}>
+            <span style={{ padding: '4px 12px', borderRadius: 100, background: '#e0e7ff', border: '1px solid #c7d2fe', color: NAVY, fontSize: 12, fontWeight: 700 }}>
+              {post.category}
+            </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-4">{post.title}</h1>
+          <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: 16 }}>
+            {post.title}
+          </h1>
 
-          <div className="flex items-center gap-4 text-sm text-gray-400 mb-8">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontSize: 13, color: MUTED, marginBottom: 32, flexWrap: 'wrap' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Calendar style={{ width: 14, height: 14 }} />
               {new Date(post.publishedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Clock style={{ width: 14, height: 14 }} />
               {post.readTime} min read
             </span>
-            <span className="text-gray-500">by {post.author}</span>
+            <span>by {post.author}</span>
           </div>
 
-          <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10">
+          <div style={{ position: 'relative', width: '100%', height: 280, borderRadius: 16, overflow: 'hidden', marginBottom: 40, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
             <Image src={post.imageUrl} alt={post.title} fill className="object-cover" />
           </div>
 
-          <div className="prose prose-invert max-w-none">
+          <div style={{ marginBottom: 48 }}>
             {content.map((para, i) => (
-              <p key={i} className="text-gray-300 leading-relaxed mb-5 text-base sm:text-lg">{para}</p>
+              <p key={i} style={{ color: SLATE, lineHeight: 1.8, marginBottom: 20, fontSize: 16 }}>{para}</p>
             ))}
           </div>
 
           {/* CTA */}
-          <div className="mt-12 p-8 rounded-2xl border border-blue-500/20 bg-blue-500/5 text-center">
-            <h3 className="text-xl font-bold text-white mb-2">Ready to automate your business?</h3>
-            <p className="text-gray-400 text-sm mb-6">Get a free consultation — we&apos;ll show you exactly how AI can help your business.</p>
+          <div style={{ padding: 40, borderRadius: 20, border: '1px solid #c7d2fe', background: 'linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: 22, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Ready to automate your business?</h3>
+            <p style={{ color: MUTED, fontSize: 14, marginBottom: 24 }}>Get a free consultation — we&apos;ll show you exactly how AI can help your business.</p>
             <a
               href={`https://wa.me/${whatsappNumber}?text=Hi! I read your blog and would like a free consultation.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-blue text-white font-semibold hover:bg-blue-500 transition-all btn-glow"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '12px 28px', borderRadius: 10,
+                background: NAVY, color: '#fff', fontWeight: 700, fontSize: 14,
+                textDecoration: 'none', boxShadow: '0 4px 16px rgba(30,58,138,0.25)',
+              }}
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle style={{ width: 16, height: 16 }} />
               Get Free Consultation
             </a>
           </div>

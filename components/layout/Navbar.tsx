@@ -21,7 +21,7 @@ const navLinks = [
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
 // Light hero bg — transparent w/ dark text, scrolls to dark navy
-const MIXED_LIGHT_PAGES = ['/services', '/products'];
+const MIXED_LIGHT_PAGES = ['/services', '/products', '/blog', '/portfolio', '/contact'];
 // Dark hero bg — transparent w/ light text, scrolls to dark navy
 const MIXED_DARK_PAGES: string[]  = [];
 
@@ -31,8 +31,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome        = pathname === '/';
   const isStandalone  = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
-  const isMixedLight  = !!pathname && MIXED_LIGHT_PAGES.includes(pathname);
-  const isMixedDark   = !!pathname && MIXED_DARK_PAGES.includes(pathname);
+  const isMixedLight  = !!pathname && MIXED_LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'));
+  const isMixedDark   = !!pathname && MIXED_DARK_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'));
   const isMixed       = isMixedLight || isMixedDark;
   // Light state: homepage always; light-bg mixed pages before scroll
   const isLightState  = isHome || (isMixedLight && !scrolled);
