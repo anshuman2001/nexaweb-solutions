@@ -74,6 +74,37 @@ function MsmeLogo() {
   );
 }
 
+function printCertificate() {
+  const certEl = document.getElementById('cert-page');
+  if (!certEl) return;
+
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:794px;height:1123px;border:none;visibility:hidden;';
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentDocument!;
+  doc.open();
+  doc.write(`<!DOCTYPE html><html><head><style>
+    @page { size: A4 portrait; margin: 0; }
+    html, body { margin: 0; padding: 0; width: 210mm; height: 297mm; overflow: hidden; background: #fff; }
+    body > div { width: 210mm !important; min-height: 0 !important; height: 297mm !important; overflow: hidden !important; box-shadow: none !important; font-family: Georgia, 'Times New Roman', serif; }
+  </style></head><body>${certEl.outerHTML}</body></html>`);
+  doc.close();
+
+  const imgs = Array.from(doc.querySelectorAll('img'));
+  let pending = imgs.length;
+  const doPrint = () => {
+    iframe.contentWindow!.focus();
+    iframe.contentWindow!.print();
+    setTimeout(() => { if (document.body.contains(iframe)) document.body.removeChild(iframe); }, 2000);
+  };
+  if (pending === 0) { setTimeout(doPrint, 80); return; }
+  const timeout = setTimeout(doPrint, 2500);
+  imgs.forEach(img => {
+    img.onload = img.onerror = () => { if (--pending === 0) { clearTimeout(timeout); doPrint(); } };
+  });
+}
+
 export default function CertificatePreviewPage() {
   const [cert, setCert]         = useState<CertData | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState('');
@@ -133,7 +164,7 @@ export default function CertificatePreviewPage() {
         </span>
         <a href="/certificates" style={{ color:'#94a3b8', fontSize:13, textDecoration:'none', border:'1px solid #334155', padding:'8px 16px', borderRadius:8 }}>← Back</a>
         <button
-          onClick={() => window.print()}
+          onClick={printCertificate}
           style={{ background:'#2563eb', color:'#fff', border:'none', padding:'10px 26px', borderRadius:10, fontWeight:700, fontSize:14, cursor:'pointer' }}
         >
           ⬇ Download / Print PDF
@@ -296,30 +327,6 @@ export default function CertificatePreviewPage() {
         </div>
       </div>
 
-      {/* Print styles */}
-      <style>{`
-        @media print {
-          @page { size: A4 portrait; margin: 0; }
-          html, body {
-            width: 210mm !important;
-            height: 297mm !important;
-            overflow: hidden !important;
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-          body * { visibility: hidden; }
-          #cert-page, #cert-page * { visibility: visible; }
-          #cert-page {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 210mm !important;
-            height: 297mm !important;
-            box-shadow: none !important;
-            overflow: hidden !important;
-          }
-        }
-      `}</style>
     </>
   );
 }
