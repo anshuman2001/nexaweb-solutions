@@ -19,7 +19,7 @@ const navLinks = [
   { label: 'Contact',    href: '/contact' },
 ];
 
-const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent'];
+const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent', '/certificate-preview'];
 // Light hero bg — transparent w/ dark text, scrolls to dark navy
 const MIXED_LIGHT_PAGES = ['/services', '/products', '/blog', '/portfolio', '/contact'];
 // Dark hero bg — transparent w/ light text, scrolls to dark navy
