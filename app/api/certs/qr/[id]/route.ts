@@ -10,7 +10,7 @@ export async function GET(_: NextRequest, { params }: { params: { id: string } }
     color: { dark: '#1e3a8a', light: '#ffffff' },
   });
 
-  return new NextResponse(buffer, {
+  return new NextResponse(new Uint8Array(buffer), {
     headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' },
   });
 }
