@@ -26,13 +26,17 @@ export async function POST(req: NextRequest) {
   const decoded = await verifyBearer(req);
   if (!decoded) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
 
-  const { student_name, email, phone, internship_role, department, duration, start_date, end_date, issued_date } = await req.json();
+  const { student_name, email, phone, internship_role, department, duration, start_date, end_date, issued_date, custom_id } = await req.json();
   if (!student_name || !internship_role || !duration)
     return NextResponse.json({ detail: 'student_name, internship_role and duration are required' }, { status: 400 });
 
-  let certId = generateCertId();
-  while ((await adminDb.collection('certificates').doc(certId).get()).exists)
-    certId = generateCertId();
+  let certId = custom_id ? custom_id.toUpperCase().trim() : generateCertId();
+  if (!custom_id) {
+    while ((await adminDb.collection('certificates').doc(certId).get()).exists)
+      certId = generateCertId();
+  } else if ((await adminDb.collection('certificates').doc(certId).get()).exists) {
+    return NextResponse.json({ detail: `Certificate ID ${certId} already exists` }, { status: 409 });
+  }
 
   const certData = {
     student_name, email: email || '', phone: phone || '',
