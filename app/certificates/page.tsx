@@ -32,6 +32,7 @@ const EMPTY_FORM = {
   internship_role: '', department: '', duration: '',
   start_date: '', end_date: '',
   issued_date: new Date().toISOString().split('T')[0],
+  custom_id: '',
 };
 
 export default function CertificatesPage() {
@@ -232,6 +233,12 @@ export default function CertificatesPage() {
                 <input type="date" value={form.issued_date}
                   onChange={e => setForm({...form, issued_date: e.target.value})}
                   className="w-full bg-white/10 border border-white/15 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" />
+              </div>
+              <div>
+                <label className="text-slate-400 text-xs mb-1 block">🔁 Custom ID <span className="text-slate-600">(only for re-issuing old certs)</span></label>
+                <input placeholder="e.g. DAGI-WSWP0M70" value={form.custom_id}
+                  onChange={e => setForm({...form, custom_id: e.target.value})}
+                  className="w-full bg-white/10 border border-white/15 text-white placeholder-slate-600 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-400 font-mono" />
               </div>
             </div>
 
