@@ -90,15 +90,18 @@ export default function CertificatesPage() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (!res.ok) { setIssueMsg(data.detail || 'Failed to issue certificate'); }
+      let data: Record<string, string> = {};
+      try { data = await res.json(); } catch { /* non-json body */ }
+      if (!res.ok) { setIssueMsg(data.detail || `Error ${res.status}: ${res.statusText}`); }
       else {
-        setNewCert(data);
+        setNewCert(data as unknown as Cert);
         setForm({ ...EMPTY_FORM });
         fetchCerts();
         setIssueMsg('✅ Certificate issued successfully!');
       }
-    } catch { setIssueMsg('Connection error. Please try again.'); }
+    } catch (e: unknown) {
+      setIssueMsg('Error: ' + (e instanceof Error ? e.message : String(e)));
+    }
     setIssuing(false);
   }
 
