@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, adminAuth } from '@/lib/firebase-admin';
+import { adminDb } from '@/lib/firebase-admin';
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY!;
 
 function generateOfferId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -8,11 +13,22 @@ function generateOfferId(): string {
   return id;
 }
 
-async function verifyBearer(req: NextRequest) {
+async function verifyBearer(req: NextRequest): Promise<{ email: string } | null> {
   const header = req.headers.get('Authorization');
   if (!header?.startsWith('Bearer ')) return null;
-  try { return await adminAuth.verifyIdToken(header.slice(7)); }
-  catch { return null; }
+  const idToken = header.slice(7);
+  try {
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const user = data?.users?.[0];
+    return user ? { email: user.email || '' } : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function GET(req: NextRequest) {
