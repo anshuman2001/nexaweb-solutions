@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, adminAuth } from '@/lib/firebase-admin';
+import { adminDb } from '@/lib/firebase-admin';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY!;
 
 function generateCertId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -10,17 +13,28 @@ function generateCertId(): string {
   return id;
 }
 
-async function verifyBearer(req: NextRequest) {
+// Verify Firebase ID token via REST API (avoids fetching Google public certificates on every cold start)
+async function verifyBearer(req: NextRequest): Promise<{ email: string } | null> {
   const header = req.headers.get('Authorization');
   if (!header?.startsWith('Bearer ')) return null;
-  try { return await adminAuth.verifyIdToken(header.slice(7)); }
-  catch { return null; }
+  const idToken = header.slice(7);
+  try {
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const user = data?.users?.[0];
+    return user ? { email: user.email || '' } : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function GET(req: NextRequest) {
   try {
     if (!await verifyBearer(req)) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
-
     const snap = await adminDb.collection('certificates').orderBy('created_at', 'desc').get();
     return NextResponse.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   } catch (err: unknown) {
@@ -45,7 +59,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ detail: 'student_name, internship_role and duration are required' }, { status: 400 });
 
     step = 'gen-id';
-    let certId = custom_id ? custom_id.toUpperCase().trim() : generateCertId();
+    let certId = custom_id ? (custom_id as string).toUpperCase().trim() : generateCertId();
 
     step = 'check-id';
     if (custom_id) {
