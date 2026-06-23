@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminDb, adminAuth } from '@/lib/firebase-admin';
 
+export const dynamic = 'force-dynamic';
+
 function generateCertId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let id = 'DAGI-';
@@ -28,22 +30,33 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  let step = 'start';
   try {
+    step = 'auth';
     const decoded = await verifyBearer(req);
     if (!decoded) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
 
-    const { student_name, email, phone, internship_role, department, duration, start_date, end_date, issued_date, custom_id } = await req.json();
+    step = 'parse';
+    const body = await req.json();
+    const { student_name, email, phone, internship_role, department, duration, start_date, end_date, issued_date, custom_id } = body;
+
+    step = 'validate';
     if (!student_name || !internship_role || !duration)
       return NextResponse.json({ detail: 'student_name, internship_role and duration are required' }, { status: 400 });
 
+    step = 'gen-id';
     let certId = custom_id ? custom_id.toUpperCase().trim() : generateCertId();
-    if (!custom_id) {
+
+    step = 'check-id';
+    if (custom_id) {
+      if ((await adminDb.collection('certificates').doc(certId).get()).exists)
+        return NextResponse.json({ detail: `Certificate ID ${certId} already exists` }, { status: 409 });
+    } else {
       while ((await adminDb.collection('certificates').doc(certId).get()).exists)
         certId = generateCertId();
-    } else if ((await adminDb.collection('certificates').doc(certId).get()).exists) {
-      return NextResponse.json({ detail: `Certificate ID ${certId} already exists` }, { status: 409 });
     }
 
+    step = 'write';
     const certData = {
       student_name, email: email || '', phone: phone || '',
       internship_role, department: department || '', duration,
@@ -58,6 +71,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: certId, ...certData });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ detail: `Server error: ${msg}` }, { status: 500 });
+    return NextResponse.json({ detail: `Error at [${step}]: ${msg}` }, { status: 500 });
   }
 }
