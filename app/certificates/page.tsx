@@ -90,9 +90,10 @@ export default function CertificatesPage() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(form),
       });
+      const raw = await res.text();
       let data: Record<string, string> = {};
-      try { data = await res.json(); } catch { /* non-json body */ }
-      if (!res.ok) { setIssueMsg(data.detail || `Error ${res.status}: ${res.statusText}`); }
+      try { data = JSON.parse(raw); } catch { /* non-json body */ }
+      if (!res.ok) { setIssueMsg(data.detail || `Error ${res.status}: ${raw.slice(0, 300) || res.statusText}`); }
       else {
         setNewCert(data as unknown as Cert);
         setForm({ ...EMPTY_FORM });
