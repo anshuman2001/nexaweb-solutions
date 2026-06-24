@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -13,7 +12,6 @@ function generateCertId(): string {
   return id;
 }
 
-// Verify Firebase ID token via REST API (avoids fetching Google public certificates on every cold start)
 async function verifyBearer(req: NextRequest): Promise<{ email: string } | null> {
   const header = req.headers.get('Authorization');
   if (!header?.startsWith('Bearer ')) return null;
@@ -35,6 +33,7 @@ async function verifyBearer(req: NextRequest): Promise<{ email: string } | null>
 export async function GET(req: NextRequest) {
   try {
     if (!await verifyBearer(req)) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
+    const { adminDb } = await import('@/lib/firebase-admin');
     const snap = await adminDb.collection('certificates').orderBy('created_at', 'desc').get();
     return NextResponse.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   } catch (err: unknown) {
@@ -57,6 +56,9 @@ export async function POST(req: NextRequest) {
     step = 'validate';
     if (!student_name || !internship_role || !duration)
       return NextResponse.json({ detail: 'student_name, internship_role and duration are required' }, { status: 400 });
+
+    step = 'firebase-init';
+    const { adminDb } = await import('@/lib/firebase-admin');
 
     step = 'gen-id';
     let certId = custom_id ? (custom_id as string).toUpperCase().trim() : generateCertId();

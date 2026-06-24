@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -22,6 +21,7 @@ async function verifyBearer(req: NextRequest): Promise<boolean> {
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   if (!await verifyBearer(req)) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
+  const { adminDb } = await import('@/lib/firebase-admin');
 
   const id = params.id.toUpperCase();
   const doc = await adminDb.collection('certificates').doc(id).get();
