@@ -162,7 +162,7 @@ export default function CertificatePreviewPage() {
           <span style={{ color:'#fff', fontWeight:600 }}>{cert.student_name}</span>
           <span style={{ color:'#475569', marginLeft:10, fontFamily:'monospace', fontSize:12 }}>{cert.id}</span>
         </span>
-        <a href="/certificates" style={{ color:'#94a3b8', fontSize:13, textDecoration:'none', border:'1px solid #334155', padding:'8px 16px', borderRadius:8 }}>← Back</a>
+        <a href="/cert/admin" style={{ color:'#94a3b8', fontSize:13, textDecoration:'none', border:'1px solid #334155', padding:'8px 16px', borderRadius:8 }}>← Back</a>
         <button
           onClick={printCertificate}
           style={{ background:'#2563eb', color:'#fff', border:'none', padding:'10px 26px', borderRadius:10, fontWeight:700, fontSize:14, cursor:'pointer' }}

@@ -164,7 +164,7 @@ export default function OfferLettersPage() {
           <p className="text-slate-500 text-xs">Offer Letter Portal</p>
         </div>
         <div className="flex items-center gap-3">
-          <a href="/certificates" className="text-slate-400 hover:text-white text-xs border border-white/10 px-3 py-1.5 rounded-lg transition">
+          <a href="/cert/admin" className="text-slate-400 hover:text-white text-xs border border-white/10 px-3 py-1.5 rounded-lg transition">
             🎓 Certificates
           </a>
           <button onClick={() => { localStorage.removeItem('cert_token'); setToken(''); setLetters([]); }}
