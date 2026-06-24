@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Prevent webpack from bundling firebase-admin — it uses native Node.js modules
+  // (grpc, crypto) that must be required at runtime, not inlined by webpack.
+  serverExternalPackages: ['firebase-admin'],
+
   images: {
     remotePatterns: [
       {

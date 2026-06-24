@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -32,14 +31,21 @@ async function verifyBearer(req: NextRequest): Promise<{ email: string } | null>
 }
 
 export async function GET(req: NextRequest) {
-  if (!await verifyBearer(req)) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
-  const snap = await adminDb.collection('offer_letters').orderBy('created_at', 'desc').get();
-  return NextResponse.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  try {
+    if (!await verifyBearer(req)) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
+    const { adminDb } = await import('@/lib/firebase-admin');
+    const snap = await adminDb.collection('offer_letters').orderBy('created_at', 'desc').get();
+    return NextResponse.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+  } catch (err: unknown) {
+    return NextResponse.json({ detail: String(err) }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
   const decoded = await verifyBearer(req);
   if (!decoded) return NextResponse.json({ detail: 'Unauthorized' }, { status: 401 });
+
+  const { adminDb } = await import('@/lib/firebase-admin');
 
   const {
     candidate_name, email, phone, role, department,
