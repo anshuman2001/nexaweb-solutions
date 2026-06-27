@@ -213,7 +213,7 @@ export default function CertificatePreviewPage() {
               <span>🌐 www.digiagentix.com</span>
               <span>✉ hr@digiagentix.com</span>
               <span>📞 +91 73039 61522</span>
-              <span style={{ marginLeft: 'auto' }}>GSTIN: 07ABCDE1234F1Z5 &nbsp;|&nbsp; MSME: UDYAM-XX-00-0000000</span>
+              <span style={{ marginLeft: 'auto' }}>GSTIN: 07ABCDE1234F1Z5 &nbsp;|&nbsp; MSME: UDYAM-UP-56-0005297</span>
             </div>
           </div>
 
@@ -370,7 +370,7 @@ export default function CertificatePreviewPage() {
               )}
               <div>
                 <div style={{ fontSize: 8.5, fontWeight: 700, color: GL }}>MSME Registered Enterprise</div>
-                <div style={{ fontSize: 7.5, color: '#93c5fd' }}>Reg No: UDYAM-XX-00-0000000</div>
+                <div style={{ fontSize: 7.5, color: '#93c5fd' }}>Reg No: UDYAM-UP-56-0005297</div>
               </div>
             </div>
             <div style={{ textAlign: 'center', fontSize: 8.5, color: '#93c5fd' }}>
