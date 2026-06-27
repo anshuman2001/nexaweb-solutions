@@ -239,7 +239,7 @@ export default function OfferLetterPreviewPage() {
               <span>🌐 www.digiagentix.com</span>
               <span>✉ hr@digiagentix.com</span>
               <span>📞 +91 73039 61522</span>
-              <span style={{ marginLeft: 'auto' }}>GSTIN: 07ABCDE1234F1Z5 &nbsp;|&nbsp; MSME: UDYAM-UP-56-0005297</span>
+              <span style={{ marginLeft: 'auto' }}>MSME Reg: UDYAM-UP-56-0005297</span>
             </div>
           </div>
 
@@ -394,7 +394,7 @@ export default function OfferLetterPreviewPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               {!msmeFailed && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src="/msme-logo.png" alt="MSME" style={{ height: 28, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} onError={() => setMsmeFailed(true)} />
+                <img src="/msme-logo.png" alt="MSME" style={{ height: 34, objectFit: 'contain', background: '#fff', borderRadius: 5, padding: 3 }} onError={() => setMsmeFailed(true)} />
               )}
               <div>
                 <div style={{ fontSize: 8.5, fontWeight: 700, color: GL }}>MSME Registered Enterprise</div>
@@ -404,7 +404,7 @@ export default function OfferLetterPreviewPage() {
 
             <div style={{ textAlign: 'center', fontSize: 8.5, color: '#93c5fd' }}>
               <div style={{ color: GL, fontWeight: 600 }}>DigiAgentix</div>
-              <div>GSTIN: 07ABCDE1234F1Z5</div>
+              <div>AI Automation &amp; Digital Solutions</div>
             </div>
 
             <div style={{ textAlign: 'right', fontSize: 8.5, color: '#93c5fd', lineHeight: 1.7 }}>
