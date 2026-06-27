@@ -39,7 +39,8 @@ const EMPTY_FORM = {
 };
 
 export default function OfferLettersPage() {
-  const [token, setToken]           = useState('');
+  // AUTH TEMPORARILY DISABLED — set dummy token so login screen is skipped
+  const [token, setToken]           = useState('test');
   const [authMode, setAuthMode]     = useState<'login' | 'signup'>('login');
   const [authForm, setAuthForm]     = useState({ email: '', password: '', name: '', firm: '' });
   const [authError, setAuthError]   = useState('');
