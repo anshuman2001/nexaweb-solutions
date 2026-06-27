@@ -366,8 +366,7 @@ export default function OfferLetterPreviewPage() {
                   <img src="/signature.png" alt="Authorized Signature" style={{ height: 44, maxWidth: 130, objectFit: 'contain', display: 'block', marginBottom: 4, mixBlendMode: 'multiply' }} onError={() => setSigFailed(true)} />
                 )}
                 <div style={{ width: 155, height: 1, background: '#374151', marginBottom: 4 }} />
-                <div style={{ fontSize: 10.5, fontWeight: 700, color: '#111' }}>HR Manager</div>
-                <div style={{ fontSize: 10, color: '#6b7280', marginTop: 1 }}>DigiAgentix</div>
+                <div style={{ fontSize: 10.5, fontWeight: 700, color: '#111' }}>DigiAgentix</div>
                 <div style={{ fontSize: 9, color: '#9ca3af', marginTop: 1, fontStyle: 'italic' }}>Authorized Signatory</div>
               </div>
 
