@@ -6,7 +6,7 @@ const siteUrl = 'https://digiagentix.com';
 
 export const metadata: Metadata = {
   title: 'Contact DigiAgentix — Get Free AI Agent Demo | Noida, India',
-  description: 'Contact DigiAgentix for AI agents and web design. Based in Noida, UP. WhatsApp: +91 99977 30768. Email: info.nexawebsolution@gmail.com. We reply within 2 hours.',
+  description: 'Contact DigiAgentix for AI agents and web design. Based in Noida, UP. Email: info.nexawebsolution@gmail.com. We reply within 2 hours.',
   keywords: [
     'contact DigiAgentix', 'AI agent demo India', 'free chatbot demo',
     'web design consultation India', 'AI agent Noida', 'web design Noida',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Contact DigiAgentix — Free AI Agent Demo',
-    description: 'Get a free demo of our AI agents. Based in Noida, India. WhatsApp +91 99977 30768. Reply within 2 hours.',
+    description: 'Get a free demo of our AI agents. Based in Noida, India. Reply within 2 hours.',
     url: `${siteUrl}/contact`,
     images: [{ url: `${siteUrl}/logo.png`, width: 1200, height: 630, alt: 'Contact DigiAgentix' }],
   },
@@ -32,7 +32,6 @@ const contactPageSchema = {
   mainEntity: {
     '@type': 'ProfessionalService',
     name: 'DigiAgentix',
-    telephone: '+91-9997730768',
     email: 'info.nexawebsolution@gmail.com',
     address: {
       '@type': 'PostalAddress',

@@ -6,7 +6,7 @@ import {
   Brain, Cog, Code2, Cloud, RefreshCw, Users,
   HeartPulse, Building2, GraduationCap, ShoppingBag,
   DollarSign, Factory, Rocket, CheckCircle2, ArrowRight,
-  TrendingUp, Shield, Award, Clock, MapPin, Phone, Mail,
+  TrendingUp, Shield, Award, Clock, MapPin, Mail,
   ChevronRight, Star, BarChart3, Layers, Briefcase, MessageCircle,
 } from 'lucide-react';
 
@@ -659,7 +659,7 @@ export function CareersSection() {
    10. FINAL CTA — dark banner, no broken form
 ═══════════════════════════════════════════════ */
 export function EnterpriseContactSection() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '72px 24px' }}>
       <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
@@ -698,7 +698,6 @@ export function EnterpriseContactSection() {
 
           <div style={{ display: 'flex', gap: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[
-              { icon: Phone, text: '+91-9997730768' },
               { icon: Mail,  text: 'info.nexawebsolution@gmail.com' },
               { icon: MapPin, text: 'Noida, Uttar Pradesh, India' },
             ].map(({ icon: Icon, text }) => (

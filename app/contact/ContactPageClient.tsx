@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Phone, Mail, MapPin, Clock, MessageCircle, CheckCircle } from 'lucide-react';
+import { Send, Mail, MapPin, Clock, MessageCircle, CheckCircle } from 'lucide-react';
 
 const NAVY = '#1e3a8a';
 const SLATE = '#334155';
@@ -32,7 +32,7 @@ export default function ContactPageClient() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +84,6 @@ export default function ContactPageClient() {
               <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 20 }}>Get In Touch</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {[
-                  { icon: Phone, label: 'WhatsApp', value: '+91 99977 30768', href: `https://wa.me/${whatsappNumber}` },
                   { icon: Mail, label: 'Email', value: 'info@digiagentix.com', href: 'mailto:info@digiagentix.com' },
                   { icon: MapPin, label: 'Location', value: 'Noida, UP, India', href: '#' },
                   { icon: Clock, label: 'Working Hours', value: 'Mon-Sat, 9AM - 8PM IST', href: '#' },

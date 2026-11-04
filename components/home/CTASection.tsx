@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function CTASection() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8">

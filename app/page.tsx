@@ -39,7 +39,6 @@ const organizationSchema = {
   contactPoint: [
     {
       '@type': 'ContactPoint',
-      telephone: '+91-9997730768',
       contactType: 'customer service',
       areaServed: 'IN',
       availableLanguage: ['English', 'Hindi'],
@@ -99,7 +98,6 @@ const localBusinessSchema = {
   name: 'DigiAgentix',
   image: `${siteUrl}/logo.png`,
   url: siteUrl,
-  telephone: '+91-9997730768',
   email: 'info.nexawebsolution@gmail.com',
   priceRange: 'Starting at ₹4,999',
   description: 'Enterprise technology solutions including AI automation, software development, cloud infrastructure, and digital transformation consulting for businesses of all sizes.',

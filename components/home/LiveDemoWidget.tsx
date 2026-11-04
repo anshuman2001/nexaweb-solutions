@@ -158,7 +158,7 @@ function getAgentReply(stage: Stage, userText: string, lead: Lead): { reply: str
   if (stage === 'contact') {
     updatedLead.contact = userText.trim();
     return {
-      reply: `🎉 Thank you, ${updatedLead.name || 'there'}!\n\nYour details have been noted:\n📌 Service: ${updatedLead.service}\n💰 Budget: ${updatedLead.budget}\n⏱️ Timeline: ${updatedLead.timeline}\n📞 Contact: ${updatedLead.contact}\n\nOur team will reach you within **2 hours**! ✅\n\nYou can also WhatsApp us directly:\n👉 +91 99977 30768`,
+      reply: `🎉 Thank you, ${updatedLead.name || 'there'}!\n\nYour details have been noted:\n📌 Service: ${updatedLead.service}\n💰 Budget: ${updatedLead.budget}\n⏱️ Timeline: ${updatedLead.timeline}\n📞 Contact: ${updatedLead.contact}\n\nOur team will reach you within **2 hours**! ✅\n\nYou can also email us directly:\n👉 info.nexawebsolution@gmail.com`,
       nextStage: 'done',
       updatedLead,
     };
@@ -166,7 +166,7 @@ function getAgentReply(stage: Stage, userText: string, lead: Lead): { reply: str
 
   if (stage === 'done') {
     return {
-      reply: `We've already noted your details! 😊\nOur team will contact you shortly.\n\nFor immediate help, WhatsApp us:\n👉 +91 99977 30768`,
+      reply: `We've already noted your details! 😊\nOur team will contact you shortly.\n\nFor immediate help, email us:\n👉 info.nexawebsolution@gmail.com`,
       nextStage: 'done',
       updatedLead,
     };

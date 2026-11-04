@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Instagram, Twitter } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const STANDALONE_ROUTES = ['/eduaccess-ai', '/ai-calling-agent', '/cold-email-agent', '/certificate-preview', '/offer-letter/admin', '/offer-letter-preview'];
@@ -76,7 +76,7 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 export default function Footer() {
   const pathname = usePathname();
   const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   if (isStandalone) return null;
 
@@ -130,11 +130,6 @@ export default function Footer() {
                 className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-blue-400 transition-colors">
                 <Mail className="w-4 h-4" />
                 info@digiagentix.com
-              </a>
-              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-green-400 transition-colors">
-                <Phone className="w-4 h-4" />
-                +91 99977 30768
               </a>
               <div className="flex items-center gap-2.5 text-sm text-gray-400">
                 <MapPin className="w-4 h-4" />
