@@ -70,7 +70,7 @@ export default function AIAgentsSection() {
 
             {/* Button */}
             <a
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999'}?text=Hi! I'd like a demo of the ${agent.name}.`}
+              href="/contact"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent-blue/10 border border-accent-blue/20 text-accent-blue text-sm font-semibold hover:bg-accent-blue hover:text-white transition-all"

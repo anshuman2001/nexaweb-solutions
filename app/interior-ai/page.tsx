@@ -71,7 +71,6 @@ const faqs = [
 ];
 
 export default function InteriorAIPage() {
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919999999999';
 
   return (
     <>
@@ -94,14 +93,14 @@ export default function InteriorAIPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href={`https://wa.me/${whatsapp}?text=Hi! I want to try the Interior AI Designer tool.`}
+                href="/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-base transition-all btn-glow btn-shimmer"
                 style={{ background: 'linear-gradient(135deg, #2563eb, #4f46e5)' }}
               >
                 <Zap className="w-5 h-5" />
-                Get Access on WhatsApp
+                Get Access
               </a>
               <Link
                 href="/products"
@@ -190,17 +189,17 @@ export default function InteriorAIPage() {
               <div className="text-4xl mb-4">🏠</div>
               <h2 className="text-3xl font-extrabold text-white mb-3">Ready to Redesign Your Space?</h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-                Get access to the Interior AI Designer tool. Contact us on WhatsApp — we&apos;ll set it up for you with your own Replicate API key.
+                Get access to the Interior AI Designer tool. Contact us — we&apos;ll set it up for you with your own Replicate API key.
               </p>
               <a
-                href={`https://wa.me/${whatsapp}?text=Hi! I want to try the Interior AI Designer. Please share access details.`}
+                href="/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-10 py-4 rounded-xl text-white font-bold text-base transition-all btn-glow"
                 style={{ background: 'linear-gradient(135deg, #2563eb, #4f46e5)' }}
               >
                 <Zap className="w-5 h-5" />
-                Get Started on WhatsApp
+                Get Started
               </a>
               <p className="text-gray-500 text-sm mt-4">~₹4 per render · No subscription · Self-hosted or hosted by us</p>
             </div>

@@ -146,7 +146,7 @@ const faqs = [
   },
   {
     q: 'Do you provide support after the project is live?',
-    a: 'Yes — all our projects include post-launch support. We are reachable on WhatsApp and phone. For ongoing maintenance and updates, we offer affordable monthly support plans.',
+    a: 'Yes — all our projects include post-launch support. We are reachable via email and phone. For ongoing maintenance and updates, we offer affordable monthly support plans.',
   },
   {
     q: 'Can you customise the solution for my specific business?',
@@ -162,7 +162,6 @@ const faqs = [
    HERO
 ══════════════════════════════════════════ */
 function Hero() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 88 }}>
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
@@ -183,18 +182,18 @@ function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
             <a
-              href={`https://wa.me/${wa}?text=Hi! I'd like to book a free consultation with DigiAgentix.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: NAVY, color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 16px rgba(30,58,138,0.35)' }}
             >
               <Phone size={16} /> Book a Free Consultation
             </a>
             <a
-              href={`https://wa.me/${wa}?text=Hi! I have a question about DigiAgentix services.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: `2px solid ${NAVY}` }}
             >
-              <MessageCircle size={16} /> WhatsApp Us
+              <MessageCircle size={16} /> Contact Us
             </a>
           </div>
 
@@ -404,7 +403,6 @@ function FAQ() {
    CTA
 ══════════════════════════════════════════ */
 function CTA() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '88px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
@@ -418,18 +416,18 @@ function CTA() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <a
-              href={`https://wa.me/${wa}?text=Hi! I'd like to book a free consultation with DigiAgentix.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
             >
               <Phone size={16} /> Book a Free Consultation
             </a>
             <a
-              href={`https://wa.me/${wa}?text=Hi DigiAgentix! I'd like to learn more about your services.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'transparent', color: '#fff', padding: '15px 32px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', border: '2px solid rgba(255,255,255,0.35)' }}
             >
-              <MessageCircle size={16} /> WhatsApp Us
+              <MessageCircle size={16} /> Contact Us
             </a>
           </div>
           <div className="flex flex-wrap gap-6 justify-center">
