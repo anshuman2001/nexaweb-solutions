@@ -3,9 +3,8 @@
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import WhatsAppFloat from './WhatsAppFloat';
 
-/* Routes that should render WITHOUT the site Navbar / Footer / WhatsApp float */
+/* Routes that should render WITHOUT the site Navbar / Footer */
 const STANDALONE_ROUTES = [
   '/eduaccess-ai',
   '/ai-calling-agent',
@@ -25,7 +24,6 @@ export default function ConditionalShell({ children }: { children: React.ReactNo
       <Navbar />
       <main>{children}</main>
       <Footer />
-      <WhatsAppFloat />
     </>
   );
 }

@@ -47,7 +47,6 @@ function SectionLabel({ text, dark = false }: { text: string; dark?: boolean }) 
    SECTION 1 — HERO
 ══════════════════════════════════════════════ */
 function HeroSection() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 60%, #e8efff 100%)', paddingTop: 104, paddingBottom: 80 }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
@@ -72,7 +71,7 @@ function HeroSection() {
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-10">
               <a
-                href={`https://wa.me/${wa}?text=Hi! I'd like to schedule a consultation.`}
+                href="/contact"
                 target="_blank" rel="noopener noreferrer"
                 style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: NAVY, color: '#fff', padding: '14px 28px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 14px rgba(30,58,138,0.35)' }}
               >
@@ -741,7 +740,6 @@ function CareersPreview() {
    SECTION 11 — FINAL CTA
 ══════════════════════════════════════════════ */
 function FinalCTA() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '88px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
@@ -758,7 +756,7 @@ function FinalCTA() {
 
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36 }}>
             <a
-              href={`https://wa.me/${wa}?text=Hi! I'd like to schedule a discovery consultation.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: NAVY, padding: '15px 32px', borderRadius: 8, fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}
             >

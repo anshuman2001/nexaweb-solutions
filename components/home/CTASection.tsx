@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function CTASection() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8">
@@ -55,14 +54,14 @@ export default function CTASection() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a discovery consultation with DigiAgentix.`}
+                href="/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-lg transition-all btn-shimmer shadow-lg shadow-green-900/20"
                 style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
               >
                 <MessageCircle className="w-5 h-5" />
-                WhatsApp Us
+                Contact Us
               </a>
               <Link
                 href="/contact"

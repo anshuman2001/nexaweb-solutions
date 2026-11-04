@@ -172,7 +172,7 @@ const metrics = [
 /* ─── Component ─────────────────────────────────────────────────────────────── */
 
 export default function EcommerceAgentPage() {
-  const whatsapp = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=Hi! I want a demo of the eCommerce Shopping Agent.`;
+  const whatsapp = '/contact';
 
   return (
     <div className="min-h-screen bg-background text-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -581,7 +581,7 @@ export default function EcommerceAgentPage() {
                 <a href={whatsapp} target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl text-white font-bold transition-all"
                   style={{ background: 'linear-gradient(135deg, #6366f1, #0ea5e9)', boxShadow: '0 8px 30px rgba(99,102,241,0.4)' }}>
-                  <Zap className="w-5 h-5" /> WhatsApp Us for Demo
+                  <Zap className="w-5 h-5" /> Contact Us for Demo
                 </a>
                 <Link href="/contact"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold transition-all hover:bg-white/5"

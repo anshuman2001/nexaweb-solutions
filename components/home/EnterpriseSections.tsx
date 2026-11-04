@@ -659,7 +659,6 @@ export function CareersSection() {
    10. FINAL CTA — dark banner, no broken form
 ═══════════════════════════════════════════════ */
 export function EnterpriseContactSection() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '72px 24px' }}>
       <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
@@ -684,7 +683,7 @@ export function EnterpriseContactSection() {
               Book a Discovery Call <ArrowRight size={16} />
             </Link>
             <a
-              href={`https://wa.me/${wa}?text=Hi! I'd like to schedule a discovery consultation with DigiAgentix.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -692,7 +691,7 @@ export function EnterpriseContactSection() {
                 borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none',
               }}
             >
-              <MessageCircle size={16} /> WhatsApp Us
+              <MessageCircle size={16} /> Contact Us
             </a>
           </div>
 

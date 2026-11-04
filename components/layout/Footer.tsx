@@ -76,7 +76,6 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 export default function Footer() {
   const pathname = usePathname();
   const isStandalone = !!pathname && STANDALONE_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   if (isStandalone) return null;
 
@@ -140,14 +139,14 @@ export default function Footer() {
             {/* CTAs */}
             <div className="flex flex-col gap-2 mb-6">
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to chat with DigiAgentix.`}
+                href="/contact"
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 transition-all w-fit">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Chat on WhatsApp
+                Contact Us
               </a>
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to book a consultation.`}
+                href="/contact"
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-300 text-sm font-medium hover:bg-blue-600/30 transition-all w-fit">
                 Book a Consultation

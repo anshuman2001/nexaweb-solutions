@@ -45,7 +45,6 @@ export default function Navbar() {
 
   useEffect(() => { setIsOpen(false); }, [pathname]);
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   if (isStandalone) return null;
 
@@ -146,7 +145,7 @@ export default function Navbar() {
                 Client Login
               </Link>
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a consultation with DigiAgentix.`}
+                href="/contact"
                 target="_blank" rel="noopener noreferrer"
                 style={{
                   padding: '9px 20px', borderRadius: 6, fontSize: 13, fontWeight: 700,
@@ -208,17 +207,17 @@ export default function Navbar() {
               })}
               <div style={{ borderTop: `1px solid ${isLightState ? '#e2e8f0' : '#1e293b'}`, marginTop: 6, paddingTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <a
-                  href={`https://wa.me/${whatsappNumber}?text=Hi DigiAgentix! I have a quick question.`}
+                  href="/contact"
                   target="_blank" rel="noopener noreferrer"
                   style={{ padding: '11px 14px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: '#22c55e', textDecoration: 'none', border: '1px solid rgba(34,197,94,0.25)', background: 'rgba(34,197,94,0.06)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}
                 >
-                  <MessageCircle size={15} /> Chat on WhatsApp
+                  <MessageCircle size={15} /> Contact Us
                 </a>
                 <Link href="/portal" style={{ padding: '11px 14px', borderRadius: 8, fontSize: 14, fontWeight: 600, color: isLightState ? '#334155' : '#d1d5db', textDecoration: 'none', border: `1px solid ${isLightState ? '#e2e8f0' : '#334155'}`, textAlign: 'center' }}>
                   Client Login
                 </Link>
                 <a
-                  href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to schedule a consultation.`}
+                  href="/contact"
                   target="_blank" rel="noopener noreferrer"
                   style={{ padding: '12px 14px', borderRadius: 8, fontSize: 14, fontWeight: 700, background: '#1e3a8a', color: '#fff', textDecoration: 'none', textAlign: 'center' }}
                 >

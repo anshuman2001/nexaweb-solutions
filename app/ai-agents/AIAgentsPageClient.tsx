@@ -11,7 +11,6 @@ export default function AIAgentsPageClient() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedAgent, setSelectedAgent] = useState<typeof agentsData[0] | null>(null);
   const [expandedFeatures, setExpandedFeatures] = useState<string[]>([]);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const toggleFeatures = (agentId: string) => {
     setExpandedFeatures(prev =>
@@ -121,7 +120,7 @@ export default function AIAgentsPageClient() {
                 {/* Buttons */}
                 <div className="flex gap-2">
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a demo of the ${agent.name}.`}
+                    href="/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 text-center py-2 rounded-xl bg-accent-blue text-white text-xs font-semibold hover:bg-blue-500 transition-all"
@@ -234,12 +233,12 @@ export default function AIAgentsPageClient() {
                 {/* CTA */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a demo of the ${selectedAgent.name} (${selectedAgent.priceRange}).`}
+                    href="/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 text-center py-3 rounded-xl bg-accent-blue text-white font-semibold hover:bg-blue-500 transition-all btn-glow"
                   >
-                    Get Demo on WhatsApp
+                    Get a Demo
                   </a>
                   <a
                     href={`mailto:info.nexawebsolution@gmail.com?subject=Inquiry: ${selectedAgent.name}`}

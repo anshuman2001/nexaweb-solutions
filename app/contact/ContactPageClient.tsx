@@ -32,7 +32,6 @@ export default function ContactPageClient() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,7 +107,7 @@ export default function ContactPageClient() {
             </div>
 
             <a
-              href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like to discuss a project.`}
+              href="/contact"
               target="_blank" rel="noopener noreferrer"
               style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderRadius: 16, background: 'rgba(37,211,102,0.08)', border: '1px solid rgba(37,211,102,0.25)', textDecoration: 'none', transition: 'background 0.15s' }}
             >
@@ -116,7 +115,7 @@ export default function ContactPageClient() {
                 <MessageCircle style={{ width: 22, height: 22, color: '#fff' }} />
               </div>
               <div>
-                <p style={{ fontWeight: 600, fontSize: 14, color: '#0f172a' }}>Chat on WhatsApp</p>
+                <p style={{ fontWeight: 600, fontSize: 14, color: '#0f172a' }}>Contact Us</p>
                 <p style={{ fontSize: 12, color: '#16a34a' }}>Fastest response — usually &lt; 30 min</p>
               </div>
             </a>
@@ -143,12 +142,12 @@ export default function ContactPageClient() {
                   <h3 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 10 }}>Message Sent!</h3>
                   <p style={{ color: MUTED, marginBottom: 24, fontSize: 15 }}>We&apos;ve received your message and will reply within 2 hours.</p>
                   <a
-                    href={`https://wa.me/${whatsappNumber}`}
+                    href="/contact"
                     target="_blank" rel="noopener noreferrer"
                     style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 10, background: '#25D366', color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}
                   >
                     <MessageCircle style={{ width: 18, height: 18 }} />
-                    Follow up on WhatsApp
+                    Contact Us
                   </a>
                 </div>
               </motion.div>

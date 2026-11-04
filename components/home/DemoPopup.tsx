@@ -19,7 +19,6 @@ export default function DemoPopup() {
     sessionStorage.setItem('demo-popup-dismissed', 'true');
   };
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   return (
     <AnimatePresence>
@@ -88,7 +87,7 @@ export default function DemoPopup() {
 
                 <div className="flex flex-col gap-3">
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=Hi! I'd like a free AI demo call.`}
+                    href="/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-semibold transition-all btn-shimmer"

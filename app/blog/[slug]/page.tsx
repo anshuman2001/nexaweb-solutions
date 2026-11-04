@@ -97,7 +97,6 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
   if (!post) notFound();
 
   const content = blogContent[post.slug] || [post.excerpt];
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -176,7 +175,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             <h3 style={{ fontSize: 22, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Ready to automate your business?</h3>
             <p style={{ color: MUTED, fontSize: 14, marginBottom: 24 }}>Get a free consultation — we&apos;ll show you exactly how AI can help your business.</p>
             <a
-              href={`https://wa.me/${whatsappNumber}?text=Hi! I read your blog and would like a free consultation.`}
+              href="/contact"
               target="_blank"
               rel="noopener noreferrer"
               style={{

@@ -212,7 +212,7 @@ export default function AICallingAgentPage() {
               <Link href="/ai-calling-agent/dashboard" className="hidden md:block text-sm font-medium px-4 py-2 rounded-lg" style={{ background: 'rgba(0,255,136,0.1)', color: '#00ff88', border: '1px solid rgba(0,255,136,0.3)' }}>
                 Dashboard
               </Link>
-              <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}?text=I+want+a+demo+of+AI+Calling+Agent`} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold px-4 py-2 rounded-lg text-black" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)' }}>
+              <a href="/contact" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold px-4 py-2 rounded-lg text-black" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)' }}>
                 Get Demo
               </a>
               <button className="md:hidden text-gray-400" onClick={() => setMenuOpen(!menuOpen)}>
@@ -257,7 +257,7 @@ export default function AICallingAgentPage() {
                 Human-like AI calls your leads in Hindi & English — 24/7, 10,000 calls simultaneously, at just <strong style={{ color: '#00ff88' }}>₹33 per call</strong>. No salary. No leave. No excuses.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}?text=I+want+a+demo+of+AI+Calling+Agent`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-7 py-4 rounded-xl font-bold text-black text-base" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)', boxShadow: '0 0 30px rgba(0,255,136,0.3)' }}>
+                <a href="/contact" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-7 py-4 rounded-xl font-bold text-black text-base" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)', boxShadow: '0 0 30px rgba(0,255,136,0.3)' }}>
                   <Play className="w-5 h-5" />
                   Book Free Demo
                 </a>
@@ -477,7 +477,7 @@ export default function AICallingAgentPage() {
                     </li>
                   ))}
                 </ul>
-                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}?text=I+want+to+know+more+about+AI+Calling+Agent`} target="_blank" rel="noopener noreferrer" className="w-full py-3 rounded-xl font-semibold text-sm text-center block transition-all" style={{
+                <a href="/contact" target="_blank" rel="noopener noreferrer" className="w-full py-3 rounded-xl font-semibold text-sm text-center block transition-all" style={{
                   background: p.popular ? `linear-gradient(135deg,${p.color},#3b82f6)` : `rgba(${p.color === '#3b82f6' ? '59,130,246' : '168,85,247'},0.15)`,
                   color: p.popular ? '#000' : p.color,
                   border: p.popular ? 'none' : `1px solid ${p.color}40`,
@@ -523,8 +523,8 @@ export default function AICallingAgentPage() {
             </h2>
             <p className="text-gray-400 mb-8 max-w-lg mx-auto">Join 50+ companies already using DigiAgentix AI to supercharge their sales. Get a free demo today.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}?text=I+want+a+free+demo+of+DigiAgentix+AI+Calling+Agent`} target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-xl font-bold text-black text-base" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)', boxShadow: '0 0 30px rgba(0,255,136,0.3)' }}>
-                📞 Book Free Demo on WhatsApp
+              <a href="/contact" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-xl font-bold text-black text-base" style={{ background: 'linear-gradient(135deg,#00ff88,#00cc6a)', boxShadow: '0 0 30px rgba(0,255,136,0.3)' }}>
+                📞 Book Free Demo
               </a>
               <a href="mailto:info@digiagentix.com?subject=AI Calling Agent Demo Request" className="px-8 py-4 rounded-xl font-semibold text-white text-base" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}>
                 ✉️ Email Us
