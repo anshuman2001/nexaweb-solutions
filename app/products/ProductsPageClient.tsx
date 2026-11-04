@@ -297,7 +297,7 @@ const whyItems = [
    HERO (light — matches Solutions page)
 ══════════════════════════════════════════ */
 function Hero() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 88 }}>
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
@@ -353,7 +353,7 @@ function Hero() {
 function ProductsGrid() {
   const [activeFilter, setActiveFilter] = useState('All');
   const filtered = activeFilter === 'All' ? products : products.filter(p => p.filterKey === activeFilter);
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   return (
     <section style={{ background: LIGHTER, padding: '72px 24px' }}>
@@ -553,7 +553,7 @@ function WhySection() {
    CTA (dark navy — matches Solutions)
 ══════════════════════════════════════════ */
 function CTA() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '88px 24px' }}>
       <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>

@@ -172,7 +172,7 @@ const metrics = [
 /* ─── Component ─────────────────────────────────────────────────────────────── */
 
 export default function EcommerceAgentPage() {
-  const whatsapp = 'https://wa.me/919997730768?text=Hi! I want a demo of the eCommerce Shopping Agent.';
+  const whatsapp = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}?text=Hi! I want a demo of the eCommerce Shopping Agent.`;
 
   return (
     <div className="min-h-screen bg-background text-white" style={{ fontFamily: "'Inter', sans-serif" }}>

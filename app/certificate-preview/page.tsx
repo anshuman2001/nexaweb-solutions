@@ -212,7 +212,6 @@ export default function CertificatePreviewPage() {
             }}>
               <span>🌐 www.digiagentix.com</span>
               <span>✉ hr@digiagentix.com</span>
-              <span>📞 +91 73039 61522</span>
               <span style={{ marginLeft: 'auto' }}>MSME Reg: UDYAM-UP-56-0005297</span>
             </div>
           </div>
@@ -379,7 +378,7 @@ export default function CertificatePreviewPage() {
             </div>
             <div style={{ textAlign: 'right', fontSize: 8.5, color: '#93c5fd', lineHeight: 1.7 }}>
               <div>www.digiagentix.com</div>
-              <div>hr@digiagentix.com &nbsp;|&nbsp; +91 73039 61522</div>
+              <div>hr@digiagentix.com</div>
               <div style={{ fontSize: 7.5, color: '#60a5fa', marginTop: 1 }}>This is an official document issued by DigiAgentix.</div>
             </div>
           </div>

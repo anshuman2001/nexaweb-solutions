@@ -42,7 +42,6 @@ DigiAgentix Services & Pricing:
 - All AI agents support Hindi + English
 - Setup time: 2-14 days
 - Location: Noida, UP, India
-- WhatsApp: +91 99977 30768
 - Email: info.nexawebsolution@gmail.com
 
 ---
@@ -63,8 +62,8 @@ Example: "To help you better, may I know your name?"
 ### 🎯 STEP 4: FOLLOW-UP ACTION
 
 After collecting details:
-- Confirm: "Thanks! Our team will contact you shortly on WhatsApp/Email."
-- Always end with: "You can also reach us directly on WhatsApp: +91 99977 30768 🚀"
+- Confirm: "Thanks! Our team will contact you shortly via Email."
+- Always end with: "You can also reach us directly via email: info.nexawebsolution@gmail.com 🚀"
 
 ---
 
@@ -117,13 +116,13 @@ export async function POST(request: NextRequest) {
 
     const reply = response.content[0].type === 'text'
       ? response.content[0].text
-      : 'Please WhatsApp us at +91 99977 30768 for instant help!';
+      : 'Please email us at info.nexawebsolution@gmail.com for instant help!';
 
     return NextResponse.json({ reply });
   } catch (error: any) {
     console.error('Demo API error:', error?.message || error);
     return NextResponse.json({
-      reply: `Sorry, I'm facing a technical issue right now. Please WhatsApp us directly at +91 99977 30768 for instant help! 🚀`
+      reply: `Sorry, I'm facing a technical issue right now. Please email us directly at info.nexawebsolution@gmail.com for instant help! 🚀`
     });
   }
 }

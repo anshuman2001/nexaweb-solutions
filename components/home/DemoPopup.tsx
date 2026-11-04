@@ -19,7 +19,7 @@ export default function DemoPopup() {
     sessionStorage.setItem('demo-popup-dismissed', 'true');
   };
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   return (
     <AnimatePresence>

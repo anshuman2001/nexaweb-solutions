@@ -162,7 +162,7 @@ const faqs = [
    HERO
 ══════════════════════════════════════════ */
 function Hero() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8efff 100%)', paddingTop: 108, paddingBottom: 88 }}>
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
@@ -404,7 +404,7 @@ function FAQ() {
    CTA
 ══════════════════════════════════════════ */
 function CTA() {
-  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
   return (
     <section style={{ background: NAVY, padding: '88px 24px' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>

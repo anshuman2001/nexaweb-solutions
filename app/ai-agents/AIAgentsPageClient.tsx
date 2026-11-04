@@ -11,7 +11,7 @@ export default function AIAgentsPageClient() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedAgent, setSelectedAgent] = useState<typeof agentsData[0] | null>(null);
   const [expandedFeatures, setExpandedFeatures] = useState<string[]>([]);
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const toggleFeatures = (agentId: string) => {
     setExpandedFeatures(prev =>

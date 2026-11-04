@@ -97,7 +97,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
   if (!post) notFound();
 
   const content = blogContent[post.slug] || [post.excerpt];
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919997730768';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
   const articleSchema = {
     '@context': 'https://schema.org',
